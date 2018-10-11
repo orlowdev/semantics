@@ -13,7 +13,7 @@ tests:
   script:
   - yarn style:check
   - yarn coverage:cover
-  - git status && git branch && ls .git
+  - ls -al
 
 code_quality:
   image: docker:stable
