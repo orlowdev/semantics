@@ -1,4 +1,5 @@
 import { AuthorInterface } from './author.interface';
+import { CommitTypes } from '../types/commit-types';
 
 export interface CommitInterface {
   hash: string;
@@ -6,4 +7,7 @@ export interface CommitInterface {
   author: AuthorInterface;
   subject: string;
   body: string[];
+  type: keyof typeof CommitTypes;
+  breakingChanges: boolean;
+  issueReference?: string;
 }
