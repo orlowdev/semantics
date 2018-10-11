@@ -8,7 +8,7 @@ export const extractCommitTypes = (commit: CommitInterface): CommitInterface => 
     let typePredicate = subject[0];
     
     if (issueReferenceRx.test(typePredicate)) {
-        commit.issueReference = typePredicate.match(issueReferenceRx)[0];
+        commit.issueReference = typePredicate.match(issueReferenceRx)[1];
         typePredicate = typePredicate.replace(issueReferenceRx, '');
     }
 
