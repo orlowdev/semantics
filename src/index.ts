@@ -2,7 +2,7 @@ import { Shell } from '@totemish/shell';
 import { execPromise } from './utils/exec-promise';
 import { catchError } from './utils/catch-promise';
 import { commitFormat } from './utils/commit-format';
-import { dropHeaderLine } from './utils/drop-header-line';
+import { normalizeChanges } from './utils/normalize-changes';
 
 execPromise('git rev-parse HEAD')
   .then((currentCommit: string) => {
@@ -14,7 +14,7 @@ execPromise('git rev-parse HEAD')
           .then((latestTaggedCommit: string) => {
             execPromise(`git rev-list ${latestTaggedCommit}..HEAD --no-merges --format='${commitFormat}'`)
             .then((changes: string) => {
-              Shell.write(JSON.parse(dropHeaderLine(changes)));
+              Shell.write(JSON.parse(normalizeChanges(changes)));
             })
             .catch(catchError);
           })
