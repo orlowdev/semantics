@@ -5,8 +5,9 @@
       "lib": [
         "es2018"
       ],
-      "sourceMap": true,
-      "declaration": true,
+      "outDir": "dist",
+      "sourceMap": false,
+      "declaration": false,
       "alwaysStrict": true,
       "moduleResolution": "node",
       "experimentalDecorators": true,

@@ -1,6 +1,13 @@
-import { exec, ExecException } from 'child_process';
 import { Shell } from '@totemish/shell';
+import { execPromise } from './utils/exec-promise';
+import { catchError } from './utils/catch-promise';
 
-exec('echo hello', (e: ExecException, stdout: string, stderr: string) => {
-  Shell.write(Shell.green(stdout));
-});
+execPromise('git rev-parse HEAD')
+  .then((commit: string) => {
+    execPromise('git rev-parse --abbrev-ref HEAD')
+      .then((branch: string) => {
+        Shell.success(branch, commit);
+      })
+      .catch(catchError);
+  })
+  .catch(catchError);

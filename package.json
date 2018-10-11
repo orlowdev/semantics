@@ -9,10 +9,12 @@
     "coverage:check": "nyc check-coverage --lines 0 --branches 0 --functions 0 --statements 0",
     "tslint:check": "tslint --project tslint.json -t stylish",
     "tslint:fix": "yarn tslint:check --fix",
-    "prettier:check": "prettier --list-different src/**/*.ts",
-    "prettier:fix": "prettier --write src/**/*.ts",
+    "prettier:check": "prettier --list-different src/**/*.ts src/*.ts",
+    "prettier:fix": "prettier --write src/**/*.ts src/*.ts",
     "style:check": "yarn prettier:check && yarn tslint:check",
-    "style:fix": "yarn prettier:fix && yarn tslint:fix"
+    "style:fix": "yarn prettier:fix && yarn tslint:fix",
+    "build:ci": "tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [
     "ci",
