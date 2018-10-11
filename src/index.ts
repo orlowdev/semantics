@@ -5,6 +5,7 @@ import { commitFormat } from './utils/commit-format';
 import { normalizeChanges } from './utils/normalize-changes';
 import { normalizeBody } from './utils/normalize-body';
 import { extractCommitTypes } from './utils/extract-commit-types';
+import { extractBreakingChanges } from './utils/extract-breaking-changes';
 
 execPromise('git rev-parse HEAD')
   .then((currentCommit: string) => {
@@ -17,7 +18,10 @@ execPromise('git rev-parse HEAD')
                 execPromise(`git rev-list ${latestTaggedCommit}..HEAD --no-merges --format='${commitFormat}'`)
                   .then((changes: string) => {
                     const normalizedChanges = JSON.parse(normalizeChanges(changes)).map(normalizeBody);
-                    normalizedChanges.map(extractCommitTypes).map((x) => Shell.write(x));
+                    normalizedChanges
+                      .map(extractCommitTypes)
+                      .map(extractBreakingChanges)
+                      .map((x) => Shell.write(x));
                   })
                   .catch(catchError);
               })
