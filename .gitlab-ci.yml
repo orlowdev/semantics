@@ -8,6 +8,7 @@ cache:
 tests:
   stage: test
   before_script:
+  - apt-get install git
   - npm i -g yarn
   - yarn install
   script:
