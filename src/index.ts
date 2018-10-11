@@ -17,8 +17,9 @@ execPromise('git rev-parse HEAD')
               .then((latestTaggedCommit: string) => {
                 execPromise(`git rev-list ${latestTaggedCommit}..HEAD --no-merges --format='${commitFormat}'`)
                   .then((changes: string) => {
-                    const normalizedChanges = JSON.parse(normalizeChanges(changes)).map(normalizeBody);
+                    const normalizedChanges = JSON.parse(normalizeChanges(changes));
                     normalizedChanges
+                      .map(normalizeBody)
                       .map(extractCommitTypes)
                       .map(extractBreakingChanges)
                       .map((x) => Shell.write(x));
