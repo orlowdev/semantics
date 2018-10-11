@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "lib": [
+        "es2018"
+      ],
+      "sourceMap": true,
+      "declaration": true,
+      "alwaysStrict": true,
+      "moduleResolution": "node",
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true
+    },
+    "exclude": [
+      "**/*.spec.ts",
+      "node_modules",
+      "test"
+    ]
+  }
+  

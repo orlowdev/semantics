@@ -1,0 +1,78 @@
+{
+  "defaultSeverity": "error",
+  "jsRules": {},
+  "rules": {
+    "interface-name": false,
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "no-namespace": false,
+    "no-conditional-assignment": false,
+    "semicolon": [],
+    "only-arrow-functions": [
+      true,
+      "allow-named-functions",
+      "allow-declarations"
+    ],
+    "adjacent-overload-signatures": true,
+    "label-position": true,
+    "no-duplicate-super": true,
+    "no-duplicate-variable": true,
+    "no-for-in-array": true,
+    "no-invalid-template-strings": true,
+    "no-string-throw": true,
+    "no-switch-case-fall-through": true,
+    "no-this-assignment": [
+      true,
+      {
+        "allow-destructuring": true,
+        "allowed-names": [
+          "^self$"
+        ]
+      }
+    ],
+    "no-unsafe-finally": true,
+    "no-use-before-declare": true,
+    "no-var-keyword": true,
+    "prefer-conditional-expression": true,
+    "prefer-const": true,
+    "prefer-object-spread": true,
+    "switch-default": true,
+    "triple-equals": [
+      true,
+      "allow-null-check",
+      "allow-undefined-check"
+    ],
+    "eofline": true,
+    "indent": [
+      true,
+      "spaces",
+      2
+    ],
+    "align": [
+      true
+    ],
+    "array-type": [
+      true,
+      "array-simple"
+    ],
+    "arrow-parens": [
+      true
+    ],
+    "arrow-return-shorthand": [
+      true
+    ],
+    "binary-expression-operand-order": true,
+    "encoding": true,
+    "import-spacing": true
+  },
+  "rulesDirectory": [],
+  "cliOptions": {
+    "exclude": [
+      ".git",
+      "node_modules",
+      "*.d.ts"
+    ]
+  }
+}
