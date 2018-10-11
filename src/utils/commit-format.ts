@@ -7,5 +7,6 @@ export const commitFormat =
   '"email": "%aE"' +
   '},' +
   '"subject": "%s",' +
-  '"body": "%b"' +
+  '"body": "%b",' +
+  '"footer": "%b"' +
   '}';

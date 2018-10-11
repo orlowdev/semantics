@@ -7,6 +7,7 @@ export interface CommitInterface {
   author: AuthorInterface;
   subject: string;
   body: string[];
+  footer: string[];
   type: keyof typeof CommitTypes;
   breakingChanges: boolean;
   issueReference?: string;
