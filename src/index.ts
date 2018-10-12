@@ -13,6 +13,7 @@ import { getAmendPatch } from './utils/get-amend-patch';
 import { changeVersion } from './utils/change-version';
 import { getSubjects } from './utils/get-subjects';
 import { getBreakingChanges } from './utils/get-breaking-changes';
+import * as request from 'request';
 
 execPromise('git rev-parse HEAD')
   .then((currentCommit: string) => {
@@ -63,7 +64,30 @@ execPromise('git rev-parse HEAD')
                       styles,
                       breakingChanges
                     );
-                    console.log(changeLog);
+
+                    const url = `https://gitlab.com/api/v4/projects/${process.env.CI_PROJECT_ID}/tags`;
+                    const token = process.env.PRIVATE_TOKEN;
+
+                    request.post(
+                      `https://gitlab.com/api/v4/projects/${process.env.CI_PROJECT_ID}/repository/tags`,
+                      {
+                        headers: {
+                          'PRIVATE-TOKEN': process.env.PRIVATE_TOKEN,
+                        },
+                        json: true,
+                        body: {
+                          id: process.env.CI_PROJECT_ID,
+                          tag_name: newVersion,
+                          ref: currentCommit,
+                          releaseDescription: changeLog,
+                        },
+                      },
+                      (e: Error, r, b) => {
+                        if (e) Shell.error(e.message);
+                        console.log(b);
+                        Shell.success(`Successfully released ${newVersion}`);
+                      }
+                    );
                   })
                   .catch(catchError);
               })
