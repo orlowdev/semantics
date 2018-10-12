@@ -79,7 +79,7 @@ execPromise('git rev-parse HEAD')
                           id: process.env.CI_PROJECT_ID,
                           tag_name: newVersion,
                           ref: currentCommit,
-                          releaseDescription: changeLog,
+                          release_description: changeLog,
                         },
                       },
                       (e: Error, r, b) => {
