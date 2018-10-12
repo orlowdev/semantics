@@ -16,3 +16,5 @@ tests:
   - yarn coverage:cover
   - yarn build:ci
   - CI_PROJECT_ID=$CI_PROJECT_ID PRIVATE_TOKEN=$PRIVATE_TOKEN yarn start
+  only:
+  - master
