@@ -1,4 +1,7 @@
-export const commitFormat =
+/**
+ * Git commit format template.
+ */
+export const commitFormat: string =
   '{' +
   '"hash": "%H",' +
   '"abbrevHash": "%h",' +

@@ -1,5 +1,9 @@
 import { getCurrentVersion } from './get-current-version';
 
+/**
+ * Amend version based on current tag and provided version change requirements.
+ * @param currentTag String representing current git tag
+ */
 export const changeVersion = (currentTag: string) => {
   const current = getCurrentVersion(currentTag);
 

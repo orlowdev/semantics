@@ -1,6 +1,12 @@
 import { CommitInterface } from '../interfaces/commit.interface';
 import { CommitTypes } from '../types/commit-types';
 
+/**
+ * Extract type from the commit subject and amend subject itself for later use.
+ * @todo:priestine Refactor this into separate functions
+ * @param commit CommitInterface
+ * @returns CommitInterface
+ */
 export const extractCommitTypes = (commit: CommitInterface): CommitInterface => {
   const subject = commit.subject.split(': ');
   const issueReferenceRx = /\((#\d+)\)/;

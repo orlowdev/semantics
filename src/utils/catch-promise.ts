@@ -1,6 +1,9 @@
-import { ExecException } from 'child_process';
 import { Shell } from '@totemish/shell';
 
-export const catchError = (e: string | ExecException): void => {
+/**
+ * Catch execPromise errors and put them to console.
+ * @param e string
+ */
+export const catchError = (e: string): void => {
   Shell.error(e.toString());
 };

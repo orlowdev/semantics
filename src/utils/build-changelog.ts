@@ -1,5 +1,22 @@
 import { CommitTypes } from '../types/commit-types';
 
+/**
+ * Build new tag release changelog based on given changes and their types.
+ * @todo:priestine - Refactor this
+ * @param version string
+ * @param features string[]
+ * @param fixes string[]
+ * @param chores string[]
+ * @param reverts string[]
+ * @param tests string[]
+ * @param refactors string[]
+ * @param perfs string[]
+ * @param builds string[]
+ * @param cis string[]
+ * @param docs string[]
+ * @param styles string[]
+ * @param breakingChanges string[]
+ */
 export const buildChangelog = (
   version: string,
   features: string[],
