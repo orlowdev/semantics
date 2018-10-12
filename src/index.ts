@@ -31,12 +31,18 @@ execPromise('git rev-parse HEAD')
                       .map(normalizeBody)
                       .map(extractCommitTypes)
                       .map(extractBreakingChanges);
-                    normalizedChanges.map((x) => Shell.write(x));
+
                     const getCommitSubjects = getSubjects(normalizedChanges);
                     const amendMajor = getAmendMajor(normalizedChanges);
                     const amendMinor = getAmendMinor(normalizedChanges);
                     const amendPatch = getAmendPatch(normalizedChanges);
                     const newVersion = versionChanger(amendMajor, amendMinor, amendPatch);
+
+                    if (currentTag === `${newVersion[0]}.${newVersion[1]}.${newVersion[2]}`) {
+                      Shell.info('Given changes do not require releasing.');
+                      return;
+                    }
+
                     const features = getCommitSubjects('feat');
                     const fixes = getCommitSubjects('fix');
                     const chores = getCommitSubjects('chore');
@@ -65,9 +71,6 @@ execPromise('git rev-parse HEAD')
                       breakingChanges
                     );
 
-                    const url = `https://gitlab.com/api/v4/projects/${process.env.CI_PROJECT_ID}/tags`;
-                    const token = process.env.PRIVATE_TOKEN;
-
                     request.post(
                       `https://gitlab.com/api/v4/projects/${process.env.CI_PROJECT_ID}/repository/tags`,
                       {
@@ -84,7 +87,6 @@ execPromise('git rev-parse HEAD')
                       },
                       (e: Error, r, b) => {
                         if (e) Shell.error(e.message);
-                        console.log(b);
                         Shell.success(`Successfully released ${newVersion}`);
                       }
                     );
