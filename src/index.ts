@@ -1,5 +1,6 @@
 import { Shell } from '@totemish/shell';
 import { execPromise } from './utils/exec-promise';
+import { buildChangelog } from './utils/build-changelog';
 import { catchError } from './utils/catch-promise';
 import { commitFormat } from './utils/commit-format';
 import { normalizeChanges } from './utils/normalize-changes';
@@ -10,6 +11,11 @@ import { getAmendMajor } from './utils/get-amend-major';
 import { getAmendMinor } from './utils/get-amend-minor';
 import { getAmendPatch } from './utils/get-amend-patch';
 import { changeVersion } from './utils/change-version';
+import { getFeatures } from './utils/get-features';
+import { getFixes } from './utils/get-fixes';
+import { getChores } from './utils/get-chores';
+import { getReverts } from './utils/get-reverts';
+import { getBreakingChanges } from './utils/get-breaking-changes';
 
 execPromise('git rev-parse HEAD')
   .then((currentCommit: string) => {
@@ -32,7 +38,13 @@ execPromise('git rev-parse HEAD')
                     const amendMinor = getAmendMinor(normalizedChanges);
                     const amendPatch = getAmendPatch(normalizedChanges);
                     const newVersion = versionChanger(amendMajor, amendMinor, amendPatch);
-                    console.log(newVersion);
+                    const features = getFeatures(normalizedChanges);
+                    const fixes = getFixes(normalizedChanges);
+                    const chores = getChores(normalizedChanges);
+                    const reverts = getReverts(normalizedChanges);
+                    const breakingChanges = getBreakingChanges(normalizedChanges);
+                    const changeLog = buildChangelog(features, fixes, chores, reverts, breakingChanges);
+                    console.log(newVersion, changeLog);
                   })
                   .catch(catchError);
               })
