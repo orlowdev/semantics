@@ -44,6 +44,8 @@ execPromise('git rev-parse HEAD')
                     const refactors = getCommitSubjects('refactor');
                     const perfs = getCommitSubjects('perf');
                     const builds = getCommitSubjects('build');
+                    const docs = getCommitSubjects('docs');
+                    const styles = getCommitSubjects('style');
                     const cis = getCommitSubjects('ci');
                     const breakingChanges = getBreakingChanges(normalizedChanges);
                     const changeLog = buildChangelog(
@@ -57,6 +59,8 @@ execPromise('git rev-parse HEAD')
                       perfs,
                       builds,
                       cis,
+                      docs,
+                      styles,
                       breakingChanges
                     );
                     console.log(changeLog);
