@@ -3,4 +3,4 @@
  * @param x String containing a number.
  * @returns number
  */
-export const parseInteger = (x: string): number => /\d+/.test(x) ? Number.parseInt(x, 10) : 0;
+export const parseInteger = (x: string): number => (/\d+/.test(x) ? Number.parseInt(x, 10) : 0);
