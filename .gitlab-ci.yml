@@ -8,12 +8,19 @@ cache:
 tests:
   stage: test
   before_script:
-  - apt-get update -qq && apt-get install -qq -y git
   - npm i -g yarn
   - yarn install
   script:
   - yarn style:check
   - yarn coverage:cover
+
+versioning:
+  stage: build
+  before_script:
+  - apt-get update -qq && apt-get install -qq -y git
+  - npm i -g yarn
+  - yarn install
+  script:
   - yarn build:ci
   - CI_PROJECT_ID=$CI_PROJECT_ID PRIVATE_TOKEN=$PRIVATE_TOKEN yarn start
   only:
