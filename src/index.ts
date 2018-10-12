@@ -12,8 +12,9 @@ import { getAmendMinor } from './utils/get-amend-minor';
 import { getAmendPatch } from './utils/get-amend-patch';
 import { changeVersion } from './utils/change-version';
 import { getSubjects } from './utils/get-subjects';
-import { getBreakingChanges } from './utils/get-breaking-changes';
 import * as request from 'request';
+import { CommitInterface } from './interfaces/commit.interface';
+import { flatten } from './utils/flatten-array';
 
 execPromise('git rev-parse HEAD')
   .then((currentCommit: string) => {
@@ -27,7 +28,7 @@ execPromise('git rev-parse HEAD')
               .then((latestTaggedCommit: string) => {
                 execPromise(`git rev-list ${latestTaggedCommit}..HEAD --no-merges --format='${commitFormat}'`)
                   .then((changes: string) => {
-                    const normalizedChanges = JSON.parse(normalizeChanges(changes))
+                    const normalizedChanges: CommitInterface[] = JSON.parse(normalizeChanges(changes))
                       .map(normalizeBody)
                       .map(extractCommitTypes)
                       .map(extractBreakingChanges);
@@ -54,7 +55,7 @@ execPromise('git rev-parse HEAD')
                     const docs = getCommitSubjects('docs');
                     const styles = getCommitSubjects('style');
                     const cis = getCommitSubjects('ci');
-                    const breakingChanges = getBreakingChanges(normalizedChanges);
+                    const breakingChanges = flatten(normalizedChanges.map((x: CommitInterface) => x.breakingChanges));
                     const changeLog = buildChangelog(
                       newVersion,
                       features,
