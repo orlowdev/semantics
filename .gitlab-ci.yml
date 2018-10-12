@@ -16,4 +16,3 @@ tests:
   - yarn coverage:cover
   - yarn build:ci
   - yarn start
-
