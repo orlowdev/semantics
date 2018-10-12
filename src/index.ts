@@ -11,10 +11,7 @@ import { getAmendMajor } from './utils/get-amend-major';
 import { getAmendMinor } from './utils/get-amend-minor';
 import { getAmendPatch } from './utils/get-amend-patch';
 import { changeVersion } from './utils/change-version';
-import { getFeatures } from './utils/get-features';
-import { getFixes } from './utils/get-fixes';
-import { getChores } from './utils/get-chores';
-import { getReverts } from './utils/get-reverts';
+import { getSubjects } from './utils/get-subjects';
 import { getBreakingChanges } from './utils/get-breaking-changes';
 
 execPromise('git rev-parse HEAD')
@@ -34,16 +31,34 @@ execPromise('git rev-parse HEAD')
                       .map(extractCommitTypes)
                       .map(extractBreakingChanges);
                     normalizedChanges.map((x) => Shell.write(x));
+                    const getCommitSubjects = getSubjects(normalizedChanges);
                     const amendMajor = getAmendMajor(normalizedChanges);
                     const amendMinor = getAmendMinor(normalizedChanges);
                     const amendPatch = getAmendPatch(normalizedChanges);
                     const newVersion = versionChanger(amendMajor, amendMinor, amendPatch);
-                    const features = getFeatures(normalizedChanges);
-                    const fixes = getFixes(normalizedChanges);
-                    const chores = getChores(normalizedChanges);
-                    const reverts = getReverts(normalizedChanges);
+                    const features = getCommitSubjects('feat');
+                    const fixes = getCommitSubjects('fix');
+                    const chores = getCommitSubjects('chore');
+                    const reverts = getCommitSubjects('revert');
+                    const tests = getCommitSubjects('test');
+                    const refactors = getCommitSubjects('refactor');
+                    const perfs = getCommitSubjects('perf');
+                    const builds = getCommitSubjects('build');
+                    const cis = getCommitSubjects('ci');
                     const breakingChanges = getBreakingChanges(normalizedChanges);
-                    const changeLog = buildChangelog(newVersion, features, fixes, chores, reverts, breakingChanges);
+                    const changeLog = buildChangelog(
+                      newVersion,
+                      features,
+                      fixes,
+                      chores,
+                      reverts,
+                      tests,
+                      refactors,
+                      perfs,
+                      builds,
+                      cis,
+                      breakingChanges
+                    );
                     console.log(changeLog);
                   })
                   .catch(catchError);
