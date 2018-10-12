@@ -20,6 +20,11 @@ execPromise('git rev-parse HEAD')
   .then((currentCommit: string) => {
     execPromise('git rev-parse --abbrev-ref HEAD')
       .then((branch: string) => {
+        if (branch !== 'master') {
+          Shell.info('Version bumping being executed in branch other than master.');
+          return;
+        }
+
         execPromise('git describe --tags `git rev-list --tags --max-count=1`')
           .then((currentTag: string) => {
             const versionChanger = changeVersion(currentTag);
