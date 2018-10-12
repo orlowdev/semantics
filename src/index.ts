@@ -43,8 +43,8 @@ execPromise('git rev-parse HEAD')
                     const chores = getChores(normalizedChanges);
                     const reverts = getReverts(normalizedChanges);
                     const breakingChanges = getBreakingChanges(normalizedChanges);
-                    const changeLog = buildChangelog(features, fixes, chores, reverts, breakingChanges);
-                    console.log(newVersion, changeLog);
+                    const changeLog = buildChangelog(newVersion, features, fixes, chores, reverts, breakingChanges);
+                    console.log(changeLog);
                   })
                   .catch(catchError);
               })
