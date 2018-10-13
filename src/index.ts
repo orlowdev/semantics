@@ -110,7 +110,10 @@ execPromise('git rev-parse HEAD')
 
     execPromise('git describe --tags `git rev-list --tags --max-count=1`')
       .then((currentTag: string) => {
-        Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(` Current tag version is `, Shell.bold(Shell.green(currentTag))));
+        Shell.write(
+          Shell.blue(`SEMANTICS INFO`),
+          Shell.white(` Current tag version is `, Shell.bold(Shell.green(currentTag)))
+        );
 
         execPromise(`git show-ref ${currentTag} -s`)
           .then((latestTaggedCommit: string) => {
