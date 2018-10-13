@@ -106,6 +106,10 @@ execPromise('git rev-parse HEAD')
               .catch(catchError);
           });
       })
-      .catch(catchError);
+      .catch(() => {
+        execPromise(`git rev-list --all --no-merges --format='${commitFormat}'`)
+          .then((changes: string) => run('0.0.0', currentCommit, changes))
+          .catch(catchError);
+      });
   })
   .catch(catchError);
