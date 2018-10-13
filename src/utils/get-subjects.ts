@@ -11,5 +11,5 @@ export const getSubjects = (xs: CommitInterface[]) => (type: keyof typeof Commit
     .filter((x: CommitInterface) => x.type === type)
     .map(
       (x: CommitInterface) =>
-        `[${x.abbrevHash}](https://gitlab.com/${process.env.CI_PROJECT_PATH_SLUG}/commit/${x.hash}): ${x.subject}`
+        `${x.abbrevHash}: ${x.subject}`
     );
