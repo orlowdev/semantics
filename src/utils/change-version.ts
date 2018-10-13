@@ -21,7 +21,7 @@ export const changeVersion = (currentTag: string) => {
     }
 
     if (patch) {
-      return `${current[0]}.${current[1]}.${current[1] + 1}`;
+      return `${current[0]}.${current[1]}.${current[2] + 1}`;
     }
 
     return `${current[0]}.${current[1]}.${current[2]}`;
