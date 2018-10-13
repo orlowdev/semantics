@@ -1,5 +1,10 @@
 image: node:10-slim
 
+stages:
+- build
+- test
+- deploy
+
 cache:
   key: "$CI_COMMIT_REF_SLUG"
   paths:
@@ -15,7 +20,7 @@ tests:
   - yarn coverage:cover
 
 versioning:
-  stage: build
+  stage: deploy
   before_script:
   - apt-get update -qq && apt-get install -qq -y git
   - npm i -g yarn
