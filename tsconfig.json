@@ -15,8 +15,7 @@
     },
     "exclude": [
       "**/*.spec.ts",
-      "node_modules",
-      "test"
+      "node_modules"
     ]
   }
   
