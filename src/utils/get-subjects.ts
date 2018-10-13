@@ -11,5 +11,7 @@ export const getSubjects = (xs: CommitInterface[]) => (type: keyof typeof Commit
     .filter((x: CommitInterface) => x.type === type)
     .map(
       (x: CommitInterface) =>
-        `**${x.abbrevHash}**: ${x.subject}${x.issueReference ? ` (${x.issueReference})` : ''}`
+        `**${x.abbrevHash}**: ${x.subject}${x.issueReference ? ` (${x.issueReference})` : ''}${
+          x.body.length ? `\n${x.body.join('\n>')}` : ''
+        }`
     );
