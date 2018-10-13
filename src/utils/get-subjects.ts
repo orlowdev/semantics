@@ -9,4 +9,7 @@ import { CommitTypes } from '../types/commit-types';
 export const getSubjects = (xs: CommitInterface[]) => (type: keyof typeof CommitTypes): string[] =>
   xs
     .filter((x: CommitInterface) => x.type === type)
-    .map((x: CommitInterface) => `${x.abbrevHash} ${x.type}: ${x.subject}`);
+    .map(
+      (x: CommitInterface) =>
+        `[${x.abbrevHash}](https://gitlab.com/${process.env.CI_PROJECT_PATH_SLUG}/commit/${x.hash}): ${x.subject}`
+    );
