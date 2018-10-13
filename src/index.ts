@@ -53,7 +53,13 @@ execPromise('git rev-parse HEAD')
                 const docs = getCommitSubjects('docs');
                 const styles = getCommitSubjects('style');
                 const cis = getCommitSubjects('ci');
-                const breakingChanges = flatten(normalizedChanges.map((x: CommitInterface) => x.breakingChanges));
+                const breakingChanges = flatten(
+                  normalizedChanges.map((x: CommitInterface) =>
+                    x.breakingChanges.map(
+                      (y: string) => `**${x.abbrevHash}**: ${y}${x.issueReference ? ` (${x.issueReference})` : ''}`
+                    )
+                  )
+                );
                 const changeLog = buildChangelog(
                   newVersion,
                   features,
