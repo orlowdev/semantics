@@ -6,7 +6,10 @@ import { CommitInterface } from '../interfaces/commit.interface';
  * @returns CommitInterface
  */
 export const extractBreakingChanges = (commit: CommitInterface): CommitInterface => {
-  commit.breakingChanges = commit.body.filter((x: string) => /^BREAKING\sCHANGE:/.test(x)) || [];
+  commit.breakingChanges =
+    commit.body
+      .filter((x: string) => /^BREAKING\sCHANGE:/.test(x))
+      .map((x: string) => x.replace(/^BREAKING\sCHANGE:/, '').trim()) || [];
   commit.body = commit.body.filter((x: string) => !/^BREAKING\sCHANGE:/.test(x));
 
   return commit;
