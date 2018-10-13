@@ -38,7 +38,7 @@ ${
       ? `
 ## ${CommitTypes.feat.title}
 
-> ${CommitTypes.feat.description}
+\`${CommitTypes.feat.description}\`
 
 ${features.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -48,7 +48,7 @@ ${features.map((f: string) => `* ${f}`).join('\n')}`
 
 ## ${CommitTypes.fix.title}
 
-> ${CommitTypes.fix.description}
+\`${CommitTypes.fix.description}\`
 
 ${fixes.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -58,7 +58,7 @@ ${fixes.map((f: string) => `* ${f}`).join('\n')}`
 
 ## ${CommitTypes.docs.title}
 
-> ${CommitTypes.docs.description}
+\`${CommitTypes.docs.description}\`
 
 ${docs.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -68,7 +68,7 @@ ${docs.map((f: string) => `* ${f}`).join('\n')}`
 
 ## ${CommitTypes.style.title}
 
-> ${CommitTypes.style.description}
+\`${CommitTypes.style.description}\`
 
 ${styles.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -78,7 +78,7 @@ ${styles.map((f: string) => `* ${f}`).join('\n')}`
 
 ## ${CommitTypes.refactor.title}
 
-> ${CommitTypes.refactor.description}
+\`${CommitTypes.refactor.description}\`
 
 ${refactors.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -88,7 +88,7 @@ ${refactors.map((f: string) => `* ${f}`).join('\n')}`
 
 ## ${CommitTypes.perf.title}
 
-> ${CommitTypes.perf.description}
+\`${CommitTypes.perf.description}\`
 
 ${perfs.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -97,7 +97,7 @@ ${perfs.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 ## ${CommitTypes.test.title}
 
-> ${CommitTypes.test.description}
+\`${CommitTypes.test.description}\`
 
 ${tests.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -107,7 +107,7 @@ ${tests.map((f: string) => `* ${f}`).join('\n')}`
 
 ## ${CommitTypes.build.title}
 
-> ${CommitTypes.build.description}
+\`${CommitTypes.build.description}\`
 
 ${builds.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -117,7 +117,7 @@ ${builds.map((f: string) => `* ${f}`).join('\n')}`
 
 ## ${CommitTypes.ci.title}
 
-> ${CommitTypes.ci.description}
+\`${CommitTypes.ci.description}\`
 
 ${cis.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -127,7 +127,7 @@ ${cis.map((f: string) => `* ${f}`).join('\n')}`
 
 ## ${CommitTypes.chore.title}
 
-> ${CommitTypes.chore.description}
+\`${CommitTypes.chore.description}\`
 
 ${chores.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -137,7 +137,7 @@ ${chores.map((f: string) => `* ${f}`).join('\n')}`
 
 ## ${CommitTypes.revert.title}
 
-> ${CommitTypes.revert.description}
+\`${CommitTypes.revert.description}\`
 
 ${reverts.map((f: string) => `* ${f}`).join('\n')}`
       : ''
@@ -147,7 +147,7 @@ ${reverts.map((f: string) => `* ${f}`).join('\n')}`
 
 ## BREAKING CHANGES
 
-> Something backwards-incompatible
+\`All things backwards-incompatible\`
 
 ${breakingChanges.map((f: string) => `* ${f}`).join('\n')}`
       : ''
