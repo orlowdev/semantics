@@ -17,14 +17,10 @@ export const TestCommits = [
     abbrevHash: '2cb8b4c',
     author: { name: 'priestine1', email: 'priestine1.dev@gmail.com' },
     subject: 'Add parseInteger test',
-    body: [
-      'BREAKING CHANGE: Testing breaking change'
-    ],
+    body: ['BREAKING CHANGE: Testing breaking change'],
     issueReference: '#1',
     type: 'test',
-    breakingChanges: [
-      'BREAKING CHANGE: Testing breaking change'
-    ],
+    breakingChanges: ['BREAKING CHANGE: Testing breaking change'],
   },
   {
     hash: '1ea807aa8e04f1d4aa726fb7e56634cd5b8b2809',
