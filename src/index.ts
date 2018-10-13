@@ -17,6 +17,8 @@ import { CommitInterface } from './interfaces/commit.interface';
 import { flatten } from './utils/flatten-array';
 
 const run = (currentTag, currentCommit, changes) => {
+  Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(' Collecting list of changes'));
+
   const normalizedChanges: CommitInterface[] = JSON.parse(normalizeChanges(changes))
     .map(normalizeBody)
     .map(extractCommitTypes)
@@ -25,13 +27,16 @@ const run = (currentTag, currentCommit, changes) => {
   const versionChanger = changeVersion(currentTag);
 
   const getCommitSubjects = getSubjects(normalizedChanges);
+
+  Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(' Evaluating version bumping requirements'));
+
   const amendMajor = getAmendMajor(normalizedChanges);
   const amendMinor = getAmendMinor(normalizedChanges);
   const amendPatch = getAmendPatch(normalizedChanges);
   const newVersion = versionChanger(amendMajor, amendMinor, amendPatch);
 
   if (currentTag === `${newVersion[0]}.${newVersion[1]}.${newVersion[2]}`) {
-    Shell.info('Given changes do not require releasing.');
+    Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(' Given changes do not require releasing'));
     return;
   }
 
@@ -84,18 +89,33 @@ const run = (currentTag, currentCommit, changes) => {
       },
     },
     (e: Error, r, b) => {
-      if (e) Shell.error(e.message);
-      Shell.success(`Successfully released ${newVersion}`);
+      if (e) {
+        Shell.error(`SEMANTICS ERROR ${e.message}`);
+        return;
+      }
+
+      if (b.message.match(/already exists/)) {
+        Shell.error(`SEMANTICS ERROR ${b.message}`);
+        return;
+      }
+
+      Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
     }
   );
 };
 
 execPromise('git rev-parse HEAD')
   .then((currentCommit: string) => {
+    Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(' Getting latest tag'));
+
     execPromise('git describe --tags `git rev-list --tags --max-count=1`')
       .then((currentTag: string) => {
+        Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(` Current tag version is `, Shell.bold(Shell.green(currentTag))));
+
         execPromise(`git show-ref ${currentTag} -s`)
           .then((latestTaggedCommit: string) => {
+            Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(' Receiving commit bound with current tag'));
+
             execPromise(`git rev-list ${latestTaggedCommit}..HEAD --no-merges --format='${commitFormat}'`)
               .then((changes: string) => run(currentTag, currentCommit, changes))
               .catch(catchError);
@@ -107,6 +127,8 @@ execPromise('git rev-parse HEAD')
           });
       })
       .catch(() => {
+        Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(' No tags found. Preparing initial tag'));
+
         execPromise(`git rev-list --all --no-merges --format='${commitFormat}'`)
           .then((changes: string) => run('0.0.0', currentCommit, changes))
           .catch(catchError);
