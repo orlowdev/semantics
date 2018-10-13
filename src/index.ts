@@ -102,8 +102,8 @@ execPromise('git rev-parse HEAD')
           })
           .catch(() => {
             execPromise(`git rev-list --all --no-merges --format='${commitFormat}'`)
-            .then((changes: string) => run(currentTag, currentCommit, changes))
-            .catch(catchError);
+              .then((changes: string) => run(currentTag, currentCommit, changes))
+              .catch(catchError);
           });
       })
       .catch(catchError);
