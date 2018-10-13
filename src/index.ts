@@ -56,7 +56,7 @@ execPromise('git rev-parse HEAD')
                 const breakingChanges = flatten(
                   normalizedChanges.map((x: CommitInterface) =>
                     x.breakingChanges.map(
-                      (y: string) => `**${x.abbrevHash}**: ${y}${x.issueReference ? ` - (**${x.issueReference}**)` : ''}`
+                      (y: string) => `**${x.abbrevHash}**: ${y}${x.issueReference ? ` (**${x.issueReference}**)` : ''}`
                     )
                   )
                 );
