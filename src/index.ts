@@ -35,8 +35,8 @@ const run = (currentTag, currentCommit, changes) => {
   const amendPatch = getAmendPatch(normalizedChanges);
   const newVersion = versionChanger(amendMajor, amendMinor, amendPatch);
 
-  if (currentTag === `${newVersion[0]}.${newVersion[1]}.${newVersion[2]}`) {
-    Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(' Given changes do not require releasing'));
+  if (currentTag === newVersion) {
+    Shell.write(Shell.yellow(`SEMANTICS WARN`), Shell.white(' Given changes do not require releasing'));
     return;
   }
 
