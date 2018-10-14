@@ -42,3 +42,17 @@ versioning:
   - CI_PROJECT_ID=$CI_PROJECT_ID PRIVATE_TOKEN=$PRIVATE_TOKEN yarn start
   only:
   - master
+
+pages:
+  stage: deploy
+  script:
+  - npm i
+  - npm run build:docs
+  - mkdir .public
+  - cp -r docs/* .public
+  - mv .public public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
