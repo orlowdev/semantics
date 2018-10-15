@@ -38,6 +38,7 @@ versioning:
   - echo http://dl-6.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories
   - apk update
   - apk add docker
+  - service docker start
   - bash build.sh
   only:
   - master
