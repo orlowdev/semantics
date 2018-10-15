@@ -32,13 +32,9 @@ cache:
 
 versioning:
   stage: deploy
-  before_script:
-  - apt-get update -qq && apt-get install -qq -y git
-  - npm i -g yarn
-  - yarn install
+  image: priestine/semantics:latest
   script:
-  - yarn build:ci
-  - yarn start
+  - priestine-semantics
   - bash build.sh
   - cat package.json
   only:
