@@ -1,9 +1,11 @@
-FROM node:10-slim
+FROM node:10-alpine
 
-RUN apt-get update -y && apt-get install git -qy
+# Install tools required for the project
+RUN apk update && \
+    apk upgrade && \
+    apk add git
 
-WORKDIR /home/node/app
-RUN mkdir -p /home/node/app
-ADD ./.git /home/node/app
+# Install `@priestine/semantics` package globally
+RUN npm i -g @priestine/semantics
 
-RUN git status
+WORKDIR /home/node
