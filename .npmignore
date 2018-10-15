@@ -18,3 +18,4 @@ tsconfig.json
 tslint.json
 .prettierrc
 .tmp.*
+Dockerfile
