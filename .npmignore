@@ -12,3 +12,11 @@ node_modules
 .github
 tsconfig.build.json
 test
+.dockerignore
+.gitlab-ci.yml
+build.sh
+.tmp.version_data
+*.md
+*.json
+yarn.lock
+.prettierrc
