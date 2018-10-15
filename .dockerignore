@@ -1,6 +1,6 @@
 .idea
 .vscode
-.nyc_outpu
+.nyc_output
 coverage
 docs
 dist
@@ -8,4 +8,3 @@ dist
 .gitlab-ci.yml
 .prettierrc
 *.md
-LICENSE
