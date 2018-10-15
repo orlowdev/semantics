@@ -99,8 +99,7 @@ const run = (currentTag, currentCommit, changes) => {
         return;
       }
 
-      execPromise(`export NEW_VERSION=${newVersion}`)
-      .then(() => {
+      execPromise(`echo ${newVersion} > .env`).then(() => {
         Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
       });
     }
