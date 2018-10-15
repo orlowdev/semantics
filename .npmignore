@@ -15,10 +15,9 @@ test
 .dockerignore
 .gitlab-ci.yml
 build.sh
-.tmp.version_data
 *.md
 *.json
 !package.json
 yarn.lock
 .prettierrc
-.tmp.*_data
+.tmp.*

@@ -101,6 +101,11 @@ const run = (currentTag, currentCommit, changes) => {
         return;
       }
 
+      execPromise(`echo ${currentTag} > .tmp.current_tag_data`);
+      execPromise(`echo ${currentCommit} > .tmp.current_commit_data`);
+      execPromise(`echo ${normalizedChanges} > .tmp.current_changes.json`);
+      execPromise(`echo ${changeLog} > .tmp.changelog.md`);
+
       execPromise(`echo ${newVersion} > .tmp.version_data`).then(() => {
         Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
       });
