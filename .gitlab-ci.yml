@@ -39,7 +39,8 @@ versioning:
   script:
   - yarn build:ci
   - yarn start
-  - cat .env
+  - if [[ -f '.tmp.version_data']]; then sed -i 's/"version":.*/"version": "$(cat .tmp.version_data)"/' package.json fi
+  - cat package.json
   only:
   - master
 
