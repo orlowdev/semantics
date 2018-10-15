@@ -42,6 +42,11 @@ versioning:
   only:
   - master
 
+publish:
+  stage: deploy
+  script:
+  - echo $NEW_VERSION
+
 pages:
   stage: deploy
   script:

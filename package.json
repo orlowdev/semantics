@@ -14,8 +14,9 @@
     "style:check": "yarn prettier:check && yarn tslint:check",
     "style:fix": "yarn prettier:fix && yarn tslint:fix",
     "build:docs": "typedoc --out ./docs ./src --exclude '**/*.spec.ts' --ignoreCompilerErrors --mode file",
+    "build:dev": "rm -rf ./build && tsc --p tsconfig.build.json -w",
     "build:ci": "tsc",
-    "start": "node dist/index.js"
+    "start": "node index.js"
   },
   "keywords": [
     "ci",

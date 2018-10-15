@@ -1,0 +1,14 @@
+.nyc_output
+coverage
+docs
+.idea
+.vscode
+node_modules
+*.ts
+!*.d.ts
+.env
+.gitignore
+.travis.yml
+.github
+tsconfig.build.json
+test
