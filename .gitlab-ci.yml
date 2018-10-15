@@ -30,7 +30,6 @@ test:node-8:
   - yarn style:check
   - yarn coverage:cover
 
-
 versioning:
   stage: deploy
   before_script:
@@ -53,6 +52,6 @@ pages:
   - mv .public public
   artifacts:
     paths:
-      - public
+    - public
   only:
-    - master
+  - master
