@@ -1,6 +1,6 @@
 {
   "name": "@priestine/semantics",
-  "version": "0.0.0-dev",
+  "version": "1.1.1",
   "description": "CI/CD-compatible semantic versioning and releasing.",
   "main": "index.js",
   "scripts": {
