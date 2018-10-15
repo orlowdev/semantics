@@ -217,6 +217,7 @@ Temporary Items
 .apdisk
 
 # Custom changes
+*.d.ts
 *.js
 *.map
 test
