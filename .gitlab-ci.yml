@@ -10,25 +10,25 @@ cache:
   paths:
   - node_modules/
 
-# test:node-10:
-#   image: node:10-alpine
-#   stage: test
-#   before_script:
-#   - npm i -g yarn
-#   - yarn install
-#   script:
-#   - yarn style:check
-#   - yarn coverage:cover
+test:node-10:
+  image: node:10-alpine
+  stage: test
+  before_script:
+  - npm i -g yarn
+  - yarn install
+  script:
+  - yarn style:check
+  - yarn coverage:cover
 
-# test:node-8:
-#   image: node:8-alpine
-#   stage: test
-#   before_script:
-#   - npm i -g yarn
-#   - yarn install
-#   script:
-#   - yarn style:check
-#   - yarn coverage:cover
+test:node-8:
+  image: node:8-alpine
+  stage: test
+  before_script:
+  - npm i -g yarn
+  - yarn install
+  script:
+  - yarn style:check
+  - yarn coverage:cover
 
 versioning:
   stage: deploy
@@ -36,20 +36,19 @@ versioning:
   script:
   - priestine-semantics
   - bash build.sh
-  - cat package.json
   only:
   - master
 
-# pages:
-#   stage: deploy
-#   script:
-#   - npm i
-#   - npm run build:docs
-#   - mkdir .public
-#   - cp -r docs/* .public
-#   - mv .public public
-#   artifacts:
-#     paths:
-#     - public
-#   only:
-#   - master
+pages:
+  stage: deploy
+  script:
+  - npm i
+  - npm run build:docs
+  - mkdir .public
+  - cp -r docs/* .public
+  - mv .public public
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
