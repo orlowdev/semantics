@@ -16,7 +16,7 @@
     "build:docs": "typedoc --out ./docs ./src --exclude '**/*.spec.ts' --ignoreCompilerErrors --mode file",
     "build:dev": "rm -rf ./build && tsc --p tsconfig.build.json -w",
     "build:ci": "tsc",
-    "start": "node index.js"
+    "start": "node src/index.js"
   },
   "keywords": [
     "ci",
