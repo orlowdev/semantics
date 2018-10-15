@@ -99,7 +99,7 @@ const run = (currentTag, currentCommit, changes) => {
         return;
       }
 
-      execPromise(`echo ${newVersion} > .env`).then(() => {
+      execPromise(`echo ${newVersion} > .tmp.version_data`).then(() => {
         Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
       });
     }
