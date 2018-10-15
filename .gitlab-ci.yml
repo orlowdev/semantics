@@ -39,7 +39,7 @@ versioning:
   script:
   - yarn build:ci
   - yarn start
-  - sh build.sh
+  - bash build.sh
   - cat package.json
   only:
   - master
