@@ -223,3 +223,4 @@ test
 docs
 .vscode
 .idea
+.tmp.*
