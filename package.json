@@ -3,6 +3,9 @@
   "version": "1.1.1",
   "description": "CI/CD-compatible semantic versioning and releasing.",
   "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "mocha --timeout 15000 --require ts-node/register --require source-map-support/register --full-trace --bail $(find . -name '*.spec.ts' ! -ipath '*node_modules*')",
     "coverage:cover": "nyc npm test",
