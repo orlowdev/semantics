@@ -39,7 +39,7 @@ versioning:
   script:
   - yarn build:ci
   - CI_PROJECT_ID=$CI_PROJECT_ID PRIVATE_TOKEN=$PRIVATE_TOKEN yarn start
-  - echo "$NEW_VERSION"
+  - echo $NEW_VERSION
   only:
   - master
 
