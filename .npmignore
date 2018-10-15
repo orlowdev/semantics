@@ -18,5 +18,7 @@ build.sh
 .tmp.version_data
 *.md
 *.json
+!package.json
 yarn.lock
 .prettierrc
+.tmp.*_data
