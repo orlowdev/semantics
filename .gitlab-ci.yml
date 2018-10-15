@@ -5,34 +5,35 @@ stages:
 - test
 - deploy
 
+before_script:
+  - npm i -g yarn
+  - yarn install
+
 cache:
   key: "$CI_COMMIT_REF_SLUG"
   paths:
   - node_modules/
 
-test:coverage:
+style:
+  image: node:10-alpine
+  stage: test
+  script:
+  - yarn style:check
+
 
 test:node-10:
   image: node:10-alpine
   stage: test
-  before_script:
-  - npm i -g yarn
-  - yarn install
   script:
-  - yarn style:check
   - yarn coverage:cover
 
 test:node-8:
   image: node:8-alpine
   stage: test
-  before_script:
-  - npm i -g yarn
-  - yarn install
   script:
-  - yarn style:check
   - yarn coverage:cover
 
-versioning:
+deploy:
   stage: deploy
   image: priestine/semantics:latest
   script:
