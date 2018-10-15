@@ -1,10 +1,13 @@
 {
   "name": "@priestine/semantics",
-  "version": "1.1.1",
+  "version": "0.0.0-dev",
   "description": "CI/CD-compatible semantic versioning and releasing.",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
+  },
+  "bin": {
+    "priestine-semantics": "./src/index.js"
   },
   "scripts": {
     "test": "mocha --timeout 15000 --require ts-node/register --require source-map-support/register --full-trace --bail $(find . -name '*.spec.ts' ! -ipath '*node_modules*')",

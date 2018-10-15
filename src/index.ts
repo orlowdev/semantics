@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Shell } from '@totemish/shell';
 import { execPromise } from './utils/exec-promise';
 import { buildChangelog } from './utils/build-changelog';
