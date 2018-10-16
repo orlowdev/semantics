@@ -59,9 +59,9 @@ const run = (currentTag, currentCommit, changes) => {
   const breakingChanges = flatten(
     normalizedChanges.map((x: CommitInterface) =>
       x.breakingChanges.map(
-        (y: string) => `**${x.abbrevHash}**: ${y}${x.issueReference ? ` (**${x.issueReference}**)` : ''}`,
-      ),
-    ),
+        (y: string) => `**${x.abbrevHash}**: ${y}${x.issueReference ? ` (**${x.issueReference}**)` : ''}`
+      )
+    )
   );
   const changeLog = buildChangelog(
     newVersion,
@@ -76,7 +76,7 @@ const run = (currentTag, currentCommit, changes) => {
     cis,
     docs,
     styles,
-    breakingChanges,
+    breakingChanges
   );
 
   request.post(
@@ -112,9 +112,8 @@ const run = (currentTag, currentCommit, changes) => {
         .then(() => {
           Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
         })
-        .catch(catchError)
-      ;
-    },
+        .catch(catchError);
+    }
   );
 };
 
@@ -126,7 +125,7 @@ execPromise('git rev-parse HEAD')
       .then((currentTag: string) => {
         Shell.write(
           Shell.blue(`SEMANTICS INFO`),
-          Shell.white(` Current tag version is `, Shell.bold(Shell.green(currentTag))),
+          Shell.white(` Current tag version is `, Shell.bold(Shell.green(currentTag)))
         );
 
         execPromise(`git show-ref ${currentTag} -s`)

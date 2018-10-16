@@ -7,16 +7,16 @@ describe('extractCommitTypes', () => {
   });
 
   it('should mark issue reference if commit scope includes a #', () => {
-    expect(extractCommitTypes({ subject: 'chore(#1): test'} as any).issueReference).to.equal('#1');
+    expect(extractCommitTypes({ subject: 'chore(#1): test' } as any).issueReference).to.equal('#1');
   });
 
   it('should extract scope from commit type', () => {
-    expect(extractCommitTypes({ subject: 'chore(#1): test'} as any).type).to.equal('chore');
-    expect(extractCommitTypes({ subject: 'fix(html): test'} as any).type).to.equal('fix');
+    expect(extractCommitTypes({ subject: 'chore(#1): test' } as any).type).to.equal('chore');
+    expect(extractCommitTypes({ subject: 'fix(html): test' } as any).type).to.equal('fix');
   });
 
   it('should put commit scope inside commit subject if it is not an issue reference', () => {
-    expect(extractCommitTypes({ subject: 'chore(#1): test'} as any).subject).to.equal('test');
-    expect(extractCommitTypes({ subject: 'fix(html): test'} as any).subject).to.equal('(html) test');
+    expect(extractCommitTypes({ subject: 'chore(#1): test' } as any).subject).to.equal('test');
+    expect(extractCommitTypes({ subject: 'fix(html): test' } as any).subject).to.equal('(html) test');
   });
 });
