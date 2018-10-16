@@ -17,4 +17,12 @@ describe('normalizeChanges', () => {
   it('should join separate lines with a comma + space', () => {
     expect(normalizeChanges('{}\n{}')).to.equal('[ {}, {} ]');
   });
+
+  it('should correctly replace string tokens from commit format template', () => {
+    expect(normalizeChanges('{ ^^^name^^^: ^^^test^^^ }')).to.equal('[ { "name": "test" } ]');
+  });
+
+  it('should correctly replace double quotes coming from commits', () => {
+    expect(normalizeChanges('{ ^^^name^^^: ^^^"test"^^^ }')).to.equal('[ { "name": "`test`" } ]');
+  });
 });

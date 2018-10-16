@@ -6,5 +6,13 @@
 export const normalizeChanges = (changes: string): string =>
   `[ ${changes
     .split('\n')
-    .reduce((r: string[], x: string) => (/^commit/.test(x) ? r : r.concat([x])), [])
-    .join(', ')} ]`;
+    .reduce((r: string[], x: string) => {
+      if (/^commit/.test(x)) {
+        return r;
+      }
+
+      x = x.replace(/"/g, '`');
+
+      return r.concat([x]);
+    }, [])
+    .join(', ')} ]`.replace(/\^\^\^/g, '"');

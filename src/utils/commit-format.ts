@@ -3,12 +3,12 @@
  */
 export const commitFormat: string =
   '{' +
-  '"hash": "%H",' +
-  '"abbrevHash": "%h",' +
-  '"author": {' +
-  '"name": "%aN",' +
-  '"email": "%aE"' +
+  '^^^hash^^^: ^^^%H^^^,' +
+  '^^^abbrevHash^^^: ^^^%h^^^,' +
+  '^^^author^^^: {' +
+  '^^^name^^^: ^^^%aN^^^,' +
+  '^^^email^^^: ^^^%aE^^^' +
   '},' +
-  '"subject": "%s",' +
-  '"body": "%b"' +
+  '^^^subject^^^: ^^^%s^^^,' +
+  '^^^body^^^: ^^^%b^^^' +
   '}';
