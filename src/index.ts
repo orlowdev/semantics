@@ -82,8 +82,6 @@ const run = (currentTag, currentCommit, changes) => {
   execPromise(`echo '${changeLog}' > .tmp.changelog.md`);
   execPromise(`echo '${newVersion}' > .tmp.version_data`);
 
-  return;
-
   request.post(
     `https://gitlab.com/api/v4/projects/${process.env.CI_PROJECT_ID}/repository/tags`,
     {
