@@ -8,7 +8,7 @@ import { CommitTypes } from '../types/commit-types';
  * @returns CommitInterface
  */
 export const extractCommitTypes = (commit: CommitInterface): CommitInterface => {
-  if (!commit.subject.includes(': ')) {
+  if (commit.subject.indexOf(': ') === -1) {
     commit.subject = `fix: ${commit.subject}`;
   }
 
