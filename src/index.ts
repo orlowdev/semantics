@@ -107,7 +107,7 @@ const run = (currentTag, currentCommit, changes) => {
 
       writeFileSync('.tmp.current_tag_data', currentTag, 'utf8');
       writeFileSync('.tmp.current_commit_data', currentCommit, 'utf8');
-      writeFileSync('..tmp.current_changes.json', JSON.stringify(normalizedChanges, null, 2), 'utf8');
+      writeFileSync('.tmp.current_changes.json', JSON.stringify(normalizedChanges, null, 2), 'utf8');
       writeFileSync('.tmp.version_data', newVersion, 'utf8');
       writeFileSync('.tmp.changelog.md', changeLog, 'utf8');
 
