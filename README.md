@@ -18,7 +18,7 @@
 
 ## WAT?
 
-`@priestine/semantics` uses [conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification) to determine the types of changes in the codebase and determines the next [semantic version](https://semver.org/), generates a list of changes (a changelog) and publishes appropriate release tag with the changelog attached to it.
+`@priestine/semantics` uses [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification) to determine the types of changes in the codebase and determines the next [semantic version](https://semver.org/), generates a list of changes (a changelog) and publishes appropriate release tag with the changelog attached to it.
 
 ## Execution logic
 
