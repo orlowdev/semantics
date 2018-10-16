@@ -1,5 +1,8 @@
 FROM node:10-alpine
 
+LABEL "maintainer"="Sergey Orlov <priestine1.dev@gmail.com>"
+LABEL "license"="MIT"
+
 # Install tools required for the project
 RUN apk update && \
     apk upgrade && \
