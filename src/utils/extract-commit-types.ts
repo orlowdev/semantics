@@ -14,12 +14,18 @@ export const extractCommitTypes = (commit: CommitInterface): CommitInterface => 
 
   const subject = commit.subject.split(': ');
   const issueReferenceRx = /\((#\d+)\)/;
+  const scopeRx = /\((.+)\)/;
 
   let typePredicate = subject[0];
 
   if (issueReferenceRx.test(typePredicate)) {
     commit.issueReference = typePredicate.match(issueReferenceRx)[1];
     typePredicate = typePredicate.replace(issueReferenceRx, '');
+  }
+
+  if (scopeRx.test(typePredicate)) {
+    subject[1] = `(${typePredicate.match(scopeRx)[1]}) ${subject[1]}`;
+    typePredicate = typePredicate.replace(scopeRx, '');
   }
 
   commit.subject = subject[1];
