@@ -19,7 +19,7 @@ if [[ -f '.tmp.version_data' ]]; then
     # Build new latest image
     docker build . -t priestine/semantics:latest --no-cache
     # Log in to Docker Cloud
-    docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
     # Publish images to Docker Cloud
     docker push priestine/semantics
 fi
