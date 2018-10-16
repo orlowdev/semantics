@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { Shell } from '@totemish/shell';
+import { writeFileSync } from 'fs';
 import { execPromise } from './utils/exec-promise';
 import { buildChangelog } from './utils/build-changelog';
 import { catchError } from './utils/catch-promise';
@@ -104,15 +105,13 @@ const run = (currentTag, currentCommit, changes) => {
         return;
       }
 
-      execPromise(`echo '${currentTag}' > .tmp.current_tag_data`).catch(catchError);
-      execPromise(`echo '${currentCommit}' > .tmp.current_commit_data`).catch(catchError);
-      execPromise(`echo '${JSON.stringify(normalizedChanges, null, 2)}' > .tmp.current_changes.json`).catch(catchError);
-      execPromise(`echo '${changeLog}' > .tmp.changelog.md`).catch(catchError);
-      execPromise(`echo '${newVersion}' > .tmp.version_data`)
-        .then(() => {
-          Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
-        })
-        .catch(catchError);
+      writeFileSync('.tmp.current_tag_data', currentTag, 'utf8');
+      writeFileSync('.tmp.current_commit_data', currentCommit, 'utf8');
+      writeFileSync('..tmp.current_changes.json', JSON.stringify(normalizedChanges, null, 2), 'utf8');
+      writeFileSync('.tmp.version_data', newVersion, 'utf8');
+      writeFileSync('.tmp.changelog.md', changeLog, 'utf8');
+
+      Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
     }
   );
 };
