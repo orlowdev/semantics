@@ -8,18 +8,4 @@ if [[ -f '.tmp.version_data' ]]; then
     echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
     # Publish new version of the app to NPM
     npm publish
-
-    # STEP 2: DOCKER
-    # Install Docker for publishing new image
-    apk add docker
-    # Start docker daemon
-    rc-service docker start
-    # Build new tagged with new version of the app
-    docker build . -t priestine/semantics:$(cat .tmp.version_data) --no-cache
-    # Build new latest image
-    docker build . -t priestine/semantics:latest --no-cache
-    # Log in to Docker Cloud
-    docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
-    # Publish images to Docker Cloud
-    docker push priestine/semantics
 fi
