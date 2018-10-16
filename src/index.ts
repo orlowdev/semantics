@@ -19,6 +19,9 @@ import { CommitInterface } from './interfaces/commit.interface';
 import { flatten } from './utils/flatten-array';
 
 const run = (currentTag, currentCommit, changes) => {
+  const vRx = /^v/i;
+  const tag = vRx.test(currentTag) ? currentTag.replace(vRx, '') : currentTag;
+
   Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(' Collecting list of changes'));
 
   const normalizedChanges: CommitInterface[] = JSON.parse(normalizeChanges(changes))
@@ -26,7 +29,7 @@ const run = (currentTag, currentCommit, changes) => {
     .map(extractCommitTypes)
     .map(extractBreakingChanges);
 
-  const versionChanger = changeVersion(currentTag);
+  const versionChanger = changeVersion(tag);
 
   const getCommitSubjects = getSubjects(normalizedChanges);
 
@@ -37,7 +40,7 @@ const run = (currentTag, currentCommit, changes) => {
   const amendPatch = getAmendPatch(normalizedChanges);
   const newVersion = versionChanger(amendMajor, amendMinor, amendPatch);
 
-  if (currentTag === newVersion) {
+  if (tag === newVersion) {
     Shell.write(Shell.yellow(`SEMANTICS WARN`), Shell.white(' Given changes do not require releasing'));
     return;
   }
@@ -56,9 +59,9 @@ const run = (currentTag, currentCommit, changes) => {
   const breakingChanges = flatten(
     normalizedChanges.map((x: CommitInterface) =>
       x.breakingChanges.map(
-        (y: string) => `**${x.abbrevHash}**: ${y}${x.issueReference ? ` (**${x.issueReference}**)` : ''}`
-      )
-    )
+        (y: string) => `**${x.abbrevHash}**: ${y}${x.issueReference ? ` (**${x.issueReference}**)` : ''}`,
+      ),
+    ),
   );
   const changeLog = buildChangelog(
     newVersion,
@@ -73,14 +76,8 @@ const run = (currentTag, currentCommit, changes) => {
     cis,
     docs,
     styles,
-    breakingChanges
+    breakingChanges,
   );
-
-  execPromise(`echo '${currentTag}' > .tmp.current_tag_data`);
-  execPromise(`echo '${currentCommit}' > .tmp.current_commit_data`);
-  execPromise(`echo '${JSON.stringify(normalizedChanges, null, 2)}' > .tmp.current_changes.json`);
-  execPromise(`echo '${changeLog}' > .tmp.changelog.md`);
-  execPromise(`echo '${newVersion}' > .tmp.version_data`);
 
   request.post(
     `https://gitlab.com/api/v4/projects/${process.env.CI_PROJECT_ID}/repository/tags`,
@@ -107,14 +104,17 @@ const run = (currentTag, currentCommit, changes) => {
         return;
       }
 
-      execPromise(`echo ${currentTag} > .tmp.current_tag_data`);
-      execPromise(`echo ${currentCommit} > .tmp.current_commit_data`);
-      execPromise(`echo ${JSON.stringify(normalizedChanges, null, 2)} > .tmp.current_changes.json`);
-
-      execPromise(`echo ${newVersion} > .tmp.version_data`).then(() => {
-        Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
-      });
-    }
+      execPromise(`echo ${currentTag} > .tmp.current_tag_data`).catch(catchError);
+      execPromise(`echo ${currentCommit} > .tmp.current_commit_data`).catch(catchError);
+      execPromise(`echo ${JSON.stringify(normalizedChanges, null, 2)} > .tmp.current_changes.json`).catch(catchError);
+      execPromise(`echo '${changeLog}' > .tmp.changelog.md`).catch(catchError);
+      execPromise(`echo ${newVersion} > .tmp.version_data`)
+        .then(() => {
+          Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
+        })
+        .catch(catchError)
+      ;
+    },
   );
 };
 
@@ -126,7 +126,7 @@ execPromise('git rev-parse HEAD')
       .then((currentTag: string) => {
         Shell.write(
           Shell.blue(`SEMANTICS INFO`),
-          Shell.white(` Current tag version is `, Shell.bold(Shell.green(currentTag)))
+          Shell.white(` Current tag version is `, Shell.bold(Shell.green(currentTag))),
         );
 
         execPromise(`git show-ref ${currentTag} -s`)
