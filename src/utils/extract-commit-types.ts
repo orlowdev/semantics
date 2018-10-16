@@ -8,6 +8,10 @@ import { CommitTypes } from '../types/commit-types';
  * @returns CommitInterface
  */
 export const extractCommitTypes = (commit: CommitInterface): CommitInterface => {
+  if (!commit.subject.includes(': ')) {
+    commit.subject = `fix: ${commit.subject}`;
+  }
+
   const subject = commit.subject.split(': ');
   const issueReferenceRx = /\((#\d+)\)/;
 
