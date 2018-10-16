@@ -13,7 +13,7 @@ if [[ -f '.tmp.version_data' ]]; then
     # Install Docker for publishing new image
     apk add docker
     # Start docker daemon
-    service docker start
+    rc-service docker start
     # Build new tagged with new version of the app
     docker build . -t priestine/semantics:$(cat .tmp.version_data) --no-cache
     # Build new latest image
