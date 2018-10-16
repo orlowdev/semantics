@@ -104,11 +104,11 @@ const run = (currentTag, currentCommit, changes) => {
         return;
       }
 
-      execPromise(`echo ${currentTag} > .tmp.current_tag_data`).catch(catchError);
-      execPromise(`echo ${currentCommit} > .tmp.current_commit_data`).catch(catchError);
-      execPromise(`echo ${JSON.stringify(normalizedChanges, null, 2)} > .tmp.current_changes.json`).catch(catchError);
+      execPromise(`echo '${currentTag}' > .tmp.current_tag_data`).catch(catchError);
+      execPromise(`echo '${currentCommit}' > .tmp.current_commit_data`).catch(catchError);
+      execPromise(`echo '${JSON.stringify(normalizedChanges, null, 2)}' > .tmp.current_changes.json`).catch(catchError);
       execPromise(`echo '${changeLog}' > .tmp.changelog.md`).catch(catchError);
-      execPromise(`echo ${newVersion} > .tmp.version_data`)
+      execPromise(`echo '${newVersion}' > .tmp.version_data`)
         .then(() => {
           Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
         })
