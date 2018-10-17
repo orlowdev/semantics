@@ -73,6 +73,8 @@ deploy:npm:
 deploy:docker:
   stage: deploy
   image: alpine:latest
+  before_script:
+  - echo ""
   script:
   - bash docker_build.sh
   only:
