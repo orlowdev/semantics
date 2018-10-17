@@ -4,7 +4,6 @@ stages:
 - build
 - style
 - test
-- coverage
 - deploy
 
 before_script:
@@ -44,7 +43,7 @@ style:
 
 coverage:check:
   image: node:10-alpine
-  stage: coverage
+  stage: test
   script:
   - yarn coverage:cover
   - yarn coverage:check
@@ -53,7 +52,7 @@ coverage:check:
 
 coverage:report:
   image: node:10
-  stage: coverage
+  stage: test
   script:
   - yarn coverage:cover
   after_script:
