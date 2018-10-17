@@ -15,7 +15,7 @@
   "scripts": {
     "test": "mocha --timeout 15000 --require ts-node/register --require source-map-support/register --full-trace --bail $(find . -name '*.spec.ts' ! -ipath '*node_modules*')",
     "coverage:cover": "nyc npm test",
-    "coverage:check": "nyc check-coverage --lines 0 --branches 0 --functions 0 --statements 0",
+    "coverage:check": "nyc check-coverage --lines 75 --branches 75 --functions 75 --statements 75",
     "tslint:check": "tslint --project tslint.json -t stylish",
     "tslint:fix": "yarn tslint:check --fix",
     "prettier:check": "prettier --list-different src/**/*.ts src/*.ts",
