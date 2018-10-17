@@ -81,7 +81,6 @@ deploy:docker:
 pages:
   stage: deploy
   script:
-  - npm i
   - npm run build:docs
   - mkdir .public
   - cp -r docs/* .public
