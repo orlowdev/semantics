@@ -71,11 +71,16 @@ deploy:npm:
 
 deploy:docker:
   stage: deploy
-  image: alpine:latest
+  image: docker:stable
   before_script:
   - echo ""
   script:
-  - bash docker_build.sh
+  - docker build -t priestine/semantics:$(git describe --tags `git rev-list --tags --max-count=1`)-alpine - < ./docker/alpine.Dockerfile
+  - docker build -t priestine/semantics:latest - < ./docker/alpine.Dockerfile
+  - docker build -t priestine/semantics:alpine - < ./docker/alpine.Dockerfile
+  - docker build -t priestine/semantics:$(git describe --tags `git rev-list --tags --max-count=1`)-slim - < ./docker/slim.Dockerfile
+  - docker build -t priestine/semantics:slim - < ./docker/slim.Dockerfile
+  - docker push priestine/semantics
   only:
   - tags
 
