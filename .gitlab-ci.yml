@@ -44,7 +44,7 @@ coverage:check:
   - yarn coverage:check
 
 coverage:report:
-  image: node:10-alpine
+  image: node:10
   stage: coverage
   script:
   - yarn coverage:cover
