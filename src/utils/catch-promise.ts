@@ -5,5 +5,5 @@ import { Shell } from '@totemish/shell';
  * @param e string
  */
 export const catchError = (e: string): void => {
-  Shell.error(e.toString());
+  Shell.error(`SEMANTICS ERROR ${e.toString()}`);
 };
