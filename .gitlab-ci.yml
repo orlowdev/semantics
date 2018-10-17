@@ -21,6 +21,8 @@ style:
   stage: style
   script:
   - yarn style:check
+  except:
+  - tags
 
 1:2 test node:
   image: node:10-alpine
@@ -29,12 +31,16 @@ style:
   - yarn coverage:cover
   after_script:
   - yarn test
+  except:
+  - tags
 
 2:2 test node:
   image: node:8-alpine
   stage: test
   script:
   - yarn test
+  except:
+  - tags
 
 coverage:check:
   image: node:10-alpine
@@ -42,6 +48,8 @@ coverage:check:
   script:
   - yarn coverage:cover
   - yarn coverage:check
+  except:
+  - tags
 
 coverage:report:
   image: node:10
@@ -50,6 +58,8 @@ coverage:report:
   - yarn coverage:cover
   after_script:
   - bash <(curl -s https://codecov.io/bash) -t "${CODECOV_TOKEN}" -f coverage/*.json
+  except:
+  - tags
 
 deploy:npm:
   stage: deploy
