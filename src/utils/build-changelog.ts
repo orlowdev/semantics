@@ -37,9 +37,9 @@ ${
     features.length
       ? `
 ## ${CommitTypes.feat.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.feat.description}\`
-
+`}
 ${features.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
@@ -47,9 +47,9 @@ ${features.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 
 ## ${CommitTypes.fix.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.fix.description}\`
-
+`}
 ${fixes.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
@@ -57,9 +57,9 @@ ${fixes.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 
 ## ${CommitTypes.docs.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.docs.description}\`
-
+`}
 ${docs.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
@@ -67,9 +67,9 @@ ${docs.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 
 ## ${CommitTypes.style.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.style.description}\`
-
+`}
 ${styles.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
@@ -77,9 +77,9 @@ ${styles.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 
 ## ${CommitTypes.refactor.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.refactor.description}\`
-
+`}
 ${refactors.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
@@ -87,18 +87,18 @@ ${refactors.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 
 ## ${CommitTypes.perf.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.perf.description}\`
-
+`}
 ${perfs.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
     tests.length
       ? `
 ## ${CommitTypes.test.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.test.description}\`
-
+`}
 ${tests.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
@@ -106,9 +106,9 @@ ${tests.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 
 ## ${CommitTypes.build.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.build.description}\`
-
+`}
 ${builds.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
@@ -116,9 +116,9 @@ ${builds.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 
 ## ${CommitTypes.ci.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.ci.description}\`
-
+`}
 ${cis.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
@@ -126,9 +126,9 @@ ${cis.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 
 ## ${CommitTypes.chore.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.chore.description}\`
-
+`}
 ${chores.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
@@ -136,9 +136,9 @@ ${chores.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 
 ## ${CommitTypes.revert.title}
-
+${process.argv.includes('--no-helpers') ? '' : `
 \`${CommitTypes.revert.description}\`
-
+`}
 ${reverts.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
@@ -146,9 +146,9 @@ ${reverts.map((f: string) => `* ${f}`).join('\n')}`
       ? `
 
 ## BREAKING CHANGES
-
+${process.argv.includes('--no-helpers' ? '' : `
 \`All things backwards-incompatible\`
-
+`)}
 ${breakingChanges.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }`.trim();
