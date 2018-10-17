@@ -34,7 +34,7 @@ export const buildChangelog = (
 ): string =>
   `# ${version}
 ${
-    features.length
+    features.length && !process.argv.includes('--no-feat')
       ? `
 ## ${CommitTypes.feat.title}
 ${
@@ -47,7 +47,7 @@ ${
 ${features.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    fixes.length
+    fixes.length && !process.argv.includes('--no-fix')
       ? `
 
 ## ${CommitTypes.fix.title}
@@ -61,7 +61,7 @@ ${
 ${fixes.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    docs.length
+    docs.length && !process.argv.includes('--no-docs')
       ? `
 
 ## ${CommitTypes.docs.title}
@@ -75,7 +75,7 @@ ${
 ${docs.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    styles.length
+    styles.length && !process.argv.includes('--no-style')
       ? `
 
 ## ${CommitTypes.style.title}
@@ -89,7 +89,7 @@ ${
 ${styles.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    refactors.length
+    refactors.length && !process.argv.includes('--no-refactor')
       ? `
 
 ## ${CommitTypes.refactor.title}
@@ -103,7 +103,7 @@ ${
 ${refactors.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    perfs.length
+    perfs.length && !process.argv.includes('--no-perf')
       ? `
 
 ## ${CommitTypes.perf.title}
@@ -117,7 +117,7 @@ ${
 ${perfs.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    tests.length
+    tests.length && !process.argv.includes('--no-test')
       ? `
 ## ${CommitTypes.test.title}
 ${
@@ -130,7 +130,7 @@ ${
 ${tests.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    builds.length
+    builds.length && !process.argv.includes('--no-build')
       ? `
 
 ## ${CommitTypes.build.title}
@@ -144,7 +144,7 @@ ${
 ${builds.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    cis.length
+    cis.length && !process.argv.includes('--no-ci')
       ? `
 
 ## ${CommitTypes.ci.title}
@@ -158,7 +158,7 @@ ${
 ${cis.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    chores.length
+    chores.length && !process.argv.includes('--no-chore')
       ? `
 
 ## ${CommitTypes.chore.title}
@@ -172,7 +172,7 @@ ${
 ${chores.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    reverts.length
+    reverts.length && !process.argv.includes('--no-revert')
       ? `
 
 ## ${CommitTypes.revert.title}
@@ -186,7 +186,7 @@ ${
 ${reverts.map((f: string) => `* ${f}`).join('\n')}`
       : ''
   }${
-    breakingChanges.length
+    breakingChanges.length && !process.argv.includes('--no-bc')
       ? `
 
 ## BREAKING CHANGES
