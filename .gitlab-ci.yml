@@ -22,7 +22,7 @@ style:
   script:
   - yarn style:check
 
-1:2 test:node-10:
+1:2 test node:
   image: node:10-alpine
   stage: test
   script:
@@ -30,7 +30,7 @@ style:
   after_script:
   - yarn test
 
-2:2 test:node-8:
+2:2 test node:
   image: node:8-alpine
   stage: test
   script:
