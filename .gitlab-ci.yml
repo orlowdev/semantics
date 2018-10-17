@@ -48,7 +48,8 @@ coverage:report:
   stage: coverage
   script:
   - yarn coverage:cover
-  - bash <(curl -s https://codecov.io/bash) -t "${CODECOV_TOKEN}" -f  -f coverage/coverage-final.json
+  after_script:
+  - bash <(curl -s https://codecov.io/bash) -t "${CODECOV_TOKEN}" -f coverage/*.json
 
 deploy:
   stage: deploy
