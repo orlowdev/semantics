@@ -64,7 +64,7 @@ deploy:npm:
   stage: deploy
   image: priestine/semantics:latest
   script:
-  - priestine-semantics
+  - priestine-semantics --private-token=${SEMANTICS_TOKEN}
   - bash build.sh
   only:
   - master
