@@ -7,6 +7,7 @@ import { execPromise } from './utils/exec-promise';
 import { buildChangelog } from './utils/build-changelog';
 import { catchError } from './utils/catch-promise';
 import { commitFormat } from './utils/commit-format';
+import { getGitLabURL } from './utils/get-gitlab-url';
 import { getPrivateToken } from './utils/get-private-token';
 import { normalizeChanges } from './utils/normalize-changes';
 import { normalizeBody } from './utils/normalize-body';
@@ -85,9 +86,10 @@ const run = (currentTag, currentCommit, changes) => {
   );
 
   const privateToken = getPrivateToken();
+  const gitLab = getGitLabURL();
 
   request.post(
-    `https://gitlab.com/api/v4/projects/${process.env.CI_PROJECT_ID}/repository/tags`,
+    `${gitLab}/projects/${process.env.CI_PROJECT_ID}/repository/tags`,
     {
       headers: {
         'PRIVATE-TOKEN': privateToken,
