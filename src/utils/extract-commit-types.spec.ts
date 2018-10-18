@@ -19,4 +19,9 @@ describe('extractCommitTypes', () => {
     expect(extractCommitTypes({ subject: 'chore(#1): test' } as any).subject).to.equal('test');
     expect(extractCommitTypes({ subject: 'fix(html): test' } as any).subject).to.equal('(html) test');
   });
+
+  it('should not extract issue references if --no-flexible-scope flag is provided', () => {
+    process.argv.unshift('--no-flexible-scope');
+    expect(extractCommitTypes({ subject: 'chore(#1): test' } as any).subject).to.equal('(#1) test');
+  });
 });

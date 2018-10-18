@@ -18,7 +18,7 @@ export const extractCommitTypes = (commit: CommitInterface): CommitInterface => 
 
   let typePredicate = subject[0];
 
-  if (issueReferenceRx.test(typePredicate)) {
+  if (!process.argv.includes('--no-flexible-scope') && issueReferenceRx.test(typePredicate)) {
     commit.issueReference = typePredicate.match(issueReferenceRx)[1];
     typePredicate = typePredicate.replace(issueReferenceRx, '');
   }
