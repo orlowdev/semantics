@@ -2,10 +2,12 @@
 
 import { Shell } from '@totemish/shell';
 import { writeFileSync } from 'fs';
+import { appendFixOrFeatFlags } from './utils/append-fix-or-feat-flags';
 import { execPromise } from './utils/exec-promise';
 import { buildChangelog } from './utils/build-changelog';
 import { catchError } from './utils/catch-promise';
 import { commitFormat } from './utils/commit-format';
+import { getPrivateToken } from './utils/get-private-token';
 import { normalizeChanges } from './utils/normalize-changes';
 import { normalizeBody } from './utils/normalize-body';
 import { extractCommitTypes } from './utils/extract-commit-types';
@@ -19,18 +21,7 @@ import * as request from 'request';
 import { CommitInterface } from './interfaces/commit.interface';
 import { flatten } from './utils/flatten-array';
 
-if (process.argv.includes('--fix-or-feat')) {
-  process.argv.push('--no-chore');
-  process.argv.push('--no-style');
-  process.argv.push('--no-refactor');
-  process.argv.push('--no-docs');
-  process.argv.push('--no-perf');
-  process.argv.push('--no-test');
-  process.argv.push('--no-revert');
-  process.argv.push('--no-build');
-  process.argv.push('--no-ci');
-  process.argv.push('--no-helpers');
-}
+appendFixOrFeatFlags();
 
 const run = (currentTag, currentCommit, changes) => {
   const vRx = /^v/i;
@@ -93,11 +84,13 @@ const run = (currentTag, currentCommit, changes) => {
     breakingChanges
   );
 
+  const privateToken = getPrivateToken();
+
   request.post(
     `https://gitlab.com/api/v4/projects/${process.env.CI_PROJECT_ID}/repository/tags`,
     {
       headers: {
-        'PRIVATE-TOKEN': process.env.PRIVATE_TOKEN,
+        'PRIVATE-TOKEN': privateToken,
       },
       json: true,
       body: {
