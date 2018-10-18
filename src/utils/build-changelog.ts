@@ -1,4 +1,5 @@
 import { CommitTypes } from '../types/commit-types';
+import { addVersionPostfix } from './add-version-postfix';
 import { addVersionPrefix } from './add-version-prefix';
 
 /**
@@ -33,7 +34,7 @@ export const buildChangelog = (
   styles: string[],
   breakingChanges: string[]
 ): string =>
-  `# ${addVersionPrefix(version)}
+  `# ${addVersionPrefix(addVersionPostfix(version))}
 ${
     features.length && !process.argv.includes('--no-feat')
       ? `

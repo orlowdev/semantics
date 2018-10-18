@@ -2,6 +2,7 @@
 
 import { Shell } from '@totemish/shell';
 import { writeFileSync } from 'fs';
+import { addVersionPostfix } from './utils/add-version-postfix';
 import { addVersionPrefix } from './utils/add-version-prefix';
 import { appendFixOrFeatFlags } from './utils/append-fix-or-feat-flags';
 import { execPromise } from './utils/exec-promise';
@@ -99,7 +100,7 @@ const run = (currentTag, currentCommit, changes) => {
       json: true,
       body: {
         id: process.env.CI_PROJECT_ID,
-        tag_name: addVersionPrefix(newVersion),
+        tag_name: addVersionPrefix(addVersionPostfix(newVersion)),
         ref: currentCommit,
         release_description: changeLog,
       },
@@ -123,7 +124,11 @@ const run = (currentTag, currentCommit, changes) => {
 
       Shell.write(
         Shell.green('SEMANTICS SUCCESS'),
-        Shell.white('🙌  Version ', Shell.bold(Shell.green(addVersionPrefix(newVersion))), ' successfully released!')
+        Shell.white(
+          '🙌  Version ',
+          Shell.bold(Shell.green(addVersionPrefix(addVersionPostfix(newVersion)))),
+          ' successfully released!'
+        )
       );
     }
   );
