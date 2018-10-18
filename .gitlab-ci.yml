@@ -72,10 +72,13 @@ deploy:npm:
 deploy:docker:
   stage: deploy
   image: docker:stable
+  services:
+  - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay
   before_script:
   - echo ""
   script:
-  - apk add git
   - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-alpine - < ./docker/alpine.Dockerfile
   - docker build -t priestine/semantics:latest - < ./docker/alpine.Dockerfile
   - docker build -t priestine/semantics:alpine - < ./docker/alpine.Dockerfile
