@@ -79,6 +79,7 @@ deploy:docker:
   before_script:
   - echo ""
   script:
+  - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
   - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-alpine - < ./docker/alpine.Dockerfile
   - docker build -t priestine/semantics:latest - < ./docker/alpine.Dockerfile
   - docker build -t priestine/semantics:alpine - < ./docker/alpine.Dockerfile
