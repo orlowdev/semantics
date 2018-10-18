@@ -34,7 +34,7 @@ commits before.
 6. Use API to create a release tag and append the changelog to the release message
 7. Put metadata (see [#output](#output)) in temporary files
 
-You can use add your own logic in the same job after `@priestine/semantics` has finished running, or assign a separate release job that will run on publishing the tag to GitLab.
+You can add your own logic in the same job after `@priestine/semantics` has finished running, or assign a separate release job that will run on publishing the tag to GitLab.
 
 ## Installation
 
@@ -54,11 +54,22 @@ versioning:
   - master
 ```
 
-**IMPORTANT NOTE**: For the app to be able to publish new tags on GitLab, you need to provide a `PRIVATE_TOKEN` environment variable. If you don't want `@priestine/semantics` to publish tags, simply omit the following step. Without the `PRIVATE_TOKEN` the app will only evaluate changes and put temporary files with metadata grabbed during evaluation (see [#output](#output))
+**IMPORTANT NOTE**: Private token is required for publishing new tags to GitLab. You can provide the token via environment variable called `PRIVATE_TOKEN` or explicitly assign it as a `priestine-semantics` argument like so:
 
-### `PRIVATE_TOKEN`
+```yaml
+  # ...
+  script:
+  - priestine-semantics --private-token=YOUR_TOKEN
+  # ...
+```
 
-Private token env variable is in fact a GitLab user access token that is used for publishing tags to GitLab. To create an access token, follow the steps:
+If you do not provide a private token, `@priestine/semantics` will simply omit publishing tag to GitLab. It will still evaluate changes and put temporary files with metadata grabbed during evaluation (see [#output](#output)).
+
+You can learn more about available CLI args and flags [here](#cli-args).
+
+#### `PRIVATE_TOKEN`
+
+Private token env variable is in fact a GitLab user **access token** that is used for publishing tags to GitLab. To create an access token, follow the steps:
 
 1. Go to your profile page (https://gitlab.com/profile)
 2. Choose `Access Tokens` in the menu on the left (https://gitlab.com/profile/personal_access_tokens)
@@ -66,17 +77,23 @@ Private token env variable is in fact a GitLab user access token that is used fo
 4. In the **scopes** section, check the `api` checkbox
 5. Press the `Create personal access token button`
 6. You'll get your newly created access token inside `Your New Personal Access Token` input
-7. Copy it and paste it in your private environment variables as `PRIVATE_TOKEN` ([GitLab docs](https://docs.gitlab.com/ee/ci/environments.html))
+7. Copy it and paste it in your private environment variables as `PRIVATE_TOKEN` ([GitLab docs on environment variables](https://docs.gitlab.com/ee/ci/environments.html))
 
 It is a good idea to create a separate user and use it for the releasing purposes.
 
-`@priestine/semantics` Dockerfile is built from `node:10-alpine`:
-
-#### Docker info
+### Docker image info
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/) [![Docker Stars](https://img.shields.io/docker/stars/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/) [![MicroBadger Layers](https://img.shields.io/microbadger/layers/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/) [![MicroBadger Size](https://img.shields.io/microbadger/image-size/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/)
 
+`priestine/semantics:latest` Docker image is built from `node:10-alpine`.
+
+There is also `priestine/semantics@alpine` version which is absolutely equal to `priestine/semantics:latest` as well as `priestine/semantics:slim` based on `node:10-slim`.
+
+Docker images are built on each `priestine/semantics` release so you can stick to the version you are comfortable with, e.g. `priestine/semantics:2.8.0-alpine` or `priestine/semantics:2.8.0-slim`.
+
 ### Manual usage
+
+[![npm](https://img.shields.io/npm/dt/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics) [![npm](https://img.shields.io/npm/v/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics)
 
 If you want to run `@priestine/semantics` yourself locally (or elsewhere except for CI) you will need [Node.js 8 or higher](https://nodejs.org/en/download/) installed on your machine. Simply install the package globally
 
@@ -90,21 +107,54 @@ or
 npm i -g @priestine/semantics
 ```
 
-Then, in your project directory, run
+Then, in your project directory, run:
 
 ```bash
 priestine-semantics
 ```
 
-#### NPM info
+You can also provide [CLI args and flags](#cli-args) to the `priestine-semantics` command.
 
-[![npm](https://img.shields.io/npm/dt/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics) [![npm](https://img.shields.io/npm/v/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics)
+### CLI args
+
+You can customize the behaviour of `priestine-semantics` command by providing CLI args and flags. To do so, simply provide them after the command itself, e.g.:
+
+```bash
+priestine-semantics --custom-domain=https://gitlab.test.com/api/v4 --no-helpers --no-flexible-scope
+```
+
+#### Args
+
+* `--private-token=VALUE` - private token for publishing tags instead of putting them inside a `PRIVATE_TOKEN` env variable
+* `--custom-domain=https://gitlab.test.com/api/v4` - set publishing tags to a GitLab located somewhere other than `https://gitlab.com`. **IMPORTANT NOTE**: always specify the version of the API of your self-hosted GitLab (e.g. `/api/v4`, **don't add the trailing slash**) This is done to allow support for GitLab APIs older than v4 _although it has never been tested_
+
+#### Flags
+
+* `--no-flexible-scope` - out of the box, `@priestine/semantics` supports special behaviour for commit scope (the thing in brackets after the commit type). Currently, it supports extracting issue references from commit scope if the scope starts with a `#`. The `--no-flexible-scope` flag forces `@priestine/semantics` to stop doing stuff with the scope and simply append whatever it contains to the changelog commit description
+* `--no-chore` - disables putting **chore** commits to the changelog
+* `--no-style` - disables putting **style** commits to the changelog
+* `--no-refactor` - disables putting **refactor** commits to the changelog
+* `--no-docs` - disables putting **docs** commits to the changelog
+* `--no-perf` - disables putting **perf** commits to the changelog
+* `--no-test` - disables putting **test** commits to the changelog
+* `--no-revert` - disables putting **revert** commits to the changelog
+* `--no-ci` - disables putting **ci** commits to the changelog
+* `--no-build` - disables putting **build** commits to the changelog
+* `--no-fix` - disables putting **fix** commits to the changelog. **This flag does not disable version bumping**
+* `--no-feat` - disables putting **feat** commits to the changelog. **This flag does not disable version bumping**
+* `--no-bc` - disables putting **BREAKING CHANGES** to the changelog. **This flag does not disable version bumping**
+* `--no-helpers` - disables all helper text blocks for commit groups in the changelog (e.g. `Documentation only changes` for `docs` commits)
+* `--fix-or-feat` - disables putting anything to changelog but **fix**, **feat** and **BREAKING CHANGE**-containing commits. This is done to make `@priestine/semantics` act like what `semantic-release` does. This flag also disables helpers
 
 ### Output
 
-While running, `@priestine/semantics` generates a few temporary files for your disposal. NOTE: they will only be created if a new release is required.
+While running, `@priestine/semantics` generates a few temporary files for your disposal.
+ 
+> Temporary file output will only be created if a new release is required.
 
-#### .tmp.current_commit_data (Example)
+#### Temporary file description
+
+##### .tmp.current_commit_data (Example)
 
 The commit assigned to the previous tag (if there was previous release tag in place for current project).
 
@@ -113,7 +163,7 @@ The commit assigned to the previous tag (if there was previous release tag in pl
 
 ```
 
-#### .tmp.current_tag_data (Example)
+##### .tmp.current_tag_data (Example)
 
 Previous tag (if there was previous release tag in place for current project).
 
@@ -122,7 +172,7 @@ Previous tag (if there was previous release tag in place for current project).
 
 ```
 
-#### .tmp.version_data (Example)
+##### .tmp.version_data (Example)
 
 The version that should be assigned according to the contents of the commits.
 
@@ -131,7 +181,7 @@ The version that should be assigned according to the contents of the commits.
 
 ```
 
-#### .tmp.current_changes.json (Example)
+##### .tmp.current_changes.json (Example)
 
 JSON containing all the commits that were evaluated.
 
