@@ -1,4 +1,5 @@
 import { CommitTypes } from '../types/commit-types';
+import { addVersionPrefix } from './add-version-prefix';
 
 /**
  * Build new tag release changelog based on given changes and their types.
@@ -32,7 +33,7 @@ export const buildChangelog = (
   styles: string[],
   breakingChanges: string[]
 ): string =>
-  `# ${version}
+  `# ${addVersionPrefix(version)}
 ${
     features.length && !process.argv.includes('--no-feat')
       ? `

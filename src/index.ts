@@ -2,6 +2,7 @@
 
 import { Shell } from '@totemish/shell';
 import { writeFileSync } from 'fs';
+import { addVersionPrefix } from './utils/add-version-prefix';
 import { appendFixOrFeatFlags } from './utils/append-fix-or-feat-flags';
 import { execPromise } from './utils/exec-promise';
 import { buildChangelog } from './utils/build-changelog';
@@ -25,6 +26,7 @@ import { flatten } from './utils/flatten-array';
 appendFixOrFeatFlags();
 
 const run = (currentTag, currentCommit, changes) => {
+  // TODO: Refactor this to ignore v or anything
   const vRx = /^v/i;
   const tag = vRx.test(currentTag) ? currentTag.replace(vRx, '') : currentTag;
 
@@ -97,7 +99,7 @@ const run = (currentTag, currentCommit, changes) => {
       json: true,
       body: {
         id: process.env.CI_PROJECT_ID,
-        tag_name: newVersion,
+        tag_name: addVersionPrefix(newVersion),
         ref: currentCommit,
         release_description: changeLog,
       },
@@ -119,7 +121,10 @@ const run = (currentTag, currentCommit, changes) => {
       writeFileSync('.tmp.version_data', newVersion, 'utf8');
       writeFileSync('.tmp.changelog.md', changeLog, 'utf8');
 
-      Shell.write(Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!'));
+      Shell.write(
+        Shell.green('SEMANTICS SUCCESS'),
+        Shell.white('🙌  Version ', Shell.bold(Shell.green(addVersionPrefix(newVersion))), ' successfully released!')
+      );
     }
   );
 };
