@@ -19,6 +19,19 @@ import * as request from 'request';
 import { CommitInterface } from './interfaces/commit.interface';
 import { flatten } from './utils/flatten-array';
 
+if (process.argv.includes('--fix-or-feat')) {
+  process.argv.push('--no-chore');
+  process.argv.push('--no-style');
+  process.argv.push('--no-refactor');
+  process.argv.push('--no-docs');
+  process.argv.push('--no-perf');
+  process.argv.push('--no-test');
+  process.argv.push('--no-revert');
+  process.argv.push('--no-build');
+  process.argv.push('--no-ci');
+  process.argv.push('--no-helpers');
+}
+
 const run = (currentTag, currentCommit, changes) => {
   const vRx = /^v/i;
   const tag = vRx.test(currentTag) ? currentTag.replace(vRx, '') : currentTag;
