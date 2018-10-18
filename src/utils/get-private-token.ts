@@ -1,5 +1,5 @@
 /**
- * Get private token from argv or PRIVATE_TOKEN env variable.
+ * Get private token from `process.argv` or `PRIVATE_TOKEN` env variable if they are provided.
  * @returns {string}
  */
 export const getPrivateToken = (): string => {

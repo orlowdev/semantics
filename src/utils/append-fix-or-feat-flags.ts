@@ -1,3 +1,6 @@
+/**
+ * Append args to `process.argv` to only put fixes and features to changelog if `--fix-or-feat` flag is provided.
+ */
 export const appendFixOrFeatFlags = (): void => {
   if (!process.argv.includes('--fix-or-feat')) {
     return;
