@@ -27,10 +27,6 @@ import { flatten } from './utils/flatten-array';
 appendFixOrFeatFlags();
 
 const run = (currentTag, currentCommit, changes) => {
-  // TODO: Refactor this to ignore v or anything
-  const vRx = /^v/i;
-  const tag = vRx.test(currentTag) ? currentTag.replace(vRx, '') : currentTag;
-
   Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(' Collecting list of changes'));
 
   const normalizedChanges: CommitInterface[] = JSON.parse(normalizeChanges(changes))
@@ -38,7 +34,7 @@ const run = (currentTag, currentCommit, changes) => {
     .map(extractCommitTypes)
     .map(extractBreakingChanges);
 
-  const versionChanger = changeVersion(tag);
+  const versionChanger = changeVersion(currentTag);
 
   const getCommitSubjects = getSubjects(normalizedChanges);
 
@@ -47,9 +43,11 @@ const run = (currentTag, currentCommit, changes) => {
   const amendMajor = getAmendMajor(normalizedChanges);
   const amendMinor = getAmendMinor(normalizedChanges);
   const amendPatch = getAmendPatch(normalizedChanges);
-  const newVersion = versionChanger(amendMajor, amendMinor, amendPatch);
+  const newVersion = [versionChanger(amendMajor, amendMinor, amendPatch)]
+    .map(addVersionPrefix)
+    .map(addVersionPostfix)[0];
 
-  if (tag === newVersion) {
+  if (currentTag === newVersion) {
     Shell.write(Shell.yellow(`SEMANTICS WARN`), Shell.white(' Given changes do not require releasing'));
     return;
   }
@@ -100,7 +98,7 @@ const run = (currentTag, currentCommit, changes) => {
       json: true,
       body: {
         id: process.env.CI_PROJECT_ID,
-        tag_name: addVersionPrefix(addVersionPostfix(newVersion)),
+        tag_name: newVersion,
         ref: currentCommit,
         release_description: changeLog,
       },
@@ -124,11 +122,7 @@ const run = (currentTag, currentCommit, changes) => {
 
       Shell.write(
         Shell.green('SEMANTICS SUCCESS'),
-        Shell.white(
-          '🙌  Version ',
-          Shell.bold(Shell.green(addVersionPrefix(addVersionPostfix(newVersion)))),
-          ' successfully released!'
-        )
+        Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!')
       );
     }
   );
