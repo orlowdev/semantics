@@ -125,8 +125,10 @@ priestine-semantics --custom-domain=https://gitlab.test.com/api/v4 --no-helpers 
 
 #### Args
 
-* `--private-token=VALUE` - private token for publishing tags instead of putting them inside a `PRIVATE_TOKEN` env variable
+* `--private-token=hiImPrivateToken` - private token for publishing tags instead of putting them inside a `PRIVATE_TOKEN` env variable
 * `--custom-domain=https://gitlab.test.com/api/v4` - set publishing tags to a GitLab located somewhere other than `https://gitlab.com`. **IMPORTANT NOTE**: always specify the version of the API of your self-hosted GitLab (e.g. `/api/v4`, **don't add the trailing slash**) This is done to allow support for GitLab APIs older than v4 _although it has never been tested_
+* `--prefix=v` - set prefix for newly created version (e.g. `v1.0.0`)
+* `--postfix=-beta` - set postfix for newly created version (e.g. `1.0.0-beta`)
 
 #### Flags
 
