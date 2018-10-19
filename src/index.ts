@@ -109,7 +109,7 @@ const run = (currentTag, currentCommit, changes) => {
         return;
       }
 
-      if (b.message.match(/already exists/)) {
+      if (b.message && /already exists/.test(b.message)) {
         Shell.error(`SEMANTICS ERROR ${b.message}`);
         return;
       }
