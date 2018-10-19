@@ -122,7 +122,7 @@ const run = (currentTag, currentCommit, changes) => {
 
       Shell.write(
         Shell.green('SEMANTICS SUCCESS'),
-        Shell.white('🙌  Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!')
+        Shell.white('🙌   Version ', Shell.bold(Shell.green(newVersion)), ' successfully released!')
       );
     }
   );
