@@ -1,10 +1,9 @@
 image: node:10-slim
 
 stages:
-- build
-- style
-- test
-- deploy
+  - style
+  - test
+  - deploy
 
 before_script:
   - npm i -g yarn
@@ -13,91 +12,91 @@ before_script:
 cache:
   key: "$CI_COMMIT_REF_SLUG"
   paths:
-  - node_modules/
+    - node_modules/
 
 style:
   image: node:10-alpine
   stage: style
   script:
-  - yarn style:check
+    - yarn style:check
   except:
-  - tags
+    - tags
+    - master
 
-1:2 test node:
-  image: node:10-alpine
+1:2 coverage:
+  image: node:10
   stage: test
   script:
-  - yarn coverage:cover
-  after_script:
-  - yarn test
+    - yarn coverage:cover
+    - yarn coverage:check
   except:
-  - tags
+    - tags
+    - master
 
-2:2 test node:
+2:2 coverage:
   image: node:8-alpine
   stage: test
   script:
-  - yarn test
+    - yarn coverage:cover
+    - yarn coverage:check
   except:
-  - tags
-
-coverage:check:
-  image: node:10-alpine
-  stage: test
-  script:
-  - yarn coverage:cover
-  - yarn coverage:check
-  except:
-  - tags
+    - tags
+    - master
 
 coverage:report:
   image: node:10
   stage: test
   script:
-  - yarn coverage:cover
+    - yarn coverage:cover
   after_script:
-  - bash <(curl -s https://codecov.io/bash) -t "${CODECOV_TOKEN}" -f coverage/*.json
-  except:
-  - tags
+    - bash <(curl -s https://codecov.io/bash) -t "${CODECOV_TOKEN}" -f coverage/*.json
+  only:
+    - master
 
-deploy:npm:
+versioning:
   stage: deploy
   image: priestine/semantics:latest
   script:
-  - priestine-semantics --private-token=${SEMANTICS_TOKEN}
-  - bash build.sh
+    - priestine-semantics --private-token=${SEMANTICS_TOKEN} --fix-or-feat
   only:
-  - master
+    - master
+
+deploy:npm:
+  stage: deploy
+  script:
+    - bash deploy_npm.sh
+  only:
+    - tags
 
 deploy:docker:
   stage: deploy
   image: docker:stable
   services:
-  - docker:dind
+    - docker:dind
   variables:
     DOCKER_DRIVER: overlay
   before_script:
-  - echo ""
+    - echo ""
   script:
-  - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
-  - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-alpine - < ./docker/alpine.Dockerfile
-  - docker build -t priestine/semantics:latest - < ./docker/alpine.Dockerfile
-  - docker build -t priestine/semantics:alpine - < ./docker/alpine.Dockerfile
-  - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-slim - < ./docker/slim.Dockerfile
-  - docker build -t priestine/semantics:slim - < ./docker/slim.Dockerfile
-  - docker push priestine/semantics
+    - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+    - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-alpine - < ./docker/alpine.Dockerfile
+    - docker build -t priestine/semantics:latest - < ./docker/alpine.Dockerfile
+    - docker build -t priestine/semantics:alpine - < ./docker/alpine.Dockerfile
+    - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-slim - < ./docker/slim.Dockerfile
+    - docker build -t priestine/semantics:slim - < ./docker/slim.Dockerfile
+    - docker push priestine/semantics
   only:
-  - tags
+    - tags
 
 pages:
   stage: deploy
   script:
-  - npm run build:docs
-  - mkdir .public
-  - cp -r docs/* .public
-  - mv .public public
+    - npm run build:docs
+    - mkdir .public
+    - cp -r docs/* .public
+    - mv .public public
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - master
+    - master
