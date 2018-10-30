@@ -92,6 +92,13 @@
     lodash "^4.17.5"
     to-fast-properties "^2.0.0"
 
+"@priestine/data@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@priestine/data/-/data-2.0.0.tgz#9338ed25959da2ad5d5ddc465fae9db6a1beb00b"
+  integrity sha512-d05rVl+UxUvkXjMVLXsC6aMkNfgEuMNhFCoHM6tjerqUQP8/WOmWuuq8nvSIimJOXq9GBLpOtlJWhH3K8F2+dw==
+  dependencies:
+    lodash "^4.17.11"
+
 "@totemish/shell@^1.3.1":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@totemish/shell/-/shell-1.3.1.tgz#f8ff6c40a22579c84684dbd8a7a9a8407e654803"
@@ -1053,7 +1060,7 @@ lodash.flattendeep@^4.4.0:
   resolved "https://registry.yarnpkg.com/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
   integrity sha1-+wMJF/hqMTTlvJvsDWngAT3f7bI=
 
-lodash@^4.17.10, lodash@^4.17.5:
+lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.5:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
