@@ -33,8 +33,7 @@ const run = (currentTag, currentCommit, changes) => {
   const normalizedChanges: CommitInterface[] = reverseCommitOrder(JSON.parse(normalizeChanges(changes)))
     .map(normalizeBody)
     .map(extractCommitTypes)
-    .map(extractBreakingChanges)
-  ;
+    .map(extractBreakingChanges);
 
   const versionChanger = changeVersion(currentTag);
 
