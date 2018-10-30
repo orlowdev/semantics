@@ -23,13 +23,14 @@ import { getSubjects } from './utils/get-subjects';
 import * as request from 'request';
 import { CommitInterface } from './interfaces/commit.interface';
 import { flatten } from './utils/flatten-array';
+import { reverseCommitOrder } from './utils/reverse-commit-order';
 
 appendFixOrFeatFlags();
 
 const run = (currentTag, currentCommit, changes) => {
   Shell.write(Shell.blue(`SEMANTICS INFO`), Shell.white(' Collecting list of changes'));
 
-  const normalizedChanges: CommitInterface[] = JSON.parse(normalizeChanges(changes))
+  const normalizedChanges: CommitInterface[] = reverseCommitOrder(JSON.parse(normalizeChanges(changes)))
     .map(normalizeBody)
     .map(extractCommitTypes)
     .map(extractBreakingChanges);
