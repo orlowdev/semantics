@@ -3,7 +3,8 @@ image: node:10-slim
 stages:
   - style
   - test
-  - deploy
+  - npm_deploy
+  - docker_deploy
 
 before_script:
   - npm i -g yarn
@@ -62,14 +63,14 @@ versioning:
     - master
 
 deploy:npm:
-  stage: deploy
+  stage: npm_deploy
   script:
     - bash deploy_npm.sh
   only:
     - tags
 
 deploy:docker:
-  stage: deploy
+  stage: docker_deploy
   image: docker:stable
   services:
     - docker:dind
