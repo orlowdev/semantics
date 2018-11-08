@@ -11,7 +11,7 @@ export const normalizeChanges = (changes: string): string =>
         return r;
       }
 
-      x = x.replace(/"/g, '\'').replace(/\s+/g, ' ');
+      x = x.replace(/"/g, `'`).replace(/\s+/g, ' ');
 
       return r.concat([x]);
     }, [])
