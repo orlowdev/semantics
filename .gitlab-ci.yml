@@ -3,7 +3,10 @@ image: node:10-slim
 stages:
   - style
   - test
-  - deploy
+  - versioning
+  - pages
+  - npm_deploy
+  - docker_deploy
 
 before_script:
   - npm i -g yarn
@@ -54,7 +57,7 @@ coverage:report:
     - master
 
 versioning:
-  stage: deploy
+  stage: versioning
   image: priestine/semantics:latest
   script:
     - priestine-semantics --private-token=${SEMANTICS_TOKEN} --fix-or-feat
@@ -62,14 +65,14 @@ versioning:
     - master
 
 deploy:npm:
-  stage: deploy
+  stage: npm_deploy
   script:
     - bash deploy_npm.sh
   only:
     - tags
 
 deploy:docker:
-  stage: deploy
+  stage: docker_deploy
   image: docker:stable
   services:
     - docker:dind
@@ -89,7 +92,7 @@ deploy:docker:
     - tags
 
 pages:
-  stage: deploy
+  stage: pages
   script:
     - npm run build:docs
     - mkdir .public

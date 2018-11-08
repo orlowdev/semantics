@@ -22,7 +22,11 @@ describe('normalizeChanges', () => {
     expect(normalizeChanges('{ ^^^name^^^: ^^^test^^^ }')).to.equal('[ { "name": "test" } ]');
   });
 
+  it('should correctly replace multiple spaces and tabs with singe spaces', () => {
+    expect(normalizeChanges('{ ^^^check^^^: ^^^test:    1^^^ }')).to.equal('[ { "check": "test: 1" } ]');
+  });
+
   it('should correctly replace double quotes coming from commits', () => {
-    expect(normalizeChanges('{ ^^^name^^^: ^^^"test"^^^ }')).to.equal('[ { "name": "`test`" } ]');
+    expect(normalizeChanges('{ ^^^name^^^: ^^^"test"^^^ }')).to.equal('[ { "name": "\'test\'" } ]');
   });
 });
