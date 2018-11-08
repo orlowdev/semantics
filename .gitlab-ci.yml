@@ -3,6 +3,7 @@ image: node:10-slim
 stages:
   - style
   - test
+  - versioning
   - npm_deploy
   - docker_deploy
 
@@ -55,7 +56,7 @@ coverage:report:
     - master
 
 versioning:
-  stage: deploy
+  stage: versioning
   image: priestine/semantics:latest
   script:
     - priestine-semantics --private-token=${SEMANTICS_TOKEN} --fix-or-feat
