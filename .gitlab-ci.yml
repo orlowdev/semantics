@@ -4,6 +4,7 @@ stages:
   - style
   - test
   - versioning
+  - pages
   - npm_deploy
   - docker_deploy
 
@@ -91,7 +92,7 @@ deploy:docker:
     - tags
 
 pages:
-  stage: deploy
+  stage: pages
   script:
     - npm run build:docs
     - mkdir .public
