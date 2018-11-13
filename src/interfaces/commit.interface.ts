@@ -12,7 +12,7 @@ export interface CommitInterface {
   subject: string;
   body: string[];
   footer: string[];
-  type: keyof typeof CommitTypes;
+  type: string;
   breakingChanges: string[];
   issueReference?: string;
 }

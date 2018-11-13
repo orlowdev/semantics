@@ -92,10 +92,10 @@
     lodash "^4.17.5"
     to-fast-properties "^2.0.0"
 
-"@priestine/data@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@priestine/data/-/data-2.0.0.tgz#9338ed25959da2ad5d5ddc465fae9db6a1beb00b"
-  integrity sha512-d05rVl+UxUvkXjMVLXsC6aMkNfgEuMNhFCoHM6tjerqUQP8/WOmWuuq8nvSIimJOXq9GBLpOtlJWhH3K8F2+dw==
+"@priestine/data@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@priestine/data/-/data-2.3.0.tgz#2afc18dd34d7db7d8886de5b2304447449312934"
+  integrity sha512-p8TZo59dnXdO6XzZFCBS7zuu98yMs1Tg7oAGPJGEzFge3bLwrG8xdX4PhWkaC+MZYsaT2Y+ywE/Nhra+x3SwKA==
   dependencies:
     lodash "^4.17.11"
 
@@ -181,6 +181,11 @@
   version "10.11.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.11.4.tgz#e8bd933c3f78795d580ae41d86590bfc1f4f389d"
   integrity sha512-ojnbBiKkZFYRfQpmtnnWTMw+rzGp/JiystjluW9jgN3VzRwilXddJ6aGQ9V/7iuDG06SBgn7ozW9k3zcAnYjYQ==
+
+"@types/ramda@^0.25.41":
+  version "0.25.41"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.25.41.tgz#c965160129d7e8345e40508858514f8ec7af706f"
+  integrity sha512-R6IkySFkrCN6Xd3exKX1PI2hvkmpbDZBKYz7u4uuYas8NeUCmcHkccYo6OWKtWIkYipjGBQP2ZzlTT+R3bUY6Q==
 
 "@types/request@^2.47.1":
   version "2.47.1"
@@ -1422,6 +1427,11 @@ qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
+
+ramda@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.25.0.tgz#8fdf68231cffa90bc2f9460390a0cb74a29b29a9"
+  integrity sha512-GXpfrYVPwx3K7RQ6aYT8KPS8XViSXUVJT1ONhoKPE9VAleW42YE+U+8VEyGWt41EnEQW7gwecYJriTI0pKoecQ==
 
 read-pkg-up@^4.0.0:
   version "4.0.0"

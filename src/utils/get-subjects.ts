@@ -6,12 +6,12 @@ import { CommitTypes } from '../types/commit-types';
  * @param xs CommitInterface[]
  * @returns string[]
  */
-export const getSubjects = (xs: CommitInterface[]) => (type: keyof typeof CommitTypes): string[] =>
+export const getSubjects = (xs: CommitInterface[]) => (type: string): string[] =>
   xs
     .filter((x: CommitInterface) => x.type === type)
     .map(
       (x: CommitInterface) =>
-        `**${x.abbrevHash}**: ${x.subject}${x.issueReference ? ` (**${x.issueReference}**)` : ''}${
-          x.body.length ? `\n\n> ${x.body.join('<br/>\n> ')}\n` : ''
-        }`
+        `**${x.abbrevHash}**: ${x.subject} _by ${x.author.name}_${
+          x.issueReference ? ` (**${x.issueReference}**)` : ''
+        }${x.body.length ? `\n\n> ${x.body.join('<br/>\n> ')}\n` : ''}`
     );
