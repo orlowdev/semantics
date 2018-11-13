@@ -18,12 +18,10 @@ import { addVersionPostfix } from './utils/add-version-postfix';
 import { flatten } from './utils/flatten-array';
 import { CommitInterface } from './interfaces/commit.interface';
 import { buildChangelog } from './utils/build-changelog';
-import { writeFileSync } from "fs";
+import { writeFileSync } from 'fs';
 
 const lift = Middleware.of;
-const Void: [(x) => void, (x) => void] = [() => {
-}, () => {
-}];
+const Void: [(x) => void, (x) => void] = [() => {}, () => {}];
 
 /**
  * Console message output.
@@ -41,80 +39,67 @@ const run = async () => {
     changes,
   }));
 
-  const currentCommit = Pipeline
-    .from([
-      R.tap(() => infoMessage('Extracting current commit hash...')),
-      execPromise,
-      Either.fromNullable,
-      (y: EitherInterface<string>) => y.fold(
+  const currentCommit = Pipeline.from([
+    R.tap(() => infoMessage('Extracting current commit hash...')),
+    execPromise,
+    Either.fromNullable,
+    (y: EitherInterface<string>) =>
+      y.fold(
         R.tap(() => warningMessage('Could not extract current commit')),
-        R.tap((x) => successMessage(`Found latest tag commit hash: ${Shell.green(Shell.bold(x))}`)),
+        R.tap((x) => successMessage(`Found latest tag commit hash: ${Shell.green(Shell.bold(x))}`))
       ),
-    ])
-  ;
+  ]);
 
-  const latestPublishedTag = await Pipeline
-    .from([
-      R.tap(() => infoMessage('Extracting latest tagged version...')),
-      execPromise,
-      Either.fromNullable,
-      (y: EitherInterface<string>) => y.fold(
+  const latestPublishedTag = await Pipeline.from([
+    R.tap(() => infoMessage('Extracting latest tagged version...')),
+    execPromise,
+    Either.fromNullable,
+    (y: EitherInterface<string>) =>
+      y.fold(
         R.tap(() => warningMessage('No tags found, falling back to initial version')),
-        R.tap((x) => successMessage(`Found current tagged version: ${Shell.green(Shell.bold(x))}`)),
+        R.tap((x) => successMessage(`Found current tagged version: ${Shell.green(Shell.bold(x))}`))
       ),
-    ])
-    .process('git describe --tags `git rev-list --tags --max-count=1`')
-  ;
+  ]).process('git describe --tags `git rev-list --tags --max-count=1`');
 
-  const getLatestPublishedCommit = Pipeline
-    .from([
-      R.tap(() => infoMessage(' Receiving commit hash of latest tagged version...')),
-      execPromise,
-      Either.fromNullable,
-      (y: EitherInterface<string>) => y.fold(
+  const getLatestPublishedCommit = Pipeline.from([
+    R.tap(() => infoMessage(' Receiving commit hash of latest tagged version...')),
+    execPromise,
+    Either.fromNullable,
+    (y: EitherInterface<string>) =>
+      y.fold(
         R.tap(() => errorMessage('Could not extract commit of the latest tagged version')),
-        R.tap((x) => successMessage(`Found commit related to currently tagged version: ${Shell.green(Shell.bold(x))}`)),
+        R.tap((x) => successMessage(`Found commit related to currently tagged version: ${Shell.green(Shell.bold(x))}`))
       ),
-    ])
-  ;
+  ]);
 
-  const latestPublishedCommit = await Either.fromNullable(latestPublishedTag)
-    .fold(
-      R.tap(() => warningMessage('No tags found, falling back to initial version')),
-      (x) => getLatestPublishedCommit.process(`git show-ref ${x} -s`),
-    )
-  ;
+  const latestPublishedCommit = await Either.fromNullable(latestPublishedTag).fold(
+    R.tap(() => warningMessage('No tags found, falling back to initial version')),
+    (x) => getLatestPublishedCommit.process(`git show-ref ${x} -s`)
+  );
 
-  const getChangesCommand = Either.fromNullable(latestPublishedCommit)
-    .fold(
-      () => `git rev-list --all --no-merges --format='${commitFormat}'`,
-      (x) => `git rev-list ${x}..HEAD --no-merges --format='${commitFormat}'`,
-    )
-  ;
+  const getChangesCommand = Either.fromNullable(latestPublishedCommit).fold(
+    () => `git rev-list --all --no-merges --format='${commitFormat}'`,
+    (x) => `git rev-list ${x}..HEAD --no-merges --format='${commitFormat}'`
+  );
 
   const changes = await Pipeline.from([
     R.tap(() => infoMessage('Collecting list of changes...')),
     execPromise,
     Either.fromNullable,
-    (y: EitherInterface<string>) => y.fold(
-      R.tap(() => errorMessage('Could not find any changes since last commit')),
-      (x) => reverseCommitOrder(JSON.parse(normalizeChanges(x)))
-        .map(normalizeBody)
-        .map(extractCommitTypes)
-        .map(extractBreakingChanges)
-      ,
-    ),
-
+    (y: EitherInterface<string>) =>
+      y.fold(R.tap(() => errorMessage('Could not find any changes since last commit')), (x) =>
+        reverseCommitOrder(JSON.parse(normalizeChanges(x)))
+          .map(normalizeBody)
+          .map(extractCommitTypes)
+          .map(extractBreakingChanges)
+      ),
   ]).process(getChangesCommand);
-
-
 
   return result
     .ap(Task.of(await currentCommit.process('git rev-parse HEAD')))
     .ap(Task.of(latestPublishedTag))
     .ap(Task.of(changes))
-    .fork(console.error, (x) => x)[1]
-  ;
+    .fork(console.error, (x) => x)[1];
 };
 
 run().then(({ currentCommit, lastPublishedVersion, changes }) => {
