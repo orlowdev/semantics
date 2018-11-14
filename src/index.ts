@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Either, Task } from '@priestine/data/src';
 import { Shell } from '@totemish/shell';
 import * as R from 'ramda';
