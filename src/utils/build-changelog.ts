@@ -1,202 +1,40 @@
 import { CommitTypes } from '../types/commit-types';
+import { ICommitType } from '../interfaces/commit-type.interface';
+import { Messenger } from './Messenger';
+import { Shell } from '@totemish/shell';
+import { getSubjects } from './get-subjects';
+import { CommitInterface } from '../interfaces/commit.interface';
 
-/**
- * Build new tag release changelog based on given changes and their types.
- * @todo:priestine - Refactor this
- * @param version string
- * @param features string[]
- * @param fixes string[]
- * @param chores string[]
- * @param reverts string[]
- * @param tests string[]
- * @param refactors string[]
- * @param perfs string[]
- * @param builds string[]
- * @param cis string[]
- * @param docs string[]
- * @param styles string[]
- * @param breakingChanges string[]
- */
-export const buildChangelog = (
-  version: string,
-  features: string[],
-  fixes: string[],
-  chores: string[],
-  reverts: string[],
-  tests: string[],
-  refactors: string[],
-  perfs: string[],
-  builds: string[],
-  cis: string[],
-  docs: string[],
-  styles: string[],
-  breakingChanges: string[]
-): string =>
-  `# ${version}
-${
-    features.length && !process.argv.includes('--no-feat')
-      ? `
-## ${CommitTypes.feat.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.feat.description}\`
-`
-        }
-${features.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    fixes.length && !process.argv.includes('--no-fix')
-      ? `
+export const getChangelog = (changes: CommitInterface[]): string => {
+  const getSubjectedCommits = getSubjects(changes);
 
-## ${CommitTypes.fix.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.fix.description}\`
-`
-        }
-${fixes.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    docs.length && !process.argv.includes('--no-docs')
-      ? `
+  return CommitTypes.map((ct: ICommitType) => {
+    let substring: string = '';
 
-## ${CommitTypes.docs.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.docs.description}\`
-`
-        }
-${docs.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    styles.length && !process.argv.includes('--no-style')
-      ? `
+    if (process.argv.includes(`--no-${ct.type}`)) {
+      ct.display = false;
+    }
 
-## ${CommitTypes.style.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.style.description}\`
-`
-        }
-${styles.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    refactors.length && !process.argv.includes('--no-refactor')
-      ? `
+    if (!ct.display) {
+      Messenger.info(`Skipping ${Shell.yellow(Shell.bold(ct.type))} commits as they were explicitly disabled...`);
+      return substring;
+    }
 
-## ${CommitTypes.refactor.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.refactor.description}\`
-`
-        }
-${refactors.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    perfs.length && !process.argv.includes('--no-perf')
-      ? `
+    const subjects = getSubjectedCommits(ct.type);
 
-## ${CommitTypes.perf.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.perf.description}\`
-`
-        }
-${perfs.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    tests.length && !process.argv.includes('--no-test')
-      ? `
-## ${CommitTypes.test.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.test.description}\`
-`
-        }
-${tests.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    builds.length && !process.argv.includes('--no-build')
-      ? `
+    if (subjects && subjects.length) {
+      substring += `\n\n## ${ct.title}\n`;
 
-## ${CommitTypes.build.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.build.description}\`
-`
-        }
-${builds.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    cis.length && !process.argv.includes('--no-ci')
-      ? `
+      if (!process.argv.includes('--no-helpers')) {
+        substring += '\n`' + ct.description + '`\n';
+      }
 
-## ${CommitTypes.ci.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.ci.description}\`
-`
-        }
-${cis.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    chores.length && !process.argv.includes('--no-chore')
-      ? `
+      substring += '\n';
+      substring += getSubjectedCommits(ct.type)
+        .map((x: string) => `* ${x}`)
+        .join('\n');
+    }
 
-## ${CommitTypes.chore.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.chore.description}\`
-`
-        }
-${chores.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    reverts.length && !process.argv.includes('--no-revert')
-      ? `
-
-## ${CommitTypes.revert.title}
-${
-          process.argv.includes('--no-helpers')
-            ? ''
-            : `
-\`${CommitTypes.revert.description}\`
-`
-        }
-${reverts.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }${
-    breakingChanges.length && !process.argv.includes('--no-bc')
-      ? `
-
-## BREAKING CHANGES
-${process.argv.includes(
-          '--no-helpers'
-            ? ''
-            : `
-\`All things backwards-incompatible\`
-`
-        )}
-${breakingChanges.map((f: string) => `* ${f}`).join('\n')}`
-      : ''
-  }`.trim();
+    return substring;
+  }).join('');
+};

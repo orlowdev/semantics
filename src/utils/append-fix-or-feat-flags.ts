@@ -1,10 +1,27 @@
 /**
  * Append args to `process.argv` to only put fixes and features to changelog if `--fix-or-feat` flag is provided.
  */
+import { Messenger } from './Messenger';
+import { Shell } from '@totemish/shell';
+
 export const appendFixOrFeatFlags = (): void => {
   if (!process.argv.includes('--fix-or-feat')) {
     return;
   }
+
+  Messenger.info(
+    Shell.bold(
+      'You have provided the ',
+      Shell.green(Shell.underline('--fix-or-feat')),
+      Shell.white(' flag. Only '),
+      Shell.blue('fixes'),
+      Shell.white(', '),
+      Shell.blue('features'),
+      Shell.white(' and '),
+      Shell.blue('breaking changes'),
+      Shell.white(' will be displayed in the changelog.')
+    )
+  );
 
   process.argv.push('--no-chore');
   process.argv.push('--no-style');
