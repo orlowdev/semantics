@@ -58,7 +58,7 @@ coverage:report:
 
 versioning:
   stage: versioning
-  image: priestine/semantics:latest
+  image: priestine/semantics:3.0.1-alpine
   script:
     - priestine-semantics --private-token=${SEMANTICS_TOKEN} --fix-or-feat
   only:
