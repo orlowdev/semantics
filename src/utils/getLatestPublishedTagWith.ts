@@ -11,6 +11,6 @@ export const getLatestPublishedTagWith = (cmd: string): Promise<string> =>
       y.fold(() => {
         Messenger.warning('No tags found, falling back to initial version');
         return '0.0.0';
-      }, R.tap((x) => Messenger.success(`Got latest tagged version: ${Shell.green(Shell.bold(x))}`)))
+      }, R.tap((x) => Messenger.info(`Got latest tagged version: ${Shell.green(Shell.bold(x))}`)))
     )
     .process(cmd);

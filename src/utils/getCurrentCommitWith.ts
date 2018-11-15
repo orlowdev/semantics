@@ -10,7 +10,7 @@ export const getCurrentCommitWith = (cmd: string): Promise<string> =>
     .map((y: EitherInterface<string>) =>
       y.fold(
         Messenger.tapWarning('Could not get current commit'),
-        R.tap((x) => Messenger.success(`Got current commit hash: ${Shell.green(Shell.bold(x))}`))
+        R.tap((x) => Messenger.info(`Got current commit hash: ${Shell.green(Shell.bold(x))}`))
       )
     )
     .process(cmd);
