@@ -6,7 +6,7 @@ import { extractCommitTypes } from './extract-commit-types';
 import { extractBreakingChanges } from './extract-breaking-changes';
 import { Messenger } from './Messenger';
 import { ExecMiddleware } from './ExecMiddleware';
-import { Shell } from '@totemish/shell';
+import { Iro } from '@priestine/iro';
 
 export const getChangesWith = (cmd: string) =>
   ExecMiddleware.map(Messenger.tapInfo('Getting list of changes...'))
@@ -28,9 +28,9 @@ export const getChangesWith = (cmd: string) =>
             .map(extractCommitTypes)
             .map(extractBreakingChanges);
 
-          Messenger.info(`Got ${Shell.bold(Shell.green(changes.length.toString()))} changes:`);
+          Messenger.info(`Got ${Iro.bold(Iro.green(changes.length.toString()))} changes:`);
           changes.map(({ abbrevHash, type, subject }) =>
-            Messenger.info(`  > ${Shell.underline(abbrevHash)} ${Shell.white(Shell.bold(type), ': ', subject)}`)
+            Messenger.info(`  > ${Iro.underline(abbrevHash)} ${Iro.white(Iro.bold(type), ': ', subject)}`)
           );
 
           return changes;

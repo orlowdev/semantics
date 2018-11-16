@@ -2,7 +2,7 @@ import { ExecMiddleware } from './ExecMiddleware';
 import { Messenger } from './Messenger';
 import { Either, EitherInterface } from '@priestine/data/src';
 import * as R from 'ramda';
-import { Shell } from '@totemish/shell';
+import { Iro } from '@priestine/iro';
 
 export const getLatestPublishedTagWith = (cmd: string): Promise<string> =>
   ExecMiddleware.map(Messenger.tapInfo('Getting latest tagged version...'))
@@ -11,6 +11,6 @@ export const getLatestPublishedTagWith = (cmd: string): Promise<string> =>
       y.fold(() => {
         Messenger.warning('No tags found, falling back to initial version');
         return '0.0.0';
-      }, R.tap((x) => Messenger.info(`Got latest tagged version: ${Shell.green(Shell.bold(x))}`)))
+      }, R.tap((x) => Messenger.info(`Got latest tagged version: ${Iro.green(Iro.bold(x))}`)))
     )
     .process(cmd);

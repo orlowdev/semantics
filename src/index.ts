@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Either, Task } from '@priestine/data/src';
-import { Shell } from '@totemish/shell';
+import { Iro } from '@priestine/iro';
 import * as R from 'ramda';
 import { changeVersion } from './utils/change-version';
 import { getAmendMajor } from './utils/get-amend-major';
@@ -35,7 +35,7 @@ const run = async (): Promise<{ currentCommit: string; lastPublishedVersion: str
     currentCommit = await getCurrentCommitWith('git rev-parse HEAD');
   } catch (e) {
     Messenger.error('Could not get current commit')
-      .info(Shell.bold('Error message:'))
+      .info(Iro.bold('Error message:'))
       .write(e);
     process.exit(1);
   }
@@ -47,7 +47,7 @@ const run = async (): Promise<{ currentCommit: string; lastPublishedVersion: str
   }
 
   const getChangesCommand = await Either.fromNullable(latestPublishedTag).fold(
-    () => `git rev-list --all --no-merges --format='${commitFormat}'`,
+    () => `git rev-list HEAD --no-merges --format='${commitFormat}'`,
     getGetChangesCommand
   );
 
@@ -79,7 +79,7 @@ run().then(({ currentCommit, lastPublishedVersion, changes }) => {
     return;
   }
 
-  Messenger.info(`New release version is going to be ${Shell.green(Shell.bold(newVersion))}`);
+  Messenger.info(`New release version is going to be ${Iro.green(Iro.bold(newVersion))}`);
 
   Messenger.info('Building changelog...');
 
@@ -121,7 +121,7 @@ run().then(({ currentCommit, lastPublishedVersion, changes }) => {
         return;
       }
 
-      Messenger.success(`Version ${Shell.bold(Shell.green(newVersion))}${Shell.white(' successfully released! 🙌')}`);
+      Messenger.success(`Version ${Iro.bold(Iro.green(newVersion))}${Iro.white(' successfully released! 🙌')}`);
     }
   );
 });
