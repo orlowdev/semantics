@@ -12,18 +12,29 @@ export const getChangesWith = (cmd: string) =>
   ExecMiddleware.map(Messenger.tapInfo('Getting list of changes...'))
     .map(Either.fromNullable)
     .map((y: EitherInterface<string>) =>
-      y.fold(Messenger.tapError('Could not find any changes since last commit'), (x: string) => {
-        const changes = reverseCommitOrder(JSON.parse(normalizeChanges(x)))
-          .map(normalizeBody)
-          .map(extractCommitTypes)
-          .map(extractBreakingChanges);
+      y.fold(
+        () => {
+          Messenger.error('Could not find any changes since last release');
+          process.exit(1);
+        },
+        (x: string) => {
+          if (x === cmd) {
+            Messenger.error('Could not find any changes since last release');
+            process.exit(1);
+          }
 
-        Messenger.success(`Got ${Shell.bold(Shell.green(changes.length.toString()))} changes:`);
-        changes.map(({ abbrevHash, type, subject }) =>
-          Messenger.success(` > ${Shell.underline(abbrevHash)} ${Shell.white(Shell.bold(type), ': ', subject)}`)
-        );
+          const changes = reverseCommitOrder(JSON.parse(normalizeChanges(x)))
+            .map(normalizeBody)
+            .map(extractCommitTypes)
+            .map(extractBreakingChanges);
 
-        return changes;
-      })
+          Messenger.success(`Got ${Shell.bold(Shell.green(changes.length.toString()))} changes:`);
+          changes.map(({ abbrevHash, type, subject }) =>
+            Messenger.success(`  > ${Shell.underline(abbrevHash)} ${Shell.white(Shell.bold(type), ': ', subject)}`)
+          );
+
+          return changes;
+        }
+      )
     )
     .process(cmd);

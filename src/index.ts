@@ -23,16 +23,33 @@ import { Void } from './utils/void';
 import * as request from 'request';
 import { getPrivateToken } from './utils/get-private-token';
 import { getGitLabURL } from './utils/get-gitlab-url';
+import { commitFormat } from './utils/commit-format';
 
 const run = async (): Promise<{ currentCommit: string; lastPublishedVersion: string; changes: CommitInterface[] }> => {
   appendFixOrFeatFlags();
 
-  const currentCommit: string = await getCurrentCommitWith('git rev-parse HEAD');
-  const latestPublishedTag: string = await getLatestPublishedTagWith(
-    'git describe --tags `git rev-list --tags --max-count=1`'
-  );
+  let currentCommit: string;
+  let latestPublishedTag: string;
 
-  const getChangesCommand = await getGetChangesCommand(latestPublishedTag);
+  try {
+    currentCommit = await getCurrentCommitWith('git rev-parse HEAD');
+  } catch (e) {
+    Messenger.error('Could not get current commit')
+      .info(Shell.bold('Error message:'))
+      .write(e);
+    process.exit(1);
+  }
+
+  try {
+    latestPublishedTag = await getLatestPublishedTagWith('git describe --tags `git rev-list --tags --max-count=1`');
+  } catch (e) {
+    Messenger.warning(`Could not get latest published tag - falling back to initial version`);
+  }
+
+  const getChangesCommand = await Either.fromNullable(latestPublishedTag).fold(
+    () => `git rev-list --all --no-merges --format='${commitFormat}'`,
+    getGetChangesCommand
+  );
 
   const changes = await getChangesWith(getChangesCommand);
 
