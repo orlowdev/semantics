@@ -79,13 +79,13 @@ run().then(({ currentCommit, lastPublishedVersion, changes }) => {
     return;
   }
 
-  Messenger.success(`New release version is going to be ${Shell.green(Shell.bold(newVersion))}`);
+  Messenger.info(`New release version is going to be ${Shell.green(Shell.bold(newVersion))}`);
 
   Messenger.info('Building changelog...');
 
   const changelog: string = `# ${newVersion}`.concat(getChangelog(changes)).concat(getBreakingChanges(changes));
 
-  Messenger.success('Changelog successfully built');
+  Messenger.info('Changelog successfully built');
 
   writeFiles({ currentCommit, lastPublishedVersion, changes, newVersion, changelog });
 

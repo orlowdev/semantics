@@ -15,9 +15,9 @@ export const writeFiles = (data: any): void => {
     .chain((x: any) => Either.try(() => writeFile('.tmp.current_changes.json', JSON.stringify(x.changes, null, 2))))
     .chain((x: any) => Either.try(() => writeFile('.tmp.version_data', x.newVersion)))
     .chain((x: any) => Either.try(() => writeFile('.tmp.changelog.md', x.changelog)))
-    .map(Messenger.tapSuccess('Temporary files successfully created') as any)
+    .map(Messenger.tapInfo('Temporary files successfully created') as any)
     .map(R.tap(Shell.blank) as any)
     .fold(...Void);
 
-  Messenger.success('Temporary files successfully created');
+  Messenger.info('Temporary files successfully created');
 };

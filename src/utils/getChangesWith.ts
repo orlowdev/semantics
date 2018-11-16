@@ -28,9 +28,9 @@ export const getChangesWith = (cmd: string) =>
             .map(extractCommitTypes)
             .map(extractBreakingChanges);
 
-          Messenger.success(`Got ${Shell.bold(Shell.green(changes.length.toString()))} changes:`);
+          Messenger.info(`Got ${Shell.bold(Shell.green(changes.length.toString()))} changes:`);
           changes.map(({ abbrevHash, type, subject }) =>
-            Messenger.success(`  > ${Shell.underline(abbrevHash)} ${Shell.white(Shell.bold(type), ': ', subject)}`)
+            Messenger.info(`  > ${Shell.underline(abbrevHash)} ${Shell.white(Shell.bold(type), ': ', subject)}`)
           );
 
           return changes;

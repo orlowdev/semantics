@@ -10,9 +10,7 @@ export const getLatestPublishedCommitWith = (cmd: string): Promise<string> =>
     .map((y: EitherInterface<string>) =>
       y.fold(
         Messenger.tapError('Could not extract commit of the latest tagged version'),
-        R.tap((x) =>
-          Messenger.success(`Got commit related to the latest tagged version: ${Shell.green(Shell.bold(x))}`)
-        )
+        R.tap((x) => Messenger.info(`Got commit related to the latest tagged version: ${Shell.green(Shell.bold(x))}`))
       )
     )
     .process(cmd);
