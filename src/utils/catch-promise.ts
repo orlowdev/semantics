@@ -1,9 +1,9 @@
-import { Shell } from '@totemish/shell';
+import { Iro } from '@priestine/iro';
 
 /**
  * Catch execPromise errors and put them to console.
  * @param e string
  */
 export const catchError = (e: string): void => {
-  Shell.error(`SEMANTICS ERROR ${e.toString()}`);
+  Iro.error(`SEMANTICS ERROR ${e.toString()}`);
 };

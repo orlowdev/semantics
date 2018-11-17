@@ -1,7 +1,7 @@
 import { CommitTypes } from '../types/commit-types';
 import { ICommitType } from '../interfaces/commit-type.interface';
 import { Messenger } from './Messenger';
-import { Shell } from '@totemish/shell';
+import { Iro } from '@priestine/iro';
 import { getSubjects } from './get-subjects';
 import { CommitInterface } from '../interfaces/commit.interface';
 
@@ -16,7 +16,7 @@ export const getChangelog = (changes: CommitInterface[]): string => {
     }
 
     if (!ct.display) {
-      Messenger.info(`Skipping ${Shell.yellow(Shell.bold(ct.type))} commits as they were explicitly disabled...`);
+      Messenger.info(`Skipping ${Iro.yellow(Iro.bold(ct.type))} commits as they were explicitly disabled...`);
       return substring;
     }
 

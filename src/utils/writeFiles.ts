@@ -1,7 +1,7 @@
 import { writeFileSync } from 'fs';
 import { Messenger } from './Messenger';
 import { Either } from '@priestine/data/src';
-import { Shell } from '@totemish/shell';
+import { Iro } from '@priestine/iro';
 import * as R from 'ramda';
 import { Void } from './void';
 
@@ -16,7 +16,7 @@ export const writeFiles = (data: any): void => {
     .chain((x: any) => Either.try(() => writeFile('.tmp.version_data', x.newVersion)))
     .chain((x: any) => Either.try(() => writeFile('.tmp.changelog.md', x.changelog)))
     .map(Messenger.tapInfo('Temporary files successfully created') as any)
-    .map(R.tap(Shell.blank) as any)
+    .map(R.tap(Iro.breaks) as any)
     .fold(...Void);
 
   Messenger.info('Temporary files successfully created');
