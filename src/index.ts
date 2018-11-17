@@ -47,7 +47,7 @@ const run = async (): Promise<{ currentCommit: string; lastPublishedVersion: str
   }
 
   const getChangesCommand = await Either.fromNullable(latestPublishedTag).fold(
-    () => `git rev-list --all --no-merges --format='${commitFormat}'`,
+    () => `git rev-list HEAD --no-merges --format='${commitFormat}'`,
     getGetChangesCommand
   );
 
