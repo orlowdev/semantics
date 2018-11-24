@@ -8,16 +8,14 @@ import { Void } from './void';
 export const writeFiles = (data: any): void => {
   const writeFile = (path, content) => writeFileSync(path, content, 'utf8');
 
-  Either.of(data)
-    .map(Messenger.tapInfo('Writing to temporary files...'))
-    .chain((x: any) => Either.try(() => writeFile('.tmp.current_tag_data', x.lastPublishedVersion)))
-    .chain((x: any) => Either.try(() => writeFile('.tmp.current_commit_data', x.currentCommit)))
-    .chain((x: any) => Either.try(() => writeFile('.tmp.current_changes.json', JSON.stringify(x.changes, null, 2))))
-    .chain((x: any) => Either.try(() => writeFile('.tmp.version_data', x.newVersion)))
-    .chain((x: any) => Either.try(() => writeFile('.tmp.changelog.md', x.changelog)))
-    .map(Messenger.tapInfo('Temporary files successfully created') as any)
-    .map(R.tap(Iro.breaks) as any)
-    .fold(...Void);
+  Messenger.info('Writing to temporary files...');
 
-  Messenger.info('Temporary files successfully created');
+  Either.try(() => writeFile('.tmp.current_tag_data', data.lastPublishedVersion));
+  Either.try(() => writeFile('.tmp.current_commit_data', data.currentCommit));
+  Either.try(() => writeFile('.tmp.current_changes.json', JSON.stringify(data.changes, null, 2)));
+  Either.try(() => writeFile('.tmp.version_data', data.newVersion));
+  Either.try(() => writeFile('.tmp.changelog.md', data.changelog)).fold(
+    () => Messenger.error('Could not write temporary files'),
+    () => Messenger.info('Temporary files successfully created')
+  );
 };
