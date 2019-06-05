@@ -782,7 +782,6 @@ Pipeline.from([
   writeTemporaryFilesIfRequired,
   publishTagIfRequired,
   // TODO: Remove ambiguity of using the same key for values of different types (no-as)
-  // TODO: Refer to supported types from config array instead of hardcoded object
   // TODO: Fix color mismatching before and after applying different color inside a string
 ])
   .process({
