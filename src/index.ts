@@ -10,88 +10,11 @@ import { transformCase } from './utils/case-transformer.util';
 import ProcessEnv = NodeJS.ProcessEnv;
 import { Log } from './utils/messenger.util';
 
-export interface ICommitType {
+export interface CommitTypeInterface {
   title: string;
-  description: string;
-  display: boolean;
-  type?: string;
+  type: string;
+  bumps?: 'patch' | 'minor' | 'major';
 }
-
-/**
- * Commit type descriptor based on Conventional Changelog.
- * @class CommitTypes
- * @abstract
- */
-export const CommitTypes: ICommitType[] = [
-  {
-    type: 'feat',
-    description: 'A new feature',
-    title: 'Features',
-    display: true,
-  },
-  {
-    type: 'fix',
-    description: 'A bug fix',
-    title: 'Bug Fixes',
-    display: true,
-  },
-  {
-    type: 'docs',
-    description: 'Documentation only changes',
-    title: 'Documentation',
-    display: false,
-  },
-  {
-    type: 'style',
-    description:
-      'Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
-    title: 'Styles',
-    display: false,
-  },
-  {
-    type: 'refactor',
-    description: 'A code change that neither fixes a bug nor adds a feature',
-    title: 'Code Refactoring',
-    display: false,
-  },
-  {
-    type: 'perf',
-    description: 'A code change that improves performance',
-    title: 'Performance Improvements',
-    display: false,
-  },
-  {
-    type: 'test',
-    description: 'Adding missing tests or correcting existing tests',
-    title: 'Tests',
-    display: false,
-  },
-  {
-    type: 'build',
-    description: 'Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)',
-    title: 'Builds',
-    display: false,
-  },
-  {
-    type: 'ci',
-    description:
-      'Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)',
-    title: 'Continuous Integrations',
-    display: false,
-  },
-  {
-    type: 'chore',
-    description: `Other changes that don't modify src or test files`,
-    title: 'Chores',
-    display: false,
-  },
-  {
-    type: 'revert',
-    description: 'Reverts a previous commit',
-    title: 'Reverts',
-    display: false,
-  },
-];
 
 export const getBreakingChanges = (changes: CommitInterface[]): string => {
   let substring: string = '';
@@ -128,52 +51,62 @@ export const getSubjects = (xs: CommitInterface[]) => (type: string): string[] =
         }`
     );
 
-export const getChangelog = (changes: CommitInterface[]): string => {
+export const getChangelog = (
+  changes: CommitInterface[],
+  types: CommitTypeInterface[],
+  omittedTypes: string[]
+): string => {
   const getSubjectedCommits = getSubjects(changes);
 
-  return CommitTypes.map((ct: ICommitType) => {
-    let substring: string = '';
+  omittedTypes.forEach((ct: string) => {
+    const commitsOfThatType = changes.filter((change) => change.type === ct);
 
-    if (process.argv.includes(`--no-${ct.type}`)) {
-      ct.display = false;
-    }
+    const mentionedTwiceIndex = types.findIndex((t) => t.type === ct);
 
-    if (process.argv.includes(`--${ct.type}`)) {
-      ct.display = true;
-    }
-
-    const commitsOfThatType = changes.filter((change) => change.type === ct.type);
-
-    if (!ct.display && commitsOfThatType.length) {
-      Log.info(
-        `Skipping ${Iro.cyan(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${
-          commitsOfThatType.length === 1 ? 'commit' : 'commits'
-        }`
-      );
-      return substring;
+    if (~mentionedTwiceIndex) {
+      Log.warning(`Commit type ${Iro.bold(Iro.yellow(ct))} was mentioned in both whitelist and blacklist.`);
+      Log.warning(`Removing ${Iro.bold(Iro.yellow(ct))} from whitelist as blacklist takes precedence.`);
+      Log.warning('Note that given commit type will not bump the version as it is blacklisted.');
+      types.splice(mentionedTwiceIndex, 1);
     }
 
     if (commitsOfThatType.length) {
-      Log.success(
-        `Adding ${Iro.green(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${
+      Log.info(
+        `Skipping ${Iro.cyan(Iro.bold(`${commitsOfThatType.length} ${ct}`))} ${
           commitsOfThatType.length === 1 ? 'commit' : 'commits'
-        } to the changelog`
+        }`
       );
     }
+  });
 
-    const subjects = getSubjectedCommits(ct.type);
+  return types
+    .map((ct: CommitTypeInterface) => {
+      let substring: string = '';
 
-    if (subjects && subjects.length) {
-      substring += `\n\n## ${ct.title}\n`;
+      const commitsOfThatType = changes.filter((change) => change.type === ct.type);
 
-      substring += '\n';
-      substring += getSubjectedCommits(ct.type)
-        .map((x: string) => `* ${x}`)
-        .join('\n');
-    }
+      if (commitsOfThatType.length) {
+        Log.success(
+          `Adding ${Iro.green(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${
+            commitsOfThatType.length === 1 ? 'commit' : 'commits'
+          } to the changelog`
+        );
+      }
 
-    return substring;
-  }).join('');
+      const subjects = getSubjectedCommits(ct.type);
+
+      if (subjects && subjects.length) {
+        substring += `\n\n## ${ct.title}\n`;
+
+        substring += '\n';
+        substring += getSubjectedCommits(ct.type)
+          .map((x: string) => `* ${x}`)
+          .join('\n');
+      }
+
+      return substring;
+    })
+    .join('');
 };
 
 /**
@@ -293,9 +226,9 @@ export interface Config {
   displayAuthor: boolean;
 
   /**
-   * @default [fix, feat] and BREAKING CHANGE ones
+   * @default includes fix and feat types
    */
-  commitTypesIncludedInTagMessage: string[];
+  commitTypesIncludedInTagMessage: CommitTypeInterface[];
 
   /**
    * @default []
@@ -333,7 +266,7 @@ export interface Config {
   preciseVersionMatching: boolean;
 }
 
-export function setUpDefaultConfig() {
+export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
   Log.info('Setting up configuration...');
 
   return {
@@ -342,8 +275,18 @@ export function setUpDefaultConfig() {
     createTemporaryFiles: false,
     oldestCommitsFirst: true,
     displayAuthor: false,
-    commitTypesIncludedInTagMessage: ['fix', 'feat'],
-    commitTypesExcludedFromTagMessage: [],
+    commitTypesIncludedInTagMessage: [
+      {
+        type: 'fix',
+        title: 'Bug fixes',
+        bumps: 'patch',
+      },
+      {
+        type: 'feat',
+        title: 'New features',
+        bumps: 'minor',
+      },
+    ],
     tagMessage: true,
     prefix: '',
     postfix: '',
@@ -593,14 +536,21 @@ export function transformCommitsStringToCommitObjects({ intermediate }: Semantic
       .map(normalizeBody)
       .map(extractCommitTypes)
       .map(extractBreakingChanges)
+      // TODO: Extract
       .map((commit: CommitInterface) => {
-        if (commit.type === 'fix') {
+        const whitelistedType = intermediate.commitTypesIncludedInTagMessage.find((c) => c.type === commit.type);
+
+        if (!whitelistedType) {
+          return commit;
+        }
+
+        if (whitelistedType.bumps === 'patch') {
           commit.hasPatchUpdate = true;
-        } else if (commit.type === 'feat') {
+        } else if (whitelistedType.bumps === 'minor') {
           commit.hasMinorUpdate = true;
         }
 
-        if (commit.breakingChanges.length) {
+        if (commit.breakingChanges.length || whitelistedType.bumps === 'major') {
           commit.hasMajorUpdate = true;
         }
 
@@ -685,7 +635,13 @@ export function buildTagMessageIfRequired({ intermediate }: SemanticsCtx) {
     Log.info('Building changelog...');
 
     intermediate.tagMessageContents = `# ${intermediate.newVersion}`
-      .concat(getChangelog(intermediate.commitsSinceLatestVersion as CommitInterface[]))
+      .concat(
+        getChangelog(
+          intermediate.commitsSinceLatestVersion as CommitInterface[],
+          intermediate.commitTypesIncludedInTagMessage,
+          intermediate.commitTypesExcludedFromTagMessage
+        )
+      )
       .concat(getBreakingChanges(intermediate.commitsSinceLatestVersion as CommitInterface[]));
   }
 
@@ -830,6 +786,7 @@ Pipeline.from([
   // TODO: Refer to supported types from config array instead of hardcoded object
   // TODO: Display "skipping" message only if there are commits of the type and the type is blacklisted
   // TODO: Display "Adding" message only if there are commits of the type and the type is whitelisted
+  // TODO: Fix color mismatching before and after applying different color inside a string
 ])
   .process({
     intermediate: {} as SemanticsIntermediate,
