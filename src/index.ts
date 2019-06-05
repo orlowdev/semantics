@@ -783,8 +783,6 @@ Pipeline.from([
   publishTagIfRequired,
   // TODO: Remove ambiguity of using the same key for values of different types (no-as)
   // TODO: Refer to supported types from config array instead of hardcoded object
-  // TODO: Display "skipping" message only if there are commits of the type and the type is blacklisted
-  // TODO: Display "Adding" message only if there are commits of the type and the type is whitelisted
   // TODO: Fix color mismatching before and after applying different color inside a string
 ])
   .process({
