@@ -277,14 +277,14 @@ export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
     displayAuthor: false,
     commitTypesIncludedInTagMessage: [
       {
-        type: 'fix',
-        title: 'Bug fixes',
-        bumps: 'patch',
-      },
-      {
         type: 'feat',
         title: 'New features',
         bumps: 'minor',
+      },
+      {
+        type: 'fix',
+        title: 'Bug fixes',
+        bumps: 'patch',
       },
     ],
     commitTypesExcludedFromTagMessage: [],
