@@ -60,7 +60,7 @@ versioning:
   stage: versioning
   image: priestine/semantics:latest
   script:
-    - priestine-semantics --private-token=${SEMANTICS_TOKEN} --fix-or-feat
+    - priestine-semantics --private-token=${SEMANTICS_TOKEN}
   only:
     - master
 
@@ -71,7 +71,7 @@ deploy:npm:
   only:
     - tags
 
-deploy:docker:
+publish:docker:
   stage: docker_deploy
   image: docker:stable
   services:
