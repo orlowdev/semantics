@@ -62,7 +62,7 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
-    "typedoc": "^0.13.0",
+    "typedoc": "^0.14.2",
     "typescript": "^3.1.1",
     "yarn": "^1.10.1"
   },
@@ -88,7 +88,7 @@
     ]
   },
   "dependencies": {
-    "@priestine/data": "^2.3.0",
+    "@priestine/data": "^3.1.1",
     "@priestine/iro": "^1.0.2",
     "ramda": "^0.25.0",
     "request": "^2.88.0"
