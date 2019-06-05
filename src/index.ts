@@ -8,6 +8,7 @@ import { Iro } from '@priestine/iro';
 import * as R from 'ramda';
 import { transformCase } from './utils/case-transformer.util';
 import ProcessEnv = NodeJS.ProcessEnv;
+import { Log } from './utils/messenger.util';
 
 export interface ICommitType {
   title: string;
@@ -92,23 +93,6 @@ export const CommitTypes: ICommitType[] = [
   },
 ];
 
-export abstract class Messenger {
-  public static info(...message): typeof Iro {
-    return Iro.log(Iro.cyan(Iro.inverse(' SEMANTICS INFO    '), '  '), Iro.white(...message));
-  }
-
-  public static success(...message): typeof Iro {
-    return Iro.log(Iro.green(Iro.inverse(' SEMANTICS SUCCESS '), '  '), Iro.white(...message));
-  }
-
-  public static warning(...message): typeof Iro {
-    return Iro.log(Iro.yellow(Iro.inverse(' SEMANTICS WARNING '), '  '), Iro.white(...message));
-  }
-  public static error(...message): typeof Iro {
-    return Iro.log(Iro.red(Iro.inverse(' SEMANTICS ERROR   '), '  '), Iro.white(...message));
-  }
-}
-
 export const getBreakingChanges = (changes: CommitInterface[]): string => {
   let substring: string = '';
 
@@ -119,7 +103,7 @@ export const getBreakingChanges = (changes: CommitInterface[]): string => {
   );
 
   if (bc && bc.length) {
-    Messenger.success(`Adding ${Iro.green(Iro.bold(`${bc.length} breaking change`))} entries to the changelog`);
+    Log.success(`Adding ${Iro.green(Iro.bold(`${bc.length} breaking change`))} entries to the changelog`);
 
     substring += `\n\n## BREAKING CHANGES\n`;
 
@@ -161,7 +145,7 @@ export const getChangelog = (changes: CommitInterface[]): string => {
     const commitsOfThatType = changes.filter((change) => change.type === ct.type);
 
     if (!ct.display && commitsOfThatType.length) {
-      Messenger.info(
+      Log.info(
         `Skipping ${Iro.cyan(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${
           commitsOfThatType.length === 1 ? 'commit' : 'commits'
         }`
@@ -170,7 +154,7 @@ export const getChangelog = (changes: CommitInterface[]): string => {
     }
 
     if (commitsOfThatType.length) {
-      Messenger.success(
+      Log.success(
         `Adding ${Iro.green(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${
           commitsOfThatType.length === 1 ? 'commit' : 'commits'
         } to the changelog`
@@ -350,7 +334,7 @@ export interface Config {
 }
 
 export function setUpDefaultConfig() {
-  Messenger.info('Setting up configuration...');
+  Log.info('Setting up configuration...');
 
   return {
     repository: 'github',
@@ -488,7 +472,7 @@ export const execPromise = (cmd: string): Promise<string> => {
 export function getCurrentCommitHash({ intermediate }: SemanticsCtx) {
   return execPromise('git rev-parse HEAD')
     .then((currentCommitHash) => {
-      Messenger.success(`Current commit hash: ${Iro.green(currentCommitHash)}`);
+      Log.success(`Current commit hash: ${Iro.green(currentCommitHash)}`);
 
       return {
         ...intermediate,
@@ -496,7 +480,7 @@ export function getCurrentCommitHash({ intermediate }: SemanticsCtx) {
       };
     })
     .catch((e) => {
-      Messenger.error(e.replace('\n', '->'));
+      Log.error(e.replace('\n', '->'));
       process.exit(1);
     });
 }
@@ -506,7 +490,7 @@ export function getLatestVersionTag({ intermediate }: SemanticsCtx) {
 
   return execPromise(`git describe --match "${matcher}" --abbrev=0 HEAD --tags`)
     .then((latestVersionTag) => {
-      Messenger.success(`Latest version tag: ${Iro.green(latestVersionTag)}`);
+      Log.success(`Latest version tag: ${Iro.green(latestVersionTag)}`);
 
       return {
         ...intermediate,
@@ -515,16 +499,16 @@ export function getLatestVersionTag({ intermediate }: SemanticsCtx) {
     })
     .catch((e) => {
       if (!/\nfatal: No names found, cannot describe anything/.test(e)) {
-        Messenger.error(e.replace('\n', '->'));
+        Log.error(e.replace('\n', '->'));
         process.exit(1);
       }
 
-      Messenger.warning(
+      Log.warning(
         `There are no previous tags matching the "${Iro.yellow(
           `${intermediate.prefix}*${intermediate.postfix}`
         )}" pattern.`
       );
-      Messenger.warning(`Initial commit hash will be considered the latest version.`);
+      Log.warning(`Initial commit hash will be considered the latest version.`);
 
       return {
         ...intermediate,
@@ -553,7 +537,7 @@ export function getLatestVersionCommitHash({ intermediate }: SemanticsCtx) {
     ? execPromise(`git show-ref ${intermediate.latestVersionTag} -s`)
     : execPromise('git rev-list HEAD | tail -n 1')
   ).then((latestVersionCommitHash) => {
-    Messenger.success(`Commit hash of latest version: ${Iro.green(latestVersionCommitHash)}`);
+    Log.success(`Commit hash of latest version: ${Iro.green(latestVersionCommitHash)}`);
 
     return {
       ...intermediate,
@@ -573,7 +557,7 @@ export function getCommitsSinceLatestVersion({ intermediate }: SemanticsCtx) {
       commitsSinceLatestVersion,
     }))
     .catch((e) => {
-      Messenger.error(e.replace('\n', '->'));
+      Log.error(e.replace('\n', '->'));
       process.exit(1);
     });
 }
@@ -602,7 +586,7 @@ export function formatCommitsStringToValidJSON({ intermediate }: SemanticsCtx) {
 
 export function transformCommitsStringToCommitObjects({ intermediate }: SemanticsCtx) {
   const result = JSON.parse(intermediate.commitsSinceLatestVersion as any);
-  Messenger.success(`Commits found since latest version: ${Iro.green(result.length)}`);
+  Log.success(`Commits found since latest version: ${Iro.green(result.length)}`);
   return {
     ...intermediate,
     commitsSinceLatestVersion: result
@@ -627,7 +611,7 @@ export function transformCommitsStringToCommitObjects({ intermediate }: Semantic
 
 export function reverseCommitsArrayIfRequired({ intermediate }: SemanticsCtx) {
   if (intermediate.oldestCommitsFirst) {
-    Messenger.info('Commits will be put oldest to newest.');
+    Log.info('Commits will be put oldest to newest.');
   }
 
   return {
@@ -687,18 +671,18 @@ export function addPrefixAndPostfixToNewVersion({ intermediate }: SemanticsCtx) 
 
 export function exitIfVersionIsNotUpdated({ intermediate }: SemanticsCtx) {
   if (intermediate.latestVersionTag === intermediate.newVersion) {
-    Messenger.warning('Evaluated changes do not require version bumping. Terminating.');
+    Log.warning('Evaluated changes do not require version bumping. Terminating.');
     return process.exit(0);
   }
 
-  Messenger.success(`New version candidate: ${Iro.green(`${intermediate.newVersion}`)}`);
+  Log.success(`New version candidate: ${Iro.green(`${intermediate.newVersion}`)}`);
 
   return intermediate;
 }
 
 export function buildTagMessageIfRequired({ intermediate }: SemanticsCtx) {
   if (intermediate.tagMessage) {
-    Messenger.info('Building changelog...');
+    Log.info('Building changelog...');
 
     intermediate.tagMessageContents = `# ${intermediate.newVersion}`
       .concat(getChangelog(intermediate.commitsSinceLatestVersion as CommitInterface[]))
@@ -710,7 +694,7 @@ export function buildTagMessageIfRequired({ intermediate }: SemanticsCtx) {
 
 export function exitIfThereAreNoNewCommits({ intermediate }: SemanticsCtx) {
   if (!intermediate.commitsSinceLatestVersion.length) {
-    Messenger.warning('There are no changes since last release. Terminating.');
+    Log.warning('There are no changes since last release. Terminating.');
     process.exit(0);
   }
 
@@ -724,7 +708,7 @@ export function writeTemporaryFilesIfRequired({ intermediate }: SemanticsCtx) {
 
   const writeFile = (path, content) => writeFileSync(path, content, 'utf8');
 
-  Messenger.info('Writing to temporary files...');
+  Log.info('Writing to temporary files...');
 
   try {
     writeFile('.tmp.current_tag_data', intermediate.latestVersionTag || '');
@@ -733,9 +717,9 @@ export function writeTemporaryFilesIfRequired({ intermediate }: SemanticsCtx) {
     writeFile('.tmp.version_data', intermediate.newVersion);
     writeFile('.tmp.changelog.md', intermediate.tagMessageContents);
 
-    Messenger.success('Temporary files successfully created');
+    Log.success('Temporary files successfully created');
   } catch (e) {
-    Messenger.error(`Could not write temporary files: ${e.message}`);
+    Log.error(`Could not write temporary files: ${e.message}`);
   }
 
   return intermediate;
@@ -743,18 +727,18 @@ export function writeTemporaryFilesIfRequired({ intermediate }: SemanticsCtx) {
 
 export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
   if (!intermediate.publishTag) {
-    Messenger.info('Skipping publishing newly created tag...');
+    Log.info('Skipping publishing newly created tag...');
 
     return intermediate;
   }
 
   if (!intermediate.privateToken) {
-    Messenger.error('Private token not specified');
+    Log.error('Private token not specified');
     process.exit(1);
   }
 
   if (!intermediate.projectPath) {
-    Messenger.error('Project path not provided');
+    Log.error('Project path not provided');
     process.exit(1);
   }
 
@@ -775,16 +759,16 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
       },
       (e: Error, r, b) => {
         if (e) {
-          Messenger.error(e.message);
+          Log.error(e.message);
           return;
         }
 
         if (b.error) {
-          Messenger.error(`Server responded with error: ${Iro.red(b.error)}`);
+          Log.error(`Server responded with error: ${Iro.red(b.error)}`);
           return;
         }
 
-        Messenger.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`);
+        Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`);
       }
     );
   } else {
@@ -804,18 +788,18 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
       },
       (e: Error, r, b) => {
         if (e) {
-          Messenger.error(e.message);
+          Log.error(e.message);
           return;
         }
 
         console.log(b);
 
         if (b.error) {
-          Messenger.error(`Server responded with error: ${Iro.red(b.error)}`);
+          Log.error(`Server responded with error: ${Iro.red(b.error)}`);
           return;
         }
 
-        Messenger.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`);
+        Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`);
       }
     );
   }
@@ -851,6 +835,6 @@ Pipeline.from([
     intermediate: {} as SemanticsIntermediate,
   })
   .catch((e) => {
-    Messenger.error(e.replace('\n', '->'));
+    Log.error(e.replace('\n', '->'));
     process.exit(1);
   });
