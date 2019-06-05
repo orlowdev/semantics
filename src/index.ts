@@ -162,7 +162,7 @@ export const getChangelog = (changes: CommitInterface[]): string => {
 
     if (!ct.display && commitsOfThatType.length) {
       Messenger.info(
-        `Skipping ${Iro.blue(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${
+        `Skipping ${Iro.cyan(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${
           commitsOfThatType.length === 1 ? 'commit' : 'commits'
         }`
       );
