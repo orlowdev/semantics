@@ -4,10 +4,10 @@ import { MiddlewareContextInterface, Pipeline } from '@priestine/data';
 import { exec, ExecException } from 'child_process';
 import * as request from 'request';
 import { writeFileSync } from 'fs';
-import ProcessEnv = NodeJS.ProcessEnv;
 import { Iro } from '@priestine/iro';
 import * as R from 'ramda';
 import { transformCase } from './utils/case-transformer.util';
+import ProcessEnv = NodeJS.ProcessEnv;
 
 export interface ICommitType {
   title: string;
@@ -15,7 +15,6 @@ export interface ICommitType {
   display: boolean;
   type?: string;
 }
-
 
 /**
  * Commit type descriptor based on Conventional Changelog.
@@ -93,7 +92,6 @@ export const CommitTypes: ICommitType[] = [
   },
 ];
 
-
 export abstract class Messenger {
   public static info(...message): typeof Iro {
     return Iro.log(Iro.cyan(Iro.inverse(' SEMANTICS INFO    '), '  '), Iro.white(...message));
@@ -116,16 +114,12 @@ export abstract class Messenger {
   public static tapError = (...message) => R.tap(() => Messenger.error(...message));
 }
 
-
-
 export const getBreakingChanges = (changes: CommitInterface[]): string => {
   let substring: string = '';
 
   const bc = R.flatten(
     changes.map((x: CommitInterface) =>
-      x.breakingChanges.map(
-        (y: string) => `* ${x.scope ? x.scope : ' '}${y} ${x.abbrevHash}`
-      )
+      x.breakingChanges.map((y: string) => `* ${x.scope ? x.scope : ' '}${y} ${x.abbrevHash}`)
     )
   );
 
@@ -140,7 +134,6 @@ export const getBreakingChanges = (changes: CommitInterface[]): string => {
   return substring;
 };
 
-
 /**
  * Extract commit subjects and transform them into readable form.
  * @param xs CommitInterface[]
@@ -151,9 +144,10 @@ export const getSubjects = (xs: CommitInterface[]) => (type: string): string[] =
     .filter((x: CommitInterface) => x.type === type)
     .map(
       (x: CommitInterface) =>
-        `${x.scope ? `${x.scope} ` : ''}${x.description} ${x.abbrevHash}${x.body.length ? `\n\n> ${x.body.join('<br/>\n> ')}\n` : ''}`
+        `${x.scope ? `${x.scope} ` : ''}${x.description} ${x.abbrevHash}${
+          x.body.length ? `\n\n> ${x.body.join('<br/>\n> ')}\n` : ''
+        }`
     );
-
 
 export const getChangelog = (changes: CommitInterface[]): string => {
   const getSubjectedCommits = getSubjects(changes);
@@ -172,12 +166,20 @@ export const getChangelog = (changes: CommitInterface[]): string => {
     const commitsOfThatType = changes.filter((change) => change.type === ct.type);
 
     if (!ct.display && commitsOfThatType.length) {
-      Messenger.info(`Skipping ${Iro.blue(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${commitsOfThatType.length === 1 ? 'commit' : 'commits'}`);
+      Messenger.info(
+        `Skipping ${Iro.blue(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${
+          commitsOfThatType.length === 1 ? 'commit' : 'commits'
+        }`
+      );
       return substring;
     }
 
     if (commitsOfThatType.length) {
-      Messenger.success(`Adding ${Iro.green(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${commitsOfThatType.length === 1 ? 'commit' : 'commits'} to the changelog`);
+      Messenger.success(
+        `Adding ${Iro.green(Iro.bold(`${commitsOfThatType.length} ${ct.type}`))} ${
+          commitsOfThatType.length === 1 ? 'commit' : 'commits'
+        } to the changelog`
+      );
     }
 
     const subjects = getSubjectedCommits(ct.type);
@@ -195,14 +197,12 @@ export const getChangelog = (changes: CommitInterface[]): string => {
   }).join('');
 };
 
-
 /**
  * Parse integer from given string containing a number. If the string has no number, 0 will be returned.
  * @param x String containing a number.
  * @returns number
  */
 export const parseInteger = (x: string): number => (x ? (/\d+/.test(x) ? Number.parseInt(x, 10) : 0) : 0);
-
 
 /**
  * Get tag string and return a tuple with three numbers.
@@ -223,7 +223,6 @@ export const getCurrentVersion = (currentTag: string): [number, number, number] 
   return [parseInteger(currentVersion[1]), parseInteger(currentVersion[2]), parseInteger(currentVersion[3])];
 };
 
-
 /**
  * Extract breaking changes from commit body.
  * @param commit CommitInterface
@@ -238,7 +237,6 @@ export const extractBreakingChanges = (commit: CommitInterface): CommitInterface
 
   return commit;
 };
-
 
 /**
  * Extract type from the commit subject and amend subject itself for later use.
@@ -268,7 +266,6 @@ export const extractCommitTypes = (commit: CommitInterface): CommitInterface => 
 
   return commit;
 };
-
 
 /**
  * Transform non-normalized commit body string into array of strings.
@@ -446,7 +443,9 @@ export function updateConfigFromArgv(argv: string[]) {
 export function updateConfigFromEnv(env: ProcessEnv) {
   return ({ intermediate }: SemanticsCtx) => {
     Object.keys(intermediate).forEach((key) => {
-      const envKey = transformCase(key).from.camel.to.snake.toString().toUpperCase();
+      const envKey = transformCase(key)
+        .from.camel.to.snake.toString()
+        .toUpperCase();
       const getFromEnv = fromEnv(env);
 
       if (typeof intermediate[key] === 'number') {
@@ -556,8 +555,8 @@ export const commitFormat: string =
 
 export function getLatestVersionCommitHash({ intermediate }: SemanticsCtx) {
   return (intermediate.latestVersionTag
-      ? execPromise(`git show-ref ${intermediate.latestVersionTag} -s`)
-      : execPromise('git rev-list HEAD | tail -n 1')
+    ? execPromise(`git show-ref ${intermediate.latestVersionTag} -s`)
+    : execPromise('git rev-list HEAD | tail -n 1')
   ).then((latestVersionCommitHash) => {
     Messenger.success(`Commit hash of latest version: ${Iro.green(latestVersionCommitHash)}`);
 
@@ -572,7 +571,7 @@ export function getCommitsSinceLatestVersion({ intermediate }: SemanticsCtx) {
   return execPromise(
     `git rev-list ${intermediate.latestVersionCommitHash}..${
       intermediate.currentCommitHash
-      } --no-merges --format='${commitFormat}'`
+    } --no-merges --format='${commitFormat}'`
   )
     .then((commitsSinceLatestVersion) => ({
       ...intermediate,
