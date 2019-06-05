@@ -299,15 +299,13 @@ export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
   };
 }
 
-export interface AuthorInterface {
-  name: string;
-  email: string;
-}
-
 export interface CommitInterface {
   hash: string;
   abbrevHash: string;
-  author: AuthorInterface;
+  author: {
+    name: string;
+    email: string;
+  };
   description: string;
   body: string[];
   footer: string[];
