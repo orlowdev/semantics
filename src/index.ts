@@ -47,7 +47,7 @@ export const getSubjects = (xs: CommitInterface[]) => (type: string): string[] =
     .map(
       (x: CommitInterface) =>
         `${x.scope ? `${x.scope} ` : ''}${x.description} ${x.abbrevHash}${
-          x.body.length ? `\n\n> ${x.body.join('<br/>\n> ')}\n` : ''
+          x.body.length ? `\n\n  * ${x.body.join('<br/>\n  * ')}\n` : ''
         }`
     );
 
