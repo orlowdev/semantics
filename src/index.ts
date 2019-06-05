@@ -287,6 +287,7 @@ export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
         bumps: 'minor',
       },
     ],
+    commitTypesExcludedFromTagMessage: [],
     tagMessage: true,
     prefix: '',
     postfix: '',
