@@ -225,3 +225,4 @@ docs
 .vscode
 .idea
 .tmp.*
+!jest.config.js
