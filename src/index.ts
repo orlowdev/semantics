@@ -8,7 +8,7 @@ import { Iro } from '@priestine/iro';
 import * as R from 'ramda';
 import { transformCase } from './utils/case-transformer.util';
 import ProcessEnv = NodeJS.ProcessEnv;
-import { Log } from './utils/messenger.util';
+import { Log } from './utils/log.util';
 
 export interface CommitTypeInterface {
   title: string;
