@@ -2,7 +2,6 @@
 
 import { Pipeline } from '@priestine/data';
 import * as request from 'request';
-import { writeFileSync } from 'fs';
 import { Iro } from '@priestine/iro';
 import * as R from 'ramda';
 import { Log } from './utils/log.util';
@@ -17,6 +16,7 @@ import { setUpDefaultConfig } from './middleware/set-up-default-config.middlewar
 import { bumpMajorVersion, bumpMinorVersion, bumpPatchVersion } from './middleware/bump-version.middleware';
 import { reverseCommitsArrayIfRequired } from './middleware/reverse-commits-array-if-required.middleware';
 import { transformCommitsStringToObject } from './middleware/transform-commits-string-to-object.middleware';
+import { writeTemporaryFilesIfRequired } from './middleware/write-temporary-files-if-required.middleware';
 
 export const getBreakingChanges = (changes: CommitInterface[]): string => {
   let substring: string = '';
@@ -336,30 +336,6 @@ export function exitIfThereAreNoNewCommits({ intermediate }: SemanticsCtx) {
   if (!intermediate.commitsSinceLatestVersion.length) {
     Log.warning('There are no changes since last release. Terminating.');
     process.exit(0);
-  }
-
-  return intermediate;
-}
-
-export function writeTemporaryFilesIfRequired({ intermediate }: SemanticsCtx) {
-  if (!intermediate.writeTemporaryFiles) {
-    return intermediate;
-  }
-
-  const writeFile = (path, content) => writeFileSync(path, content, 'utf8');
-
-  Log.info('Writing to temporary files...');
-
-  try {
-    writeFile('.tmp.current_tag_data', intermediate.latestVersionTag || '');
-    writeFile('.tmp.current_commit_data', intermediate.currentCommitHash);
-    writeFile('.tmp.current_changes.json', JSON.stringify(intermediate.commitsSinceLatestVersion, null, 2));
-    writeFile('.tmp.version_data', intermediate.newVersion);
-    writeFile('.tmp.changelog.md', intermediate.tagMessageContents);
-
-    Log.success('Temporary files successfully created');
-  } catch (e) {
-    Log.error(`Could not write temporary files: ${e.message}`);
   }
 
   return intermediate;
