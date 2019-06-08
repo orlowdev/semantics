@@ -1,4 +1,4 @@
-import { fromEnv } from './from-env.util';
+import { fromEnv } from '../src/utils/from-env.util';
 
 describe('fromEnv', () => {
   const getFromEnv = fromEnv({
