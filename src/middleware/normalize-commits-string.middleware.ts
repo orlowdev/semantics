@@ -1,6 +1,6 @@
 import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
 
-export function transformCommitsStringToObject({ intermediate }: SemanticsCtx) {
+export function normalizeCommitsString({ intermediate }: SemanticsCtx) {
   return {
     ...intermediate,
     commitsSinceLatestVersion: `[ ${(intermediate.commitsSinceLatestVersion as string)
