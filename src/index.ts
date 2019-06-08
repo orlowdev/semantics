@@ -9,6 +9,7 @@ import * as R from 'ramda';
 import { transformCase } from './utils/case-transformer.util';
 import ProcessEnv = NodeJS.ProcessEnv;
 import { Log } from './utils/log.util';
+import { getVersionTuple } from './middleware/get-version-tuple';
 
 export interface CommitTypeInterface {
   title: string;
@@ -107,32 +108,6 @@ export const getChangelog = (
       return substring;
     })
     .join('');
-};
-
-/**
- * Parse integer from given string containing a number. If the string has no number, 0 will be returned.
- * @param x String containing a number.
- * @returns number
- */
-export const parseInteger = (x: string): number => (x ? (/\d+/.test(x) ? Number.parseInt(x, 10) : 0) : 0);
-
-/**
- * Get tag string and return a tuple with three numbers.
- * @param currentTag String representing current git tag
- * @returns [number, number, number]
- */
-export const getCurrentVersion = (currentTag: string): [number, number, number] => {
-  if (!currentTag) {
-    return [0, 0, 0];
-  }
-
-  const currentVersion = currentTag.match(/(\d+).(\d+).(\d+)/);
-
-  if (!currentVersion || !currentVersion[1]) {
-    return [0, 0, 0];
-  }
-
-  return [parseInteger(currentVersion[1]), parseInteger(currentVersion[2]), parseInteger(currentVersion[3])];
 };
 
 /**
@@ -571,12 +546,6 @@ export function reverseCommitsArrayIfRequired({ intermediate }: SemanticsCtx) {
   };
 }
 
-export function getVersionTuple({ intermediate }: SemanticsCtx) {
-  return {
-    ...intermediate,
-    versionTuple: getCurrentVersion(intermediate.latestVersionTag),
-  };
-}
 
 export function bumpPatchVersion({ intermediate }: SemanticsCtx) {
   const currentVersionTuple = intermediate.versionTuple;
