@@ -6,7 +6,7 @@ import { writeFileSync } from 'fs';
 import { Iro } from '@priestine/iro';
 import * as R from 'ramda';
 import { Log } from './utils/log.util';
-import { getVersionTuple } from './middleware/get-version-tuple';
+import { getVersionTuple } from './middleware/get-version-tuple.middleware';
 import { SemanticsCtx, SemanticsIntermediate } from './interfaces/semantics-intermediate.interface';
 import { CommitInterface } from './interfaces/commit.interface';
 import { CommitTypeInterface } from './interfaces/commit-type.interface';
