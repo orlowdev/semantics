@@ -1,4 +1,4 @@
-import { SemanticsCtx } from '../index';
+import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
 
 export function getVersionTuple({ intermediate }: SemanticsCtx) {
   if (!intermediate.latestVersionTag) {

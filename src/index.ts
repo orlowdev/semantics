@@ -1,21 +1,18 @@
 #!/usr/bin/env node
 
-import { MiddlewareContextInterface, Pipeline } from '@priestine/data';
+import { Pipeline } from '@priestine/data';
 import { exec, ExecException } from 'child_process';
 import * as request from 'request';
 import { writeFileSync } from 'fs';
 import { Iro } from '@priestine/iro';
 import * as R from 'ramda';
 import { transformCase } from './utils/case-transformer.util';
-import ProcessEnv = NodeJS.ProcessEnv;
 import { Log } from './utils/log.util';
 import { getVersionTuple } from './middleware/get-version-tuple';
-
-export interface CommitTypeInterface {
-  title: string;
-  type: string;
-  bumps?: 'patch' | 'minor' | 'major';
-}
+import { SemanticsCtx, SemanticsIntermediate } from './interfaces/semantics-intermediate.interface';
+import ProcessEnv = NodeJS.ProcessEnv;
+import { CommitInterface } from './interfaces/commit.interface';
+import { CommitTypeInterface } from './interfaces/commit-type.interface';
 
 export const getBreakingChanges = (changes: CommitInterface[]): string => {
   let substring: string = '';
@@ -170,77 +167,6 @@ export const normalizeBody = (commit: CommitInterface): CommitInterface => {
   return commit;
 };
 
-export interface Config {
-  /**
-   * @default github
-   */
-  repository: 'github' | 'gitlab';
-
-  privateToken: string;
-
-  projectPath: string;
-
-  /**
-   * @default true
-   */
-  publishTag: boolean;
-
-  /**
-   * @default false
-   */
-  createTemporaryFiles: boolean;
-
-  /**
-   * @default true
-   */
-  oldestCommitsFirst: boolean;
-
-  /**
-   * @default false
-   */
-  displayAuthor: boolean;
-
-  /**
-   * @default includes fix and feat types
-   */
-  commitTypesIncludedInTagMessage: CommitTypeInterface[];
-
-  /**
-   * @default []
-   */
-  commitTypesExcludedFromTagMessage: string[];
-
-  /**
-   * @default true
-   */
-  tagMessage: boolean;
-
-  /**
-   * @default ""
-   */
-  prefix: string;
-
-  /**
-   * @default ""
-   */
-  postfix: string;
-
-  /**
-   * @default "./"
-   */
-  configFilePath: string;
-
-  /**
-   * @default false
-   */
-  writeTemporaryFiles: boolean;
-
-  /**
-   * @default true
-   */
-  preciseVersionMatching: boolean;
-}
-
 export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
   Log.info('Setting up configuration...');
 
@@ -272,24 +198,6 @@ export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
     privateToken: '',
     projectPath: '',
   };
-}
-
-export interface CommitInterface {
-  hash: string;
-  abbrevHash: string;
-  author: {
-    name: string;
-    email: string;
-  };
-  description: string;
-  body: string[];
-  footer: string[];
-  type: string;
-  hasPatchUpdate: boolean;
-  hasMinorUpdate: boolean;
-  hasMajorUpdate: boolean;
-  scope?: string;
-  breakingChanges: string[];
 }
 
 export function fromEnv(env: ProcessEnv) {
@@ -357,18 +265,6 @@ export function updateConfigFromEnv(env: ProcessEnv) {
 
     return intermediate;
   };
-}
-
-export type SemanticsCtx = MiddlewareContextInterface<SemanticsIntermediate>;
-
-export interface SemanticsIntermediate extends Config {
-  currentCommitHash: string;
-  latestVersionTag: string;
-  latestVersionCommitHash: string;
-  commitsSinceLatestVersion: string | CommitInterface[];
-  versionTuple: [number, number, number];
-  newVersion: string;
-  tagMessageContents: string;
 }
 
 /**
@@ -545,7 +441,6 @@ export function reverseCommitsArrayIfRequired({ intermediate }: SemanticsCtx) {
       : intermediate.commitsSinceLatestVersion,
   };
 }
-
 
 export function bumpPatchVersion({ intermediate }: SemanticsCtx) {
   const currentVersionTuple = intermediate.versionTuple;
