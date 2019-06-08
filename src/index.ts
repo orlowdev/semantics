@@ -13,6 +13,7 @@ import { CommitTypeInterface } from './interfaces/commit-type.interface';
 import { updateConfigFromArgv } from './middleware/update-config-from-argv.middleware';
 import { updateConfigFromEnv } from './middleware/update-config-from-env.middleware';
 import { execPromise } from './utils/exec-promise.util';
+import { setUpDefaultConfig } from './middleware/set-up-default-config.middleware';
 
 export const getBreakingChanges = (changes: CommitInterface[]): string => {
   let substring: string = '';
@@ -166,39 +167,6 @@ export const normalizeBody = (commit: CommitInterface): CommitInterface => {
     );
   return commit;
 };
-
-export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
-  Log.info('Setting up configuration...');
-
-  return {
-    repository: 'github',
-    publishTag: true,
-    createTemporaryFiles: false,
-    oldestCommitsFirst: true,
-    displayAuthor: false,
-    commitTypesIncludedInTagMessage: [
-      {
-        type: 'feat',
-        title: 'New features',
-        bumps: 'minor',
-      },
-      {
-        type: 'fix',
-        title: 'Bug fixes',
-        bumps: 'patch',
-      },
-    ],
-    commitTypesExcludedFromTagMessage: [],
-    tagMessage: true,
-    prefix: '',
-    postfix: '',
-    configFilePath: '',
-    writeTemporaryFiles: false,
-    preciseVersionMatching: true,
-    privateToken: '',
-    projectPath: '',
-  };
-}
 
 export function getCurrentCommitHash({ intermediate }: SemanticsCtx) {
   return execPromise('git rev-parse HEAD')
