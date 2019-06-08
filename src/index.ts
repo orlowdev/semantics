@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import { Pipeline } from '@priestine/data';
-import { exec, ExecException } from 'child_process';
 import * as request from 'request';
 import { writeFileSync } from 'fs';
 import { Iro } from '@priestine/iro';
@@ -13,6 +12,7 @@ import { CommitInterface } from './interfaces/commit.interface';
 import { CommitTypeInterface } from './interfaces/commit-type.interface';
 import { updateConfigFromArgv } from './middleware/update-config-from-argv.middleware';
 import { updateConfigFromEnv } from './middleware/update-config-from-env.middleware';
+import { execPromise } from './utils/exec-promise.util';
 
 export const getBreakingChanges = (changes: CommitInterface[]): string => {
   let substring: string = '';
@@ -199,21 +199,6 @@ export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
     projectPath: '',
   };
 }
-
-/**
- * Execute command in a Promise.
- * @param cmd Command to be executed.
- * @returns Promise<string>
- */
-export const execPromise = (cmd: string): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    exec(cmd, (e: ExecException, stdout: string, stderr: string) => {
-      if (e) return reject(e.message.replace(/\n$/, ''));
-      if (stderr) return reject(stderr.replace(/\n$/, ''));
-      resolve(stdout.replace(/\n$/, ''));
-    });
-  });
-};
 
 export function getCurrentCommitHash({ intermediate }: SemanticsCtx) {
   return execPromise('git rev-parse HEAD')
