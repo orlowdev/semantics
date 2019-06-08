@@ -16,6 +16,7 @@ import { execPromise } from './utils/exec-promise.util';
 import { setUpDefaultConfig } from './middleware/set-up-default-config.middleware';
 import { bumpMajorVersion, bumpMinorVersion, bumpPatchVersion } from './middleware/bump-version.middleware';
 import { reverseCommitsArrayIfRequired } from './middleware/reverse-commits-array-if-required.middleware';
+import { transformCommitsStringToObject } from './middleware/transform-commits-string-to-object.middleware';
 
 export const getBreakingChanges = (changes: CommitInterface[]): string => {
   let substring: string = '';
@@ -263,28 +264,6 @@ export function getCommitsSinceLatestVersion({ intermediate }: SemanticsCtx) {
     });
 }
 
-export function formatCommitsStringToValidJSON({ intermediate }: SemanticsCtx) {
-  return {
-    ...intermediate,
-    commitsSinceLatestVersion: `[ ${(intermediate.commitsSinceLatestVersion as string)
-      .split('\n')
-      .reduce((acc: string[], line: string) => {
-        // Skip lines containing commit hash
-        if (/^commit/.test(line)) {
-          return acc;
-        }
-
-        return acc.concat([
-          line
-            .replace(/"/g, `'`)
-            .replace(/\s+/g, ' ')
-            .replace(/\n/g, ''),
-        ]);
-      }, [])
-      .join(', ')} ]`.replace(/\^\^\^/g, '"'),
-  };
-}
-
 export function transformCommitsStringToCommitObjects({ intermediate }: SemanticsCtx) {
   const result = JSON.parse(intermediate.commitsSinceLatestVersion as any);
   Log.success(`Commits found since latest version: ${Iro.green(result.length)}`);
@@ -474,7 +453,7 @@ Pipeline.from([
   getLatestVersionTag,
   getLatestVersionCommitHash,
   getCommitsSinceLatestVersion,
-  formatCommitsStringToValidJSON,
+  transformCommitsStringToObject,
   transformCommitsStringToCommitObjects,
   exitIfThereAreNoNewCommits,
   reverseCommitsArrayIfRequired,
