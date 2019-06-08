@@ -6,13 +6,13 @@ import * as request from 'request';
 import { writeFileSync } from 'fs';
 import { Iro } from '@priestine/iro';
 import * as R from 'ramda';
-import { transformCase } from './utils/case-transformer.util';
 import { Log } from './utils/log.util';
 import { getVersionTuple } from './middleware/get-version-tuple';
 import { SemanticsCtx, SemanticsIntermediate } from './interfaces/semantics-intermediate.interface';
-import ProcessEnv = NodeJS.ProcessEnv;
 import { CommitInterface } from './interfaces/commit.interface';
 import { CommitTypeInterface } from './interfaces/commit-type.interface';
+import { updateConfigFromArgv } from './middleware/update-config-from-argv.middleware';
+import { updateConfigFromEnv } from './middleware/update-config-from-env.middleware';
 
 export const getBreakingChanges = (changes: CommitInterface[]): string => {
   let substring: string = '';
@@ -197,73 +197,6 @@ export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
     preciseVersionMatching: true,
     privateToken: '',
     projectPath: '',
-  };
-}
-
-export function fromEnv(env: ProcessEnv) {
-  return (key: string, defaultVal = '', transformer = (x) => x): string => {
-    if (!env) {
-      return defaultVal;
-    }
-
-    return transformer(env[key]) || defaultVal;
-  };
-}
-
-export function fromArgv(argv: string[]) {
-  const args = argv.reduce((acc, arg) => {
-    const [key, value] = arg.split('=');
-    acc[key] = value;
-    return acc;
-  }, {});
-  return (key: string, defaultVal = '', transformer = (x) => x): string => {
-    if (!argv) {
-      return defaultVal;
-    }
-
-    return transformer(args[key]) || defaultVal;
-  };
-}
-
-export function updateConfigFromArgv(argv: string[]) {
-  return ({ intermediate }: SemanticsCtx) => {
-    Object.keys(intermediate).forEach((key) => {
-      const argvKey = `--${transformCase(key).from.camel.to.kebab.toString()}`;
-      const getFromArgv = fromArgv(argv.filter((arg) => /^--.*=/.test(arg)));
-
-      if (typeof intermediate[key] === 'number') {
-        intermediate[key] = Number.isInteger(intermediate[key])
-          ? Number.parseInt(getFromArgv(argvKey, intermediate[key]))
-          : Number.parseFloat(getFromArgv(argvKey, intermediate[key]));
-      } else if (typeof intermediate[key] === 'boolean') {
-        intermediate[key] = getFromArgv(argvKey, String(intermediate[key])) === 'true';
-      } else {
-        intermediate[key] = getFromArgv(argvKey, intermediate[key]);
-      }
-    });
-  };
-}
-
-export function updateConfigFromEnv(env: ProcessEnv) {
-  return ({ intermediate }: SemanticsCtx) => {
-    Object.keys(intermediate).forEach((key) => {
-      const envKey = transformCase(key)
-        .from.camel.to.snake.toString()
-        .toUpperCase();
-      const getFromEnv = fromEnv(env);
-
-      if (typeof intermediate[key] === 'number') {
-        intermediate[key] = Number.isInteger(intermediate[key])
-          ? Number.parseInt(getFromEnv(envKey, intermediate[key]))
-          : Number.parseFloat(getFromEnv(envKey, intermediate[key]));
-      } else if (typeof intermediate[key] === 'boolean') {
-        intermediate[key] = getFromEnv(envKey, String(intermediate[key])) === 'true';
-      } else {
-        intermediate[key] = getFromEnv(envKey, intermediate[key]);
-      }
-    });
-
-    return intermediate;
   };
 }
 
