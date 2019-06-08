@@ -15,6 +15,7 @@ import { updateConfigFromEnv } from './middleware/update-config-from-env.middlew
 import { execPromise } from './utils/exec-promise.util';
 import { setUpDefaultConfig } from './middleware/set-up-default-config.middleware';
 import { bumpMajorVersion, bumpMinorVersion, bumpPatchVersion } from './middleware/bump-version.middleware';
+import { reverseCommitsArrayIfRequired } from './middleware/reverse-commits-array-if-required.middleware';
 
 export const getBreakingChanges = (changes: CommitInterface[]): string => {
   let substring: string = '';
@@ -313,19 +314,6 @@ export function transformCommitsStringToCommitObjects({ intermediate }: Semantic
 
         return commit;
       }),
-  };
-}
-
-export function reverseCommitsArrayIfRequired({ intermediate }: SemanticsCtx) {
-  if (intermediate.oldestCommitsFirst) {
-    Log.info('Commits will be put oldest to newest.');
-  }
-
-  return {
-    ...intermediate,
-    commitsSinceLatestVersion: intermediate.oldestCommitsFirst
-      ? (intermediate.commitsSinceLatestVersion as CommitInterface[]).reverse()
-      : intermediate.commitsSinceLatestVersion,
   };
 }
 
