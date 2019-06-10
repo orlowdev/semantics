@@ -6,7 +6,7 @@ import { CommitTypeInterface } from '../interfaces/commit-type.interface';
 import { getSubjects } from './transform-commits-string-to-objects.middleware';
 import * as R from 'ramda';
 
-export const getBreakingChanges = (changes: CommitInterface[]): string => {
+export function getBreakingChanges(changes: CommitInterface[]): string {
   let substring: string = '';
 
   const bc = R.flatten(
@@ -24,13 +24,9 @@ export const getBreakingChanges = (changes: CommitInterface[]): string => {
   }
 
   return substring;
-};
+}
 
-export const getChangelog = (
-  changes: CommitInterface[],
-  types: CommitTypeInterface[],
-  omittedTypes: string[]
-): string => {
+export function getChangelog(changes: CommitInterface[], types: CommitTypeInterface[], omittedTypes: string[]): string {
   const getSubjectedCommits = getSubjects(changes);
 
   omittedTypes.forEach((ct: string) => {
@@ -82,7 +78,7 @@ export const getChangelog = (
       return substring;
     })
     .join('');
-};
+}
 
 export function buildTagMessageIfRequired({ intermediate }: SemanticsCtx) {
   if (intermediate.tagMessage) {
