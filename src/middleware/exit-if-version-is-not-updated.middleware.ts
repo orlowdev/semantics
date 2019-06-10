@@ -1,7 +1,6 @@
 import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
 import { Log } from '../utils/log.util';
 import { Iro } from '@priestine/iro/src';
-import { fork } from '../utils/fork.util';
 import * as R from 'ramda';
 
 const versionUpdated = R.lift(R.equals)(
@@ -20,4 +19,4 @@ const handleVersionUpdate = ({ intermediate }: SemanticsCtx) => {
   return intermediate;
 };
 
-export const exitIfVersionIsNotUpdated = fork(versionUpdated, handleSameVersion, handleVersionUpdate);
+export const exitIfVersionIsNotUpdated = R.ifElse(versionUpdated, handleSameVersion, handleVersionUpdate);
