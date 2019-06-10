@@ -1,22 +1,35 @@
-import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
+import * as R from 'ramda';
 
-export function getVersionTuple({ intermediate }: SemanticsCtx) {
-  if (!intermediate.latestVersionTag) {
-    return {
-      ...intermediate,
-      versionTuple: [0, 0, 0],
-    };
-  }
+const hasLatestVersionTag = R.pipe(
+  R.path(['intermediate', 'latestVersionTag']),
+  Boolean
+);
 
-  const currentVersion = intermediate.latestVersionTag.match(/(\d+).(\d+).(\d+)/);
-  const parseInteger = (x: string): number => (x ? (/\d+/.test(x) ? Number.parseInt(x, 10) : 0) : 0);
+const versionTuple = R.lensPath(['intermediate', 'versionTuple']);
 
-  if (!currentVersion || !currentVersion[1]) {
-    return [0, 0, 0];
-  }
+const setVersionTuple = (value) => R.pipe(
+  R.set(versionTuple, value),
+  R.prop('intermediate')
+);
 
-  return {
-    ...intermediate,
-    versionTuple: [parseInteger(currentVersion[1]), parseInteger(currentVersion[2]), parseInteger(currentVersion[3])],
-  };
-}
+const setDefaultVersionTuple = setVersionTuple([0, 0, 0]);
+
+const getCurrentVersion = R.pipe(
+  R.path(['intermediate', 'latestVersionTag']),
+  R.match(/(\d+).(\d+).(\d+)/),
+);
+
+const setVersionTupleFromVersionTag = (ctx) =>
+  setVersionTuple(R.map(Number, getCurrentVersion(ctx).slice(1, 4)))(ctx);
+
+const hasCurrentVersion = R.pipe(
+  getCurrentVersion,
+  R.prop('length'),
+  Boolean,
+);
+
+export const getVersionTuple = R.ifElse(
+  R.allPass([hasLatestVersionTag, hasCurrentVersion]),
+  setVersionTupleFromVersionTag,
+  setDefaultVersionTuple
+);
