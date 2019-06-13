@@ -22,12 +22,6 @@ import { getLatestVersionCommitHash } from './middleware/get-latest-version-comm
 import { getLatestVersionTag } from './middleware/get-latest-version-tag.middleware';
 import { getCurrentCommitHash } from './middleware/get-current-commit-hash.middleware';
 
-// TODO: tests
-// TODO: * as *
-// TODO: extract logging
-// TODO: rewrite exitIf* middleware with generic exitIf
-// TODO: rewrite *IfRequired middleware with HoF `optionally`
-
 Pipeline.from([
   setUpDefaultConfig,
   updateConfigFromArgv(process.argv.slice(2)),
