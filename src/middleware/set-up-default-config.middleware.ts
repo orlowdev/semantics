@@ -7,7 +7,6 @@ export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
   return {
     repository: 'github',
     publishTag: true,
-    createTemporaryFiles: false,
     oldestCommitsFirst: true,
     displayAuthor: false,
     commitTypesIncludedInTagMessage: [
