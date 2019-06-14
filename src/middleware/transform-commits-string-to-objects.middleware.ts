@@ -57,7 +57,7 @@ export const extractCommitTypes = (commit: CommitInterface): CommitInterface => 
 
   commit.description = description[1];
 
-  commit.type = typePredicate as any;
+  commit.type = typePredicate.replace(/!$/, '');
 
   return commit;
 };
