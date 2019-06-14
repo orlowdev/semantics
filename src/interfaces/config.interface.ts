@@ -157,4 +157,14 @@ export interface ConfigInterface {
    * @default true
    */
   preciseVersionMatching: boolean;
+
+  /**
+   * If true, merge commits will be excluded when evaluating changes. Set to false if you prefer to use Conventional
+   * Commits format in merge request commits and assign version bumping there.
+   *
+   * Maybe useful for key/lead developers in charge of an issue.
+   *
+   * @default true
+   */
+  excludeMerges: boolean;
 }

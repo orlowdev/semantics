@@ -23,7 +23,10 @@ export function bumpMinorVersion({ intermediate }: SemanticsCtx) {
 export function bumpMajorVersion({ intermediate }: SemanticsCtx) {
   const currentVersionTuple = intermediate.versionTuple;
 
-  if (intermediate.commitsSinceLatestVersion.some((commit) => commit.hasMajorUpdate) || !intermediate.newVersion) {
+  if (
+    intermediate.commitsSinceLatestVersion.some((commit) => commit.hasMajorUpdate) ||
+    intermediate.versionTuple.every((x) => x === 0)
+  ) {
     intermediate.newVersion = `${currentVersionTuple[0] + 1}.0.0`;
   }
 

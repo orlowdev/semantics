@@ -90,10 +90,10 @@ describe('bumpMajorVersion', () => {
     expect(
       bumpMajorVersion({
         intermediate: {
-          versionTuple: [4, 5, 6],
+          versionTuple: [0, 0, 0],
           commitsSinceLatestVersion: [],
         },
       } as any).newVersion
-    ).toEqual('5.0.0');
+    ).toEqual('1.0.0');
   });
 });
