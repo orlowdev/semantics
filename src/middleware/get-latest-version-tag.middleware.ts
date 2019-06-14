@@ -4,7 +4,8 @@ import { Log } from '../utils/log.util';
 import { Iro } from '@priestine/iro/src';
 
 export function getLatestVersionTag({ intermediate }: SemanticsCtx) {
-  const matcher = intermediate.preciseVersionMatching ? `${intermediate.prefix}*${intermediate.postfix}` : `*`;
+  const glob = '*[0-9]';
+  const matcher = intermediate.preciseVersionMatching ? `${intermediate.prefix}${glob}${intermediate.postfix}` : glob;
 
   return execPromise(`git describe --match "${matcher}" --abbrev=0 HEAD --tags`)
     .then((latestVersionTag) => {
