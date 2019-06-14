@@ -220,8 +220,8 @@ Temporary Items
 *.d.ts
 *.js
 *.map
-test
 docs
 .vscode
 .idea
 .tmp.*
+!jest.config.js

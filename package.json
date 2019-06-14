@@ -13,17 +13,12 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "test": "mocha --timeout 15000 --require ts-node/register --require source-map-support/register --full-trace --bail $(find . -name '*.spec.ts' ! -ipath '*node_modules*')",
-    "coverage:cover": "nyc npm test",
-    "coverage:check": "nyc check-coverage --lines 75 --branches 75 --functions 75 --statements 75",
-    "tslint:check": "tslint --project tslint.json -t stylish",
-    "tslint:fix": "yarn tslint:check --fix",
-    "prettier:check": "prettier --list-different src/**/*.ts src/*.ts",
-    "prettier:fix": "prettier --write src/**/*.ts src/*.ts",
-    "style:check": "yarn prettier:check && yarn tslint:check",
-    "style:fix": "yarn prettier:fix && yarn tslint:fix",
+    "test": "jest",
+    "test:cover": "rm -rf coverage && yarn test --coverage",
+    "test:watch": "npm run test -- --watch",
+    "style:check": "prettier --list-different src/**/*.ts src/*.ts",
+    "style:fix": "prettier --write src/**/*.ts src/*.ts",
     "build:docs": "typedoc --out ./docs ./src --exclude '**/*.spec.ts' --ignoreCompilerErrors --mode file",
-    "build:dev": "rm -rf ./build && tsc --p tsconfig.build.json -w",
     "build:ci": "tsc",
     "start": "node src/index.js"
   },
@@ -36,7 +31,7 @@
   ],
   "author": {
     "email": "priestine1.dev@gmail.com",
-    "name": "Sergey Orlov",
+    "name": "Sergei Orlov",
     "url": "https://priestine.com"
   },
   "license": "MIT",
@@ -50,45 +45,19 @@
   "homepage": "https://gitlab.com/priestine/semantics#readme",
   "devDependencies": {
     "@types/chai": "^4.1.6",
-    "@types/mocha": "^5.2.5",
+    "@types/jest": "24.0.13",
     "@types/node": "^10.11.4",
     "@types/ramda": "^0.25.41",
     "@types/request": "^2.47.1",
-    "chai": "^4.2.0",
-    "mocha": "^5.2.0",
-    "nyc": "^13.0.1",
+    "jest": "24.8.0",
     "prettier": "^1.14.3",
+    "ts-jest": "24.0.2",
     "ts-node": "^7.0.1",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
-    "tslint-config-standard": "^8.0.1",
-    "typedoc": "^0.13.0",
-    "typescript": "^3.1.1",
-    "yarn": "^1.10.1"
-  },
-  "nyc": {
-    "include": [
-      "src/**"
-    ],
-    "exclude": [
-      "src/**/*.spec.ts",
-      "src/*.spec.ts"
-    ],
-    "extension": [
-      ".ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "reporter": [
-      "text",
-      "json",
-      "html",
-      "lcov"
-    ]
+    "typedoc": "^0.14.2",
+    "typescript": "^3.1.1"
   },
   "dependencies": {
-    "@priestine/data": "^2.3.0",
+    "@priestine/data": "^3.1.1",
     "@priestine/iro": "^1.0.2",
     "ramda": "^0.25.0",
     "request": "^2.88.0"

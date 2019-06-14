@@ -9,8 +9,7 @@ stages:
   - docker_deploy
 
 before_script:
-  - npm i -g yarn
-  - yarn install
+  - npm install
 
 cache:
   key: "$CI_COMMIT_REF_SLUG"
@@ -21,46 +20,42 @@ style:
   image: node:10-alpine
   stage: style
   script:
-    - yarn style:check
+    - npm run style:check
   except:
     - tags
     - master
 
 1:2 coverage:
-  image: node:10
+  image: node:10-alpine
   stage: test
   script:
-    - yarn coverage:cover
-    - yarn coverage:check
+    - npm run test:cover
   except:
     - tags
-    - master
 
 2:2 coverage:
-  image: node:8-alpine
+  image: node:12-alpine
   stage: test
   script:
-    - yarn coverage:cover
-    - yarn coverage:check
+    - npm run test:cover
   except:
     - tags
-    - master
 
 coverage:report:
-  image: node:10
+  image: node:12
   stage: test
   script:
-    - yarn coverage:cover
+    - npm run test:cover
   after_script:
     - bash <(curl -s https://codecov.io/bash) -t "${CODECOV_TOKEN}" -f coverage/*.json
   only:
-    - master
+    - tags
 
 versioning:
   stage: versioning
   image: priestine/semantics:latest
   script:
-    - priestine-semantics --private-token=${SEMANTICS_TOKEN} --fix-or-feat
+    - priestine-semantics --private-token=${SEMANTICS_TOKEN} --project-path=${CI_PROJECT_PATH}
   only:
     - master
 
@@ -71,7 +66,7 @@ deploy:npm:
   only:
     - tags
 
-deploy:docker:
+publish:docker:
   stage: docker_deploy
   image: docker:stable
   services:
@@ -102,4 +97,4 @@ pages:
     paths:
       - public
   only:
-    - master
+    - tags
