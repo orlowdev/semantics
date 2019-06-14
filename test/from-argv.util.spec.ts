@@ -3,7 +3,8 @@ import { fromArgv } from '../src/utils/from-argv.util';
 describe('fromArgv', () => {
   const getFromArgv = fromArgv([
     'success=true',
-    'number=123'
+    'number=123',
+    'flag'
   ]);
 
   it('should extract value from argv provided as an argument', () => {
@@ -20,6 +21,10 @@ describe('fromArgv', () => {
 
   it('should apply given transformer on the returned value', () => {
     expect(getFromArgv('number', '456', Number)).toEqual(123);
+  });
+
+  it('should set value to true if it was not provided', () => {
+    expect(getFromArgv('flag')).toEqual('true');
   });
 
   it('should return default value if argv was not provided', () => {

@@ -27,7 +27,7 @@ describe('exitIfVersionIsNotUpdated', () => {
       },
     };
 
-    expect(exitIfVersionIsNotUpdated(ctx)).toEqual(ctx.intermediate);
+    expect(exitIfVersionIsNotUpdated(ctx)).toEqual(undefined);
     expect(mockSuccess).toHaveBeenCalledWith(`New version candidate: ${Iro.green('1.3.0')}`);
   });
 });
