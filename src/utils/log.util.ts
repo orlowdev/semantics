@@ -19,22 +19,22 @@ export namespace Log {
   }
 
   export const tapInfo = (...message) => ({ intermediate }) => {
-    Iro.log(Iro.cyan(Iro.inverse(' SEMANTICS INFO    '), '  '), Iro.white(...message));
+    Log.info(...message);
     return intermediate;
   };
 
   export const tapSuccess = (...message) => ({ intermediate }) => {
-    Iro.log(Iro.green(Iro.inverse(' SEMANTICS SUCCESS '), '  '), Iro.white(...message));
+    Log.success(...message);
     return intermediate;
   };
 
   export const tapWarning = (...message) => ({ intermediate }) => {
-    Iro.log(Iro.yellow(Iro.inverse(' SEMANTICS WARNING '), '  '), Iro.white(...message));
+    Log.warning(...message);
     return intermediate;
   };
 
   export const tapError = (...message) => ({ intermediate }) => {
-    Iro.log(Iro.red(Iro.inverse(' SEMANTICS ERROR   '), '  '), Iro.white(...message));
+    Log.error(...message);
     return intermediate;
   };
 }
