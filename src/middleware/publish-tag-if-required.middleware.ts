@@ -70,8 +70,8 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
           return;
         }
 
-        if (b.error) {
-          Log.error(`Server responded with error: ${Iro.red(b.error)}`);
+        if (r.statusCode !== 201) {
+          Log.error(`Server responded with error: ${Iro.red(b.message)}`);
           return;
         }
 

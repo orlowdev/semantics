@@ -5,9 +5,7 @@ import { commitFormat } from '../commit-format';
 
 export function getCommitsSinceLatestVersion({ intermediate }: SemanticsCtx) {
   return execPromise(
-    `git rev-list ${intermediate.latestVersionCommitHash}..${
-      intermediate.currentCommitHash
-    } --no-merges --format='${commitFormat}'`
+    `git rev-list ${intermediate.latestVersionCommitHash}..HEAD --no-merges --format='${commitFormat}'`
   )
     .then((commitsSinceLatestVersionString) => ({
       ...intermediate,
