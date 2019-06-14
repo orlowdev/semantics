@@ -92,6 +92,7 @@ PREFIX=v priestine-semantics
 * `--postfix=<value>` - set postfix for newly created version (e.g. `--postfix=-beta -> 1.0.0-beta`)
 * `--write-temporary-files[=<true|false>]` - if true, @priestine/semantics will create temporary files containing the data gathered during its execution (**NOTE**: temporary files are not generated if there are no reasons for version bumping)
 * `--precise-version-matching[=<true|false>]` - if true, @priestine/semantics will look for previous versions with given prefix and/or postfix instead of just looking for any previous SemVer-like tag. This is helpful for leading several changelogs for various types of releases.
+* `--exclude-merges[=<true|false>]` - if true, merge request commits will be excluded when evaluating changes since latest version. Defaults to **true**.
 
 ### Environment Variables
 
@@ -105,6 +106,7 @@ PREFIX=v priestine-semantics
 * `POSTFIX=<value>` - set postfix for newly created version (e.g. `--postfix=-beta -> 1.0.0-beta`)
 * `WRITE_TEMPORARY_FILES=<true|false>` - if true, @priestine/semantics will create temporary files containing the data gathered during its execution (**NOTE**: temporary files are not generated if there are no reasons for version bumping)
 * `PRECISE_VERSION_MATCHING=<true|false>` - if true, @priestine/semantics will look for previous versions with given prefix and/or postfix instead of just looking for any previous SemVer-like tag. This is helpful for leading several changelogs for various types of releases.
+* `EXCLUDE_MERGES=<true|false>` - if true, merge request commits will be excluded when evaluating changes since latest version. Defaults to **true**.
 
 ## Temporary files
 

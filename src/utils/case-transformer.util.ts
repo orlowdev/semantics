@@ -116,8 +116,8 @@ export const transformKeys = (transformer: (x: string) => string, obj: Object, d
       if (obj[k] instanceof Date) {
         delegate[transformer(k)] = obj[k];
       } else if (Array.isArray(obj[k])) {
-        delegate[transformer(k)] = obj[k].map(
-          (x) => (typeof x === 'object' && !!x ? transformKeys(transformer, x, {}) : x)
+        delegate[transformer(k)] = obj[k].map((x) =>
+          typeof x === 'object' && !!x ? transformKeys(transformer, x, {}) : x
         );
       } else if (!obj[k]) {
         delegate[transformer(k)] = null;

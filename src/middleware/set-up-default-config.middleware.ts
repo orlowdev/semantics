@@ -30,5 +30,6 @@ export function setUpDefaultConfig(): Partial<SemanticsIntermediate> {
     preciseVersionMatching: true,
     privateToken: '',
     projectPath: '',
+    excludeMerges: true,
   };
 }

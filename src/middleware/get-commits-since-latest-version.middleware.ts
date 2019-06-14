@@ -4,9 +4,8 @@ import { Log } from '../utils/log.util';
 import { commitFormat } from '../commit-format';
 
 export function getCommitsSinceLatestVersion({ intermediate }: SemanticsCtx) {
-  return execPromise(
-    `git rev-list ${intermediate.latestVersionCommitHash}..HEAD --no-merges --format='${commitFormat}'`
-  )
+  const noMerges = intermediate.excludeMerges ? '--no-merges ' : '';
+  return execPromise(`git rev-list ${intermediate.latestVersionCommitHash}..HEAD ${noMerges}--format='${commitFormat}'`)
     .then((commitsSinceLatestVersionString) => ({
       ...intermediate,
       commitsSinceLatestVersionString,
