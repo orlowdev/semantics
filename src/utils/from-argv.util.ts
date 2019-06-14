@@ -5,7 +5,12 @@ export function fromArgv(argv: string[]) {
     }
 
     const args = argv.reduce((acc, arg) => {
-      const [key, value] = arg.split('=');
+      let [key, value] = arg.split('=');
+
+      if (!value) {
+        value = 'true';
+      }
+
       acc[key] = value;
       return acc;
     }, {});

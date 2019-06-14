@@ -6,7 +6,7 @@ export function updateConfigFromArgv(argv: string[]) {
   return ({ intermediate }: SemanticsCtx) => {
     Object.keys(intermediate).forEach((key) => {
       const argvKey = `--${transformCase(key).from.camel.to.kebab.toString()}`;
-      const getFromArgv = fromArgv(argv.filter((arg) => /^--.*=/.test(arg)));
+      const getFromArgv = fromArgv(argv.filter((arg) => /^--.*=?/.test(arg)));
 
       if (typeof intermediate[key] === 'number') {
         intermediate[key] = Number.isInteger(intermediate[key])
