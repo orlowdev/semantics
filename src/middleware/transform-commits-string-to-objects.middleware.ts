@@ -89,7 +89,7 @@ export const normalizeBody = (commit: CommitInterface): CommitInterface => {
 };
 
 export function transformCommitsStringToObjects({ intermediate }: SemanticsCtx) {
-  const result = JSON.parse(intermediate.commitsSinceLatestVersion as any);
+  const result = JSON.parse(intermediate.commitsSinceLatestVersionString);
   Log.success(`Commits found since latest version: ${Iro.green(result.length)}`);
   return {
     ...intermediate,

@@ -9,9 +9,9 @@ export function getCommitsSinceLatestVersion({ intermediate }: SemanticsCtx) {
       intermediate.currentCommitHash
     } --no-merges --format='${commitFormat}'`
   )
-    .then((commitsSinceLatestVersion) => ({
+    .then((commitsSinceLatestVersionString) => ({
       ...intermediate,
-      commitsSinceLatestVersion,
+      commitsSinceLatestVersionString,
     }))
     .catch((e) => {
       Log.error(e.replace('\n', '->'));

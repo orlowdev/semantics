@@ -1,6 +1,5 @@
 import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
 import { Log } from '../utils/log.util';
-import { CommitInterface } from '../interfaces/commit.interface';
 
 export function reverseCommitsArrayIfRequired({ intermediate }: SemanticsCtx) {
   if (intermediate.oldestCommitsFirst) {
@@ -10,7 +9,7 @@ export function reverseCommitsArrayIfRequired({ intermediate }: SemanticsCtx) {
   return {
     ...intermediate,
     commitsSinceLatestVersion: intermediate.oldestCommitsFirst
-      ? (intermediate.commitsSinceLatestVersion as CommitInterface[]).reverse()
+      ? intermediate.commitsSinceLatestVersion.reverse()
       : intermediate.commitsSinceLatestVersion,
   };
 }

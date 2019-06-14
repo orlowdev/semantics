@@ -87,12 +87,12 @@ export function buildTagMessageIfRequired({ intermediate }: SemanticsCtx) {
     intermediate.tagMessageContents = `# ${intermediate.newVersion}`
       .concat(
         getChangelog(
-          intermediate.commitsSinceLatestVersion as CommitInterface[],
+          intermediate.commitsSinceLatestVersion,
           intermediate.commitTypesIncludedInTagMessage,
           intermediate.commitTypesExcludedFromTagMessage
         )
       )
-      .concat(getBreakingChanges(intermediate.commitsSinceLatestVersion as CommitInterface[]));
+      .concat(getBreakingChanges(intermediate.commitsSinceLatestVersion));
   }
 
   return intermediate;

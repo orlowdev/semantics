@@ -25,7 +25,13 @@ export interface SemanticsIntermediate extends ConfigInterface {
   /**
    * Array of commits found since latest version was released.
    */
-  commitsSinceLatestVersion: string | CommitInterface[];
+  commitsSinceLatestVersion: CommitInterface[];
+
+  /**
+   * String containing commits found since latest version was released.
+   * This string is provided by git rev-list command.
+   */
+  commitsSinceLatestVersionString: string;
 
   /**
    * A tuple of three numbers representing each part of semantic version.

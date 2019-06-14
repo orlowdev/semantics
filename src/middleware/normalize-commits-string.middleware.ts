@@ -3,7 +3,7 @@ import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
 export function normalizeCommitsString({ intermediate }: SemanticsCtx) {
   return {
     ...intermediate,
-    commitsSinceLatestVersion: `[ ${(intermediate.commitsSinceLatestVersion as string)
+    commitsSinceLatestVersionString: `[ ${intermediate.commitsSinceLatestVersionString
       .split('\n')
       .reduce((acc: string[], line: string) => {
         // Skip lines containing commit hash
