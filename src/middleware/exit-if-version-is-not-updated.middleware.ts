@@ -1,22 +1,24 @@
-import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
 import { Log } from '../utils/log.util';
 import { Iro } from '@priestine/iro/src';
 import * as R from 'ramda';
+import { exit } from '../utils/exit.util';
 
 const versionHasNotChanged = R.lift(R.equals)(
   R.path(['intermediate', 'newVersion']),
   R.path(['intermediate', 'latestVersionTag'])
 );
 
-const handleUnchangedVersion = () => {
-  Log.warning('Evaluated changes do not require version bumping. Terminating.');
-  return process.exit(0);
-};
+const handleUnchangedVersion = R.pipe(
+  Log.tapWarning('Evaluated changes do not require version bumping. Terminating.'),
+  exit(0)
+);
 
-const handleChangedVersion = ({ intermediate }: SemanticsCtx) => {
-  Log.success(`New version candidate: ${Iro.green(`${intermediate.newVersion}`)}`);
+const logVersionCandidate = ({ intermediate }) =>
+  Log.tapSuccess(`New version candidate: ${Iro.green(`${intermediate.newVersion}`)}`)(intermediate);
 
-  return intermediate;
-};
+const handleChangedVersion = R.pipe(
+  logVersionCandidate,
+  R.prop('intermediate')
+);
 
 export const exitIfVersionIsNotUpdated = R.ifElse(versionHasNotChanged, handleUnchangedVersion, handleChangedVersion);
