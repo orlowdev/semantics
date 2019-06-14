@@ -69,12 +69,22 @@ export const extractCommitTypes = (commit: CommitInterface): CommitInterface => 
  * @returns CommitInterface
  */
 export const normalizeBody = (commit: CommitInterface): CommitInterface => {
-  commit.body = (commit.body as any)
-    .split(', ')
-    .reduce(
-      (r: string[], x: string) => (x ? r.concat([/^(\*|-)\s+/.test(x) ? x.replace(/^(\*|-)\s+/, '') : x]) : r),
-      []
-    );
+  commit.body = (commit.body as any).split(', ').reduce((r: string[], x: string) => {
+    // Only consider parts of the body that are not for automatic issue closing
+    // @see https://help.github.com/en/articles/closing-issues-using-keywords
+    // @see https://docs.gitlab.com/ee/user/project/issues/automatic_issue_closing.html
+    if (
+      x &&
+      !/clos(e|ed|es|ing)\s.*(#|http)/i.test(x) &&
+      !/resolv(e|ed|es|ing)\s.*(#|http)/i.test(x) &&
+      !/fix(e|ed|es|ing)\s.*(#|http)/i.test(x) &&
+      !/implement(ed|es|ing)\s.*(#|http)/i.test(x)
+    ) {
+      r.push(/^(\*|-)\s+/.test(x) ? x.replace(/^(\*|-)\s+/, '') : x);
+    }
+
+    return r;
+  }, []);
   return commit;
 };
 
