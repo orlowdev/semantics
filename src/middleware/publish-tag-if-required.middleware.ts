@@ -75,7 +75,6 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
           return;
         }
 
-
         Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`);
       }
     );
