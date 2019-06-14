@@ -70,8 +70,6 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
           return;
         }
 
-        console.log(b);
-
         if (b.error) {
           Log.error(`Server responded with error: ${Iro.red(b.error)}`);
           return;

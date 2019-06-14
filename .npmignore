@@ -19,3 +19,7 @@ tslint.json
 .prettierrc
 .tmp.*
 Dockerfile
+jest.config.js
+*.sh
+docker
+public
