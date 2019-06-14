@@ -8,6 +8,28 @@
 
 `@priestine/semantics` automates version bumping for your projects. It determines the next version number, generates the release notes and publishes the release tag.
 
+## Table of Contents
+
+- [@priestine/semantics](#priestinesemantics)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
+    - [Docker and GitLab CI](#docker-and-gitlab-ci)
+    - [Docker image info](#docker-image-info)
+    - [Manual usage](#manual-usage)
+  - [Customizing behaviour](#customizing-behaviour)
+    - [Command Line Options](#command-line-options)
+    - [Environment Variables](#environment-variables)
+  - [Temporary files](#temporary-files)
+      - [Temporary file description](#temporary-file-description)
+        - [.tmp.current_commit_data (Example)](#tmpcurrentcommitdata-example)
+        - [.tmp.current_tag_data (Example)](#tmpcurrenttagdata-example)
+        - [.tmp.version_data (Example)](#tmpversiondata-example)
+        - [.tmp.current_changes.json (Example)](#tmpcurrentchangesjson-example)
+      - [.tmp.changelog.md (Example)](#tmpchangelogmd-example)
+  - [Supported Versions](#supported-versions)
+  - [Badge](#badge)
+
 ## Features
 
 * Automated versioning that follows [SemVer](https://semver.org/)
