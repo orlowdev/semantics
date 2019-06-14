@@ -96,4 +96,15 @@ describe('bumpMajorVersion', () => {
       } as any).newVersion
     ).toEqual('1.0.0');
   });
+
+  it('should use previous version if major version bumping is not applicable', () => {
+    expect(
+      bumpMajorVersion({
+        intermediate: {
+          versionTuple: [1, 2, 3],
+          commitsSinceLatestVersion: [],
+        },
+      } as any).newVersion
+    ).toEqual('1.2.3');
+  });
 });

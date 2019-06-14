@@ -30,5 +30,10 @@ export function bumpMajorVersion({ intermediate }: SemanticsCtx) {
     intermediate.newVersion = `${currentVersionTuple[0] + 1}.0.0`;
   }
 
+  // TODO: Extract
+  if (!intermediate.newVersion) {
+    intermediate.newVersion = `${currentVersionTuple[0]}.${currentVersionTuple[1]}.${currentVersionTuple[2]}`;
+  }
+
   return intermediate;
 }
