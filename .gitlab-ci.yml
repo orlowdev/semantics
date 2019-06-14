@@ -77,11 +77,8 @@ publish:docker:
     - echo ""
   script:
     - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
-    - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-alpine - < ./docker/alpine.Dockerfile
-    - docker build -t priestine/semantics:latest - < ./docker/alpine.Dockerfile
-    - docker build -t priestine/semantics:alpine - < ./docker/alpine.Dockerfile
-    - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-slim - < ./docker/slim.Dockerfile
-    - docker build -t priestine/semantics:slim - < ./docker/slim.Dockerfile
+    - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-alpine -t priestine/semantics:latest -t priestine/semantics:alpine - < ./docker/alpine.Dockerfile
+    - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-slim -t priestine/semantics:slim - < ./docker/slim.Dockerfile
     - docker push priestine/semantics
   only:
     - tags
