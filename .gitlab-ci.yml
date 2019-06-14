@@ -55,7 +55,7 @@ versioning:
   stage: versioning
   image: priestine/semantics:latest
   script:
-    - priestine-semantics --private-token=${SEMANTICS_TOKEN} --project-path=${CI_PROJECT_PATH}
+    - priestine-semantics --private-token=${SEMANTICS_TOKEN} --project-path=priestine/semantics
   only:
     - master
 
