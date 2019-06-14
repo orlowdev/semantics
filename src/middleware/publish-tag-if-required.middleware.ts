@@ -50,33 +50,34 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
       }
     );
   } else {
-    request.post(
-      `https://api.github.com/repos/${intermediate.projectPath}/releases`,
-      {
-        headers: {
-          Authorization: `token ${intermediate.privateToken}`,
-          'User-Agent': 'Priestine-Semantics',
-        },
-        json: true,
-        body: {
-          tag_name: intermediate.newVersion,
-          name: intermediate.newVersion,
-          body: intermediate.tagMessageContents,
-        },
-      },
-      (e: Error, r, b) => {
-        if (e) {
-          Log.error(e.message);
-          return;
-        }
-
-        if (r.statusCode !== 201) {
-          Log.error(`Server responded with error: ${Iro.red(b.message)}`);
-          return;
-        }
-
-        Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`);
-      }
-    );
+    console.log(intermediate);
+    // request.post(
+    //   `https://api.github.com/repos/${intermediate.projectPath}/releases`,
+    //   {
+    //     headers: {
+    //       Authorization: `token ${intermediate.privateToken}`,
+    //       'User-Agent': 'Priestine-Semantics',
+    //     },
+    //     json: true,
+    //     body: {
+    //       tag_name: intermediate.newVersion,
+    //       name: intermediate.newVersion,
+    //       body: intermediate.tagMessageContents,
+    //     },
+    //   },
+    //   (e: Error, r, b) => {
+    //     if (e) {
+    //       Log.error(e.message);
+    //       return;
+    //     }
+    //
+    //     if (r.statusCode !== 201) {
+    //       Log.error(`Server responded with error: ${Iro.red(b.message)}`);
+    //       return;
+    //     }
+    //
+    //     Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`);
+    //   }
+    // );
   }
 }
