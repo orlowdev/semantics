@@ -8,6 +8,28 @@
 
 `@priestine/semantics` automates version bumping for your projects. It determines the next version number, generates the release notes and publishes the release tag.
 
+## Table of Contents
+
+- [@priestine/semantics](#priestinesemantics)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
+    - [Docker and GitLab CI](#docker-and-gitlab-ci)
+    - [Docker image info](#docker-image-info)
+    - [Manual usage](#manual-usage)
+  - [Customizing behaviour](#customizing-behaviour)
+    - [Command Line Options](#command-line-options)
+    - [Environment Variables](#environment-variables)
+  - [Temporary files](#temporary-files)
+      - [Temporary file description](#temporary-file-description)
+        - [.tmp.current_commit_data (Example)](#tmpcurrentcommitdata-example)
+        - [.tmp.current_tag_data (Example)](#tmpcurrenttagdata-example)
+        - [.tmp.version_data (Example)](#tmpversiondata-example)
+        - [.tmp.current_changes.json (Example)](#tmpcurrentchangesjson-example)
+      - [.tmp.changelog.md (Example)](#tmpchangelogmd-example)
+  - [Supported Versions](#supported-versions)
+  - [Badge](#badge)
+
 ## Features
 
 * Automated versioning that follows [SemVer](https://semver.org/)
@@ -195,6 +217,15 @@ Markdown changelog for evaluated commits.
 * **36af8aa**: Last attempt to fix publishing for today (**#14**)
 
 ```
+
+## Supported Versions
+
+| Version | Supported          |
+| ------- | ------------------ |
+| 5.1.x   | :white_check_mark: |
+| 5.0.x   | :x:                |
+| 4.0.x   | :white_check_mark: |
+| < 4.0   | :x:                |
 
 ## Badge
 
