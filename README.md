@@ -44,7 +44,11 @@
 
 ## Installation
 
-### Docker and GitLab CI
+```bash
+npm i -g @priestine/semantics
+```
+
+### GitLab CI using Docker image
 
 The easiest way to use the app is to go get the [Docker image from Docker Cloud](https://cloud.docker.com/repository/docker/priestine/semantics). You can create a separate job in your `.gitlab-ci.yml` that will bump your versions. In fact, it is as simple as:
 
@@ -60,6 +64,25 @@ versioning:
   - master
 ```
 
+### Travis CI
+
+```yaml
+# .travis.yml
+
+language: node_js
+node_js:
+  - "10"
+stages:
+  - name: versioning
+  - if: branch = master
+jobs:
+  include:
+    - stage: versioning
+      script:
+        - npm install -g @priestine/semantics
+        - priestine-semantics --private-token=REPOSITORY_ACCESS_TOKEN --project-path=account/my-project --prefix=v
+```
+
 ### Docker image info
 
 `priestine/semantics:latest` Docker image is built from `node:10-alpine`.
@@ -70,19 +93,7 @@ Docker images are built on each `priestine/semantics` release so you can stick t
 
 ### Manual usage
 
-If you want to run `@priestine/semantics` yourself locally (or elsewhere except for CI) you will need [Node.js 8 or higher](https://nodejs.org/en/download/) installed on your machine. Simply install the package globally
-
-```bash
-npm i -g @priestine/semantics
-```
-
-or
-
-```bash
-yarn global add @priestine/semantics
-```
-
-Then, in your project directory, run:
+If you want to run `@priestine/semantics` yourself locally (or elsewhere except for CI) you will need [Node.js 8 or higher](https://nodejs.org/en/download/) installed on your machine. Simply install the package globally. Then, in your project directory, run:
 
 ```bash
 priestine-semantics
