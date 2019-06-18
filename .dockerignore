@@ -5,6 +5,7 @@ coverage
 docs
 dist
 .gitignore
+.github
 .gitlab-ci.yml
 .prettierrc
 *.md
