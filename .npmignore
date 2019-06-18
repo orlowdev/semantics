@@ -12,6 +12,7 @@ test
 .dockerignore
 .gitlab-ci.yml
 build.sh
+.github
 *.md
 tsconfig.dev.json
 tsconfig.json

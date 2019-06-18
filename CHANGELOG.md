@@ -1,3 +1,3 @@
 # Changelog
 
-[https://gitlab.com/priestine/semantics/tags](https://gitlab.com/priestine/semantics/tags)
+[https://github.com/priestine/semantics/releases](https://github.com/priestine/semantics/releases)
