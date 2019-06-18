@@ -1,6 +1,6 @@
 # @priestine/semantics
 
-[![pipeline](https://gitlab.com/priestine1/semantics/badges/master/pipeline.svg)](https://gitlab.com/priestine1/semantics/pipelines) [![codecov](https://codecov.io/gl/priestine/semantics/branch/master/graph/badge.svg)](https://codecov.io/gl/priestine/semantics) [![npm](https://img.shields.io/npm/dt/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics) [![npm](https://img.shields.io/npm/v/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics)
+[![pipeline](https://gitlab.com/priestine1/semantics/badges/master/pipeline.svg)](https://gitlab.com/priestine1/semantics/pipelines) [![codecov](https://codecov.io/gh/priestine/semantics/branch/master/graph/badge.svg)](https://codecov.io/gh/priestine/semantics) [![npm](https://img.shields.io/npm/dt/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics) [![npm](https://img.shields.io/npm/v/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics)
 
 [![licence: MIT](https://img.shields.io/npm/l/@priestine/semantics.svg)](https://gitlab.com/priestine/semantics) [![docs: typedoc](https://img.shields.io/badge/docs-typedoc-orange.svg)](https://priestine1.gitlab.io/semantics) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) [![versioning: semantics](https://img.shields.io/badge/versioning-semantics-912e5c.svg)](https://github.com/priestine/semantics)
 
