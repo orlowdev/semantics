@@ -74,7 +74,7 @@ node_js:
   - "10"
 stages:
   - name: versioning
-  - if: branch = master
+    if: branch = master
 jobs:
   include:
     - stage: versioning
