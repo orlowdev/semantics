@@ -232,5 +232,5 @@ Markdown changelog for evaluated commits.
 Let people know that your package is published using `@priestine/semantics` by including the badge in your README:
 
 ```markdown
-[![versioning: semantics](https://img.shields.io/badge/versioning-semantics-912e5c.svg)](https://gitlab.com/priestine/semantics)
+[![versioning: semantics](https://img.shields.io/badge/versioning-semantics-912e5c.svg)](https://github.com/priestine/semantics)
 ```
