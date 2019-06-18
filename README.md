@@ -55,8 +55,11 @@ The easiest way to use the app is to go get the [Docker image from Docker Cloud]
 ```yaml
 # .gitab-ci.yml
 
+stages:
+  - versioning
+
 versioning:
-  stage: deploy
+  stage: versioning
   image: priestine/semantics:latest
   script:
   - priestine-semantics --repository=gitlab --private-token=$GITLAB_ACCESS_TOKEN --project-path=my-account/my-project --prefix=v
