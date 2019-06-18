@@ -57,6 +57,7 @@
     "typescript": "^3.1.1"
   },
   "dependencies": {
+    "@priestine/case-transformer": "1.0.1",
     "@priestine/data": "^3.1.1",
     "@priestine/iro": "^1.0.2",
     "ramda": "^0.25.0",
