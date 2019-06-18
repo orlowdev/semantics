@@ -1,5 +1,5 @@
 import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
-import { transformCase } from '../utils/case-transformer.util';
+import { transformCase } from '@priestine/case-transformer';
 import { fromEnv } from '../utils/from-env.util';
 import ProcessEnv = NodeJS.ProcessEnv;
 

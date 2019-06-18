@@ -1,5 +1,5 @@
 import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
-import { transformCase } from '../utils/case-transformer.util';
+import { transformCase } from '@priestine/case-transformer';
 import { fromArgv } from '../utils/from-argv.util';
 
 export function updateConfigFromArgv(argv: string[]) {
