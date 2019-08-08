@@ -12,7 +12,7 @@
 	[the Docker Community Forums](https://forums.docker.com/), [the Docker Community Slack](https://blog.docker.com/2016/11/introducing-docker-community-directory-docker-community-slack/), or [Stack Overflow](https://stackoverflow.com/search?tab=newest&q=docker)
 
 -	**Where to file issues**:  
-	[https://https://github.com/priestine/semantics/blob/master/docker/alpine.Dockerfile.com/priestine/semantics/issues](https://github.com/priestine/semantics/issues)
+	[https://github.com/priestine/semantics/issues](https://github.com/priestine/semantics/issues)
 
 -	**Maintained by**:  
 	[the Docker Community](https://github.com/docker-library/hello-world)
