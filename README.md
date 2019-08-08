@@ -48,7 +48,7 @@ npm i -g @priestine/semantics
 
 ### GitLab CI using Docker image
 
-The easiest way to use the app is to go get the [Docker image from Docker Cloud](https://cloud.docker.com/repository/docker/priestine/semantics). You can create a separate job in your `.gitlab-ci.yml` that will bump your versions. In fact, it is as simple as:
+The easiest way to use the app is to go get the [Docker image from Docker Cloud](https://hub.docker.com/r/priestine/semantics). You can create a separate job in your `.gitlab-ci.yml` that will bump your versions. In fact, it is as simple as:
 
 ```yaml
 # .gitab-ci.yml
@@ -86,7 +86,7 @@ jobs:
 
 ### Docker image info
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/) [![Docker Stars](https://img.shields.io/docker/stars/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/) [![MicroBadger Layers](https://img.shields.io/microbadger/layers/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/) [![MicroBadger Size](https://img.shields.io/microbadger/image-size/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics) [![Docker Stars](https://img.shields.io/docker/stars/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics) [![MicroBadger Layers](https://img.shields.io/microbadger/layers/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics) [![MicroBadger Size](https://img.shields.io/microbadger/image-size/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics)
 
 `priestine/semantics:latest` Docker image is built from `node:10-alpine`.
 
