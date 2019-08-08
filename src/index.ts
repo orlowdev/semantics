@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Pipeline } from '@priestine/data';
+import { IntermediatePipeline } from '@priestine/pipeline';
 import { Log } from './utils/log.util';
 import { getVersionTuple } from './middleware/get-version-tuple.middleware';
 import { SemanticsIntermediate } from './interfaces/semantics-intermediate.interface';
@@ -22,31 +22,47 @@ import { getLatestVersionCommitHash } from './middleware/get-latest-version-comm
 import { getLatestVersionTag } from './middleware/get-latest-version-tag.middleware';
 import { getCurrentCommitHash } from './middleware/get-current-commit-hash.middleware';
 
-Pipeline.from([
+const GatherConfigPipeline = IntermediatePipeline.from([
   setUpDefaultConfig,
   updateConfigFromArgv(process.argv.slice(2)),
   updateConfigFromEnv(process.env),
+]);
+
+const GitCommandsPipeline = IntermediatePipeline.from([
   getCurrentCommitHash,
   getLatestVersionTag,
   getLatestVersionCommitHash,
   getCommitsSinceLatestVersion,
-  normalizeCommitsString,
-  transformCommitsStringToObjects,
-  exitIfThereAreNoNewCommits,
-  reverseCommitsArrayIfRequired,
+]);
+
+const NormalizeCommitsPipeline = IntermediatePipeline.from([normalizeCommitsString, transformCommitsStringToObjects]);
+
+const ExitIfNoCommits = IntermediatePipeline.of(exitIfThereAreNoNewCommits);
+
+const BuildNewVersionPipeline = IntermediatePipeline.from([
   getVersionTuple,
   bumpPatchVersion,
   bumpMinorVersion,
   bumpMajorVersion,
   addPrefixAndPostfixToNewVersion,
-  exitIfVersionIsNotUpdated,
+]);
+
+const ExitIfNoBumping = IntermediatePipeline.of(exitIfVersionIsNotUpdated);
+
+const ApplyVersioningPipeline = IntermediatePipeline.from([
+  reverseCommitsArrayIfRequired,
   buildTagMessageIfRequired,
   writeTemporaryFilesIfRequired,
   publishTagIfRequired,
-])
-  .process({
-    intermediate: {} as SemanticsIntermediate,
-  })
+]);
+
+GatherConfigPipeline.concat(GitCommandsPipeline)
+  .concat(NormalizeCommitsPipeline)
+  .concat(ExitIfNoCommits)
+  .concat(BuildNewVersionPipeline)
+  .concat(ExitIfNoBumping)
+  .concat(ApplyVersioningPipeline)
+  .process({} as SemanticsIntermediate)
   .catch((e) => {
     Log.error(e.replace('\n', '->'));
     process.exit(1);
