@@ -4,7 +4,6 @@ stages:
   - style
   - test
   - versioning
-  - pages
   - npm_deploy
   - docker_deploy
 
@@ -82,18 +81,5 @@ publish:docker:
     - docker build -t priestine/semantics:${CI_COMMIT_REF_NAME}-slim - < ./docker/slim.Dockerfile
     - docker build -t priestine/semantics:slim - < ./docker/slim.Dockerfile
     - docker push priestine/semantics
-  only:
-    - tags
-
-pages:
-  stage: pages
-  script:
-    - npm run build:docs
-    - mkdir .public
-    - cp -r docs/* .public
-    - mv .public public
-  artifacts:
-    paths:
-      - public
   only:
     - tags
