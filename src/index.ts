@@ -6,7 +6,6 @@ import { getVersionTuple } from './middleware/get-version-tuple.middleware';
 import { SemanticsIntermediate } from './interfaces/semantics-intermediate.interface';
 import { updateConfigFromArgv } from './middleware/update-config-from-argv.middleware';
 import { updateConfigFromEnv } from './middleware/update-config-from-env.middleware';
-import { setUpDefaultConfig } from './middleware/set-up-default-config.middleware';
 import { bumpMajorVersion, bumpMinorVersion, bumpPatchVersion } from './middleware/bump-version.middleware';
 import { reverseCommitsArrayIfRequired } from './middleware/reverse-commits-array-if-required.middleware';
 import { normalizeCommitsString } from './middleware/normalize-commits-string.middleware';
@@ -23,7 +22,6 @@ import { getLatestVersionTag } from './middleware/get-latest-version-tag.middlew
 import { getCurrentCommitHash } from './middleware/get-current-commit-hash.middleware';
 
 const GatherConfigPipeline = IntermediatePipeline.from([
-  setUpDefaultConfig,
   updateConfigFromArgv(process.argv.slice(2)),
   updateConfigFromEnv(process.env),
 ]);
@@ -62,7 +60,34 @@ GatherConfigPipeline.concat(GitCommandsPipeline)
   .concat(BuildNewVersionPipeline)
   .concat(ExitIfNoBumping)
   .concat(ApplyVersioningPipeline)
-  .process({} as SemanticsIntermediate)
+  .process({
+    repository: 'github',
+    publishTag: true,
+    oldestCommitsFirst: true,
+    displayAuthor: false,
+    commitTypesIncludedInTagMessage: [
+      {
+        type: 'feat',
+        title: 'New features',
+        bumps: 'minor',
+      },
+      {
+        type: 'fix',
+        title: 'Bug fixes',
+        bumps: 'patch',
+      },
+    ],
+    commitTypesExcludedFromTagMessage: [],
+    tagMessage: true,
+    prefix: '',
+    postfix: '',
+    configFilePath: '',
+    writeTemporaryFiles: false,
+    preciseVersionMatching: true,
+    privateToken: '',
+    projectPath: '',
+    excludeMerges: true,
+  } as SemanticsIntermediate)
   .catch((e) => {
     Log.error(e.replace('\n', '->'));
     process.exit(1);
