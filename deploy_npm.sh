@@ -1,5 +1,5 @@
 # Add version to package.json
-sed -i s/"\"version\":.*/\"version\": \"${CI_COMMIT_REF_NAME}\","/ package.json
+sed -i s/"\"version\":.*/\"version\": \"${TRAVIS_TAG}\","/ package.json
 
 # Install dependencies
 npm run build:ci
