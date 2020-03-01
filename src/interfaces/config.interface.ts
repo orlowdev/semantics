@@ -158,4 +158,17 @@ export interface ConfigInterface {
    * @default true
    */
   writeToChangelog: boolean;
+
+  /**
+   * Name of the git user that will be used to publish updates to the repository. If this value is not specified,
+   * the USER value will be taken.
+   *
+   * @default ""
+   */
+  gitUserName: string;
+
+  /**
+   * Email of the git user that will be used to publish updates to the repository.
+   */
+  gitUserEmail: string;
 }

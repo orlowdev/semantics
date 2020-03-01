@@ -12,9 +12,18 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     return intermediate;
   }
 
+  const gitUser = intermediate.gitUserName ? intermediate.gitUserName : intermediate.user;
+
+  execSync(`git config user.name ${intermediate.gitUserName}`);
+
+  if (intermediate.gitUserEmail) {
+    execSync(`git config user.email ${intermediate.gitUserEmail}`);
+  }
+
   const origin = intermediate.origin
     ? intermediate.origin
     : execSync('git config --get remote.origin.url', { encoding: 'utf8' });
+
   let branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' });
   if (branch == 'HEAD') {
     branch = execSync('git name-rev HEAD', { encoding: 'utf8' }).replace(/HEAD\s+/, '');
