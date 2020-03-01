@@ -30,5 +30,16 @@ jobs:
         - npm i -g @priestine/semantics
         - priestine-semantics
     - stage: publish
+      services:
+        - docker
       script:
         - bash deploy_npm.sh
+        - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+        - docker build -t priestine/semantics:${TRAVIS_TAG}-alpine - < ./docker/alpine.Dockerfile
+        - docker build -t priestine/semantics:${TRAVIS_TAG} - < ./docker/alpine.Dockerfile
+        - docker build -t priestine/semantics:latest - < ./docker/alpine.Dockerfile
+        - docker build -t priestine/semantics:alpine - < ./docker/alpine.Dockerfile
+        - docker build -t priestine/semantics:${TRAVIS_TAG}-slim - < ./docker/slim.Dockerfile
+        - docker build -t priestine/semantics:slim - < ./docker/slim.Dockerfile
+        - docker push priestine/semantics
+
