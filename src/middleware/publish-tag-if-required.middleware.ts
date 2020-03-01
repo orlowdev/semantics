@@ -12,7 +12,9 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     return intermediate;
   }
 
-  const origin = execSync('git config --get remote.origin.url', { encoding: 'utf8' });
+  const origin = intermediate.origin
+    ? intermediate.origin
+    : execSync('git config --get remote.origin.url', { encoding: 'utf8' });
   const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' });
 
   if (!origin.includes('@')) {
@@ -39,6 +41,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     execSync(`git push origin ${branch}`);
   }
 
-  execPromise(`git tag -am "${intermediate.tagMessageContents}" ${intermediate.newVersion}`)
-    .then(() => execPromise(`git push origin ${intermediate.newVersion}`));
+  execPromise(`git tag -am "${intermediate.tagMessageContents}" ${intermediate.newVersion}`).then(() =>
+    execPromise(`git push origin ${intermediate.newVersion}`)
+  );
 }

@@ -123,8 +123,10 @@ PREFIX=v priestine-semantics
 * `--publish-tag[=<true|false>]` - if true, @priestine/semantics will attempt to publish release tag to the platform. Defaults to **true**.
 * `--oldest-commits-first[=<true|false>]` - if true, commits in the release notes will be sorted chronologically, oldest to latest. Defaults to **true**.
 * `--tag-message[=<true|false>]` - if true, tag release notes will be generated and added as release message when publishing. Defaults to **true**.
-* `--prefix=<value>` - set prefix for newly created version (e.g. `--prefix=v -> v1.0.0`)
-* `--postfix=<value>` - set postfix for newly created version (e.g. `--postfix=-beta -> 1.0.0-beta`)
+* `--prefix=<value>` - set prefix for newly created version (e.g. `--prefix=v -> v1.0.0`).
+* `--postfix=<value>` - set postfix for newly created version (e.g. `--postfix=-beta -> 1.0.0-beta`).
+* `--write-to-changelog[=<true|false>]` - if true, tag release notes will be prepended to ./CHANGELOG.md. Defaults to **true**.
+* `--origin=<value>` - custom remote origin to push release tag to. If not specified, updates are pushed to the current repository.
 * `--write-temporary-files[=<true|false>]` - if true, @priestine/semantics will create temporary files containing the data gathered during its execution (**NOTE**: temporary files are not generated if there are no reasons for version bumping)
 * `--precise-version-matching[=<true|false>]` - if true, @priestine/semantics will look for previous versions with given prefix and/or postfix instead of just looking for any previous SemVer-like tag. This is helpful for leading several changelogs for various types of releases.
 * `--exclude-merges[=<true|false>]` - if true, merge request commits will be excluded when evaluating changes since latest version. Defaults to **true**.
@@ -137,8 +139,10 @@ PREFIX=v priestine-semantics
 * `PUBLISH_TAG=<true|false>` - if true, @priestine/semantics will attempt to publish release tag to the platform. Defaults to **true**.
 * `OLDEST_COMMITS_FIRST=<true|false>` - if true, commits in the release notes will be sorted chronologically, oldest to latest. Defaults to **true**.
 * `TAG_MESSAGE=<true|false>` - if true, tag release notes will be generated and added as release message when publishing. Defaults to **true**.
-* `PREFIX=<value>` - set prefix for newly created version (e.g. `PREFIX=v -> v1.0.0`)
-* `POSTFIX=<value>` - set postfix for newly created version (e.g. `POSTFIX=-beta -> 1.0.0-beta`)
+* `PREFIX=<value>` - set prefix for newly created version (e.g. `PREFIX=v -> v1.0.0`).
+* `POSTFIX=<value>` - set postfix for newly created version (e.g. `POSTFIX=-beta -> 1.0.0-beta`).
+* `WRITE_TO_CHANGELOG=<true|false>` - if true, tag release notes will be prepended to ./CHANGELOG.md. Defaults to **true**.
+* `ORIGIN=<value>` - custom remote origin to push release tag to. If not specified, updates are pushed to the current repository.
 * `WRITE_TEMPORARY_FILES=<true|false>` - if true, @priestine/semantics will create temporary files containing the data gathered during its execution (**NOTE**: temporary files are not generated if there are no reasons for version bumping)
 * `PRECISE_VERSION_MATCHING=<true|false>` - if true, @priestine/semantics will look for previous versions with given prefix and/or postfix instead of just looking for any previous SemVer-like tag. This is helpful for leading several changelogs for various types of releases.
 * `EXCLUDE_MERGES=<true|false>` - if true, merge request commits will be excluded when evaluating changes since latest version. Defaults to **true**.
