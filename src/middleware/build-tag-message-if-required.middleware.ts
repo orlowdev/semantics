@@ -81,19 +81,17 @@ export function getChangelog(changes: CommitInterface[], types: CommitTypeInterf
 }
 
 export function buildTagMessageIfRequired({ intermediate }: SemanticsCtx) {
-  if (intermediate.tagMessage) {
-    Log.info('Building changelog...');
+  Log.info('Building changelog...');
 
-    intermediate.tagMessageContents = `# ${intermediate.newVersion}`
-      .concat(
-        getChangelog(
-          intermediate.commitsSinceLatestVersion,
-          intermediate.commitTypesIncludedInTagMessage,
-          intermediate.commitTypesExcludedFromTagMessage
-        )
+  intermediate.tagMessageContents = `# ${intermediate.newVersion}`
+    .concat(
+      getChangelog(
+        intermediate.commitsSinceLatestVersion,
+        intermediate.commitTypesIncludedInTagMessage,
+        intermediate.commitTypesExcludedFromTagMessage
       )
-      .concat(getBreakingChanges(intermediate.commitsSinceLatestVersion));
-  }
+    )
+    .concat(getBreakingChanges(intermediate.commitsSinceLatestVersion));
 
   return intermediate;
 }

@@ -118,9 +118,8 @@ PREFIX=v priestine-semantics
 
 ### Command Line Options
 
-* `--repository=<github|gitlab>` platform to publish tags to. Defaults to **github**.
-* `--private-token=<value>` - private token for publishing tags.
-* `--project-path=<value>` - project path for building the URL in chosen platform for publishing the release tag. E.g. `priestine/semantics` stored on Github will mean publishing to https://api.github.com/repos/priestine/semantics/releases.
+* `--user=<username>` - existing user that will be associated with the release.
+* `--password=<value>` - user password or access token for publishing tags.
 * `--publish-tag[=<true|false>]` - if true, @priestine/semantics will attempt to publish release tag to the platform. Defaults to **true**.
 * `--oldest-commits-first[=<true|false>]` - if true, commits in the release notes will be sorted chronologically, oldest to latest. Defaults to **true**.
 * `--tag-message[=<true|false>]` - if true, tag release notes will be generated and added as release message when publishing. Defaults to **true**.
@@ -132,8 +131,8 @@ PREFIX=v priestine-semantics
 
 ### Environment Variables
 
-* `REPOSITORY=<github|gitlab>` platform to publish tags to. Defaults to **github**.
-* `PRIVATE_TOKEN=<value>` - private token for publishing tags.
+* `USER=<username>` - existing user that will be associated with the release.
+* `PASSWORD=<value>` - user password or access token for publishing tags.
 * `PROJECT_PATH=<value>` - project path for building the URL in chosen platform for publishing the release tag. E.g. `priestine/semantics` stored on Github will mean publishing to https://api.github.com/repos/priestine/semantics/releases.
 * `PUBLISH_TAG=<true|false>` - if true, @priestine/semantics will attempt to publish release tag to the platform. Defaults to **true**.
 * `OLDEST_COMMITS_FIRST=<true|false>` - if true, commits in the release notes will be sorted chronologically, oldest to latest. Defaults to **true**.
