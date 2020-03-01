@@ -15,13 +15,6 @@ import { CommitTypeInterface } from './commit-type.interface';
  */
 export interface ConfigInterface {
   /**
-   * Platform for publishing release tags to.
-   *
-   * @default github
-   */
-  repository: 'github' | 'gitlab';
-
-  /**
    * Private token for publishing to chosen platform. Refer to according docs section on how to get private token.
    *
    * @throws if you set `publishTag` to true but do not provide the `privateToken` for publishing.
@@ -29,21 +22,6 @@ export interface ConfigInterface {
    * @default ""
    */
   privateToken: string;
-
-  /**
-   * Project path for building the URL in chosen platform for publishing the release tag. E.g. `priestine/semantics`
-   * stored on github will be used for constructing the project URL https://api.github.com/repos/priestine/semantics/releases.
-   *
-   * For Github, this will be `${OWNER|ORGANISATION}/${REPOSITORY_NAME}`.
-   * For Gitlab, this will be `${OWNER|GROUP}[/${SUBGROUP}...]/${REPOSITORY_NAME}`.
-   *
-   * In Gitlab CI you can also get the `projectPath` from a CI env variable (**CI_PROJECT_PATH**).
-   *
-   * @throws if you set `publishTag` to true but do not provide the `projectPath` for publishing.
-   *
-   * @default ""
-   */
-  projectPath: string;
 
   /**
    * If true, @priestine/semantics will attempt to publish a release tag to the chosen platform.
@@ -167,4 +145,12 @@ export interface ConfigInterface {
    * @default true
    */
   excludeMerges: boolean;
+
+  /**
+   * If true, CHANGELOG.md file in the root directory of the project will be prepended with the changes in the newly
+   * tagged version.
+   *
+   * @default true
+   */
+  writeToChangelog: boolean;
 }

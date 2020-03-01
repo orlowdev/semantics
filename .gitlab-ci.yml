@@ -53,7 +53,7 @@ versioning:
   stage: versioning
   image: priestine/semantics:latest
   script:
-    - priestine-semantics --private-token=${SEMANTICS_TOKEN} --project-path=priestine/semantics
+    - priestine-semantics --private-token=${SEMANTICS_TOKEN}
   only:
     - master
 

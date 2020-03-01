@@ -61,10 +61,8 @@ GatherConfigPipeline.concat(GitCommandsPipeline)
   .concat(ExitIfNoBumping)
   .concat(ApplyVersioningPipeline)
   .process({
-    repository: 'github',
     publishTag: true,
     oldestCommitsFirst: true,
-    displayAuthor: false,
     commitTypesIncludedInTagMessage: [
       {
         type: 'feat',
@@ -81,14 +79,13 @@ GatherConfigPipeline.concat(GitCommandsPipeline)
     tagMessage: true,
     prefix: '',
     postfix: '',
-    configFilePath: '',
     writeTemporaryFiles: false,
     preciseVersionMatching: true,
     privateToken: '',
-    projectPath: '',
     excludeMerges: true,
+    writeToChangelog: true,
   } as SemanticsIntermediate)
   .catch((e) => {
-    Log.error(e.replace('\n', '->'));
+    Log.error(e);
     process.exit(1);
   });
