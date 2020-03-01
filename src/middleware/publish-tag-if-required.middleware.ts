@@ -12,17 +12,15 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     return intermediate;
   }
 
-  if (!intermediate.password) {
-    Log.error('Private token not specified');
-    process.exit(1);
-  }
-
   const origin = execSync('git config --get remote.origin.url', { encoding: 'utf8' });
 
   if (!origin.includes('@')) {
-    const accessibleRemote = origin.includes('@')
-      ? origin
-      : origin.replace('https://', `https://${intermediate.user}:${intermediate.password}@`);
+    if (!intermediate.password) {
+      Log.error('Private token not specified');
+      process.exit(1);
+    }
+
+    const accessibleRemote = origin.replace('https://', `https://${intermediate.user}:${intermediate.password}@`);
 
     execSync(`git remote set-url origin ${accessibleRemote}`);
   }
