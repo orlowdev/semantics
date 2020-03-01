@@ -13,7 +13,7 @@ stages:
   - name: versioning
     if: branch = master AND type = push
   - name: publish
-    if: tag IS present AND tag =~ ^v
+    if: tag IS present
 
 jobs:
   include:
@@ -27,8 +27,7 @@ jobs:
         - bash <(curl -s https://codecov.io/bash) -t "${CODECOV_TOKEN}" -f coverage/*.json
     - stage: versioning
       script:
-        - npm install -g @priestine/semantics
-        - priestine-semantics --prefix=v --precise-version-matching=false
+        - npx priestine-semantics
     - stage: publish
       script:
         - bash deploy_npm.sh

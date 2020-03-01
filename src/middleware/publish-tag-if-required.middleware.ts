@@ -21,7 +21,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
 
   const accessibleRemote = origin.replace('https://', `https://${intermediate.user}:${intermediate.password}@`);
 
-  execSync(accessibleRemote);
+  execSync(`git remote set-url origin ${accessibleRemote}`);
 
   if (!existsSync('./CHANGELOG.md')) {
     Log.warning('CHANGELOG.md is not in place. Creating the file.');
