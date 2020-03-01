@@ -15,7 +15,6 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
   const origin = execSync('git config --get remote.origin.url', { encoding: 'utf8' });
   const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' });
 
-
   if (!origin.includes('@')) {
     if (!intermediate.password) {
       Log.error('Private token not specified');
