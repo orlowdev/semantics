@@ -16,8 +16,8 @@
     "test": "jest",
     "test:cover": "rm -rf coverage && yarn test --coverage",
     "test:watch": "npm run test -- --watch",
-    "style:check": "prettier --list-different src/**/*.ts src/*.ts",
-    "style:fix": "prettier --write src/**/*.ts src/*.ts",
+    "lint": "prettier --list-different src/**/*.ts src/*.ts",
+    "lint:fix": "prettier --write src/**/*.ts src/*.ts",
     "build:ci": "tsc",
     "start": "node src/index.js"
   },
