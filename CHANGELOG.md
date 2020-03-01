@@ -1,3 +1,5 @@
-# Changelog
+# 6.0.1
 
-[https://github.com/priestine/semantics/releases](https://github.com/priestine/semantics/releases)
+## Bug fixes
+
+* (observability) add logging during publishing tags 6c1230a
