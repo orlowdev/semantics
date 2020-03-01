@@ -85,6 +85,6 @@ GatherConfigPipeline.concat(GitCommandsPipeline)
     excludeMerges: true,
   } as SemanticsIntermediate)
   .catch((e) => {
-    Log.error(e.replace('\n', '->'));
+    Log.error(e);
     process.exit(1);
   });

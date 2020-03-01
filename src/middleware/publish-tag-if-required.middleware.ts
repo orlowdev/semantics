@@ -2,6 +2,8 @@ import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
 import { Log } from '../utils/log.util';
 import { Iro } from '@priestine/iro/src';
 import { execPromise } from '../utils/exec-promise.util';
+import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'fs';
+import { execSync } from 'child_process';
 
 export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
   if (!intermediate.publishTag) {
@@ -15,11 +17,18 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     process.exit(1);
   }
 
-  execPromise(`git tag --annotate ${intermediate.newVersion} --message "${intermediate.tagMessageContents}"`)
-    .then((message) => {
-      Log.info(message);
-      return execPromise('git push --tags');
-    })
-    .then(() => Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`))
-    .catch((e: Error) => Log.error(e.message));
+  if (!existsSync('./CHANGELOG.md')) {
+    Log.warning('CHANGELOG.md is not in place. Creating the file.');
+    writeFileSync('./CHANGELOG.md', '', 'ut8');
+  }
+
+  const changelog = readFileSync('./CHANGELOG.md', 'utf8');
+  writeFileSync('./CHANGELOG.md', intermediate.tagMessageContents.concat('\n').concat(changelog));
+  execSync('git add ./CHANGELOG.md');
+  execSync(`git commit -m "docs(changelog): add ${intermediate.newVersion} changes"`);
+  execSync(`git push`);
+
+  execPromise(`git tag -am "${intermediate.tagMessageContents}" ${intermediate.newVersion}`)
+    .then(() => execPromise(`git push origin ${intermediate.newVersion}`))
+    .catch(Log.error);
 }

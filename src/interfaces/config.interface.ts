@@ -14,7 +14,6 @@ import { CommitTypeInterface } from './commit-type.interface';
  * defaults -> package.json | semantics.config.js | semantics.{json|yml|yaml} | .semanticsrc -> args -> ENV
  */
 export interface ConfigInterface {
-
   /**
    * Private token for publishing to chosen platform. Refer to according docs section on how to get private token.
    *
