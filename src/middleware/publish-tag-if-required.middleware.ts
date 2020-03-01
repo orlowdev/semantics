@@ -26,7 +26,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
   let branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' });
   if (/HEAD/.test('HEAD')) {
     branch = execSync('git name-rev HEAD', { encoding: 'utf8' }).replace(/HEAD\s+/, '');
-    Log.info(`The HEAD is detached. Current branch is ${branch}`);
+    Log.info(`The HEAD is detached. Current branch is ${branch}.`);
   }
 
   if (!origin.includes('@')) {
@@ -54,7 +54,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
       //   execSync(`git commit -m "docs(changelog): add ${intermediate.newVersion} changes"`);
       // }
 
-      return execPromise(`git push --follow-tags`);
+      return execPromise(`git push origin ${intermediate.newVersion}`);
     })
     .catch(Log.error)
     .then(() => Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`))
