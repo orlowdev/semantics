@@ -41,7 +41,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     execSync(`git push origin ${branch}`);
   }
 
-  execPromise(`git tag -am "${intermediate.tagMessageContents}" ${intermediate.newVersion}`).then(() =>
-    execPromise(`git push origin ${intermediate.newVersion}`)
-  );
+  execPromise(`git tag -am "${intermediate.tagMessageContents}" ${intermediate.newVersion}`)
+    .then(() => execPromise(`git push origin ${intermediate.newVersion}`))
+    .then(() => Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`));
 }
