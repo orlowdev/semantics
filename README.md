@@ -4,41 +4,18 @@
 
 [![licence: MIT](https://img.shields.io/npm/l/@priestine/semantics.svg)](https://github.com/priestine/semantics) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) [![versioning: semantics](https://img.shields.io/badge/versioning-semantics-912e5c.svg)](https://github.com/priestine/semantics)
 
-`@priestine/semantics` automates version bumping for your projects. It determines the next version number, generates the release notes and publishes the release tag.
-
-## Table of Contents
-
-- [@priestine/semantics](#priestinesemantics)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Installation](#installation)
-    - [Docker and GitLab CI](#docker-and-gitlab-ci)
-    - [Docker image info](#docker-image-info)
-    - [Manual usage](#manual-usage)
-  - [Customizing behaviour](#customizing-behaviour)
-    - [Command Line Options](#command-line-options)
-    - [Environment Variables](#environment-variables)
-  - [Temporary files](#temporary-files)
-      - [Temporary file description](#temporary-file-description)
-        - [.tmp.current_commit_data (Example)](#tmpcurrentcommitdata-example)
-        - [.tmp.current_tag_data (Example)](#tmpcurrenttagdata-example)
-        - [.tmp.version_data (Example)](#tmpversiondata-example)
-        - [.tmp.current_changes.json (Example)](#tmpcurrentchangesjson-example)
-      - [.tmp.changelog.md (Example)](#tmpchangelogmd-example)
-  - [Supported Versions](#supported-versions)
-  - [Badge](#badge)
+`@priestine/semantics` automates version bumping for your projects. It determines the next SemVer version number, generates the release notes, updates the CHANGELOG and publishes the release tag.
 
 ## Features
 
+* Compatibility with Github, Gitlab and Bitbucket
 * Automated versioning that follows [SemVer](https://semver.org/)
 * Automatically generated release notes
 * Simple and transparent way of releasing your code
 * Support for formalized commits that follow widely adopted Conventional Commits specification
-* Support for any language
+* Works with any programming loanguage
 * Simple integration with any CI/CD tool
-* Docker image for your entertainment
-* Unopinionated behaviour
-* Compatibility with both Github and Gitlab
+* Convenience Docker images for your entertainment
 
 ## Installation
 
@@ -81,7 +58,7 @@ jobs:
     - stage: versioning
       script:
         - npm install -g @priestine/semantics
-        - priestine-semantics --user=$USER --password=$PASSWORD --prefix=v
+        - priestine-semantics --user=$CI_USER --password=$CI_PASSWORD --prefix=v
 ```
 
 ### Docker image info
