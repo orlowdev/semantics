@@ -16,8 +16,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
   }
 
   execPromise(`git tag --annotate ${intermediate.newVersion} --message "${intermediate.tagMessageContents}"`)
-    .then(() => execPromise("git push --tags"))
+    .then(() => execPromise('git push --tags'))
     .then(() => Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`))
-    .catch((e: Error) => Log.error(e.message))
-  ;
+    .catch((e: Error) => Log.error(e.message));
 }
