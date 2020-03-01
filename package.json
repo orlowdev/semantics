@@ -6,9 +6,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "bin": {
-    "priestine-semantics": "./src/index.js"
-  },
+  "bin": "./src/index.js",
   "engines": {
     "node": ">=8.0.0"
   },
@@ -31,17 +29,17 @@
   "author": {
     "email": "priestine1.dev@gmail.com",
     "name": "Sergei Orlov",
-    "url": "https://priestine.com"
+    "url": "https://raini.dev"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/priestine/semantics.git"
+    "url": "git+ssh://git@github.com/priestine/semantics.git"
   },
   "bugs": {
-    "url": "https://gitlab.com/priestine/semantics/issues"
+    "url": "https://github.com/priestine/semantics/issues"
   },
-  "homepage": "https://gitlab.com/priestine/semantics#readme",
+  "homepage": "https://github.com/priestine/semantics#readme",
   "devDependencies": {
     "@types/jest": "24.0.13",
     "@types/node": "^10.11.4",
