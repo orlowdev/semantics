@@ -60,7 +60,7 @@ versioning:
   stage: versioning
   image: priestine/semantics:latest
   script:
-  - priestine-semantics --repository=gitlab --private-token=$GITLAB_ACCESS_TOKEN --project-path=my-account/my-project --prefix=v
+  - priestine-semantics --prefix=v
   only:
   - master
 ```
@@ -81,7 +81,7 @@ jobs:
     - stage: versioning
       script:
         - npm install -g @priestine/semantics
-        - priestine-semantics --private-token=REPOSITORY_ACCESS_TOKEN --project-path=account/my-project --prefix=v
+        - priestine-semantics --user=$USER --password=$PASSWORD --prefix=v
 ```
 
 ### Docker image info
