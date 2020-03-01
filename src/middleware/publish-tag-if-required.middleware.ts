@@ -29,7 +29,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
   if (intermediate.writeToChangelog) {
     if (!existsSync('./CHANGELOG.md')) {
       Log.warning('CHANGELOG.md is not in place. Creating the file.');
-      writeFileSync('./CHANGELOG.md', '', 'ut8');
+      writeFileSync('./CHANGELOG.md', '', 'utf8');
     }
 
     const changelog = readFileSync('./CHANGELOG.md', 'utf8');

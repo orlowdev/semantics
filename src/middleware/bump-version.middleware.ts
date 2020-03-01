@@ -25,7 +25,8 @@ export function bumpMajorVersion({ intermediate }: SemanticsCtx) {
 
   if (
     intermediate.commitsSinceLatestVersion.some((commit) => commit.hasMajorUpdate) ||
-    intermediate.versionTuple.every((x) => x === 0)
+    intermediate.versionTuple.every((x) => x === 0) ||
+    intermediate.versionTuple[0] < 1
   ) {
     intermediate.newVersion = `${currentVersionTuple[0] + 1}.0.0`;
   }
