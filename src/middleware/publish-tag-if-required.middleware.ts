@@ -19,11 +19,13 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
 
   const origin = execSync('git config --get remote.origin.url', { encoding: 'utf8' });
 
-  const accessibleRemote = origin.includes('@')
-    ? origin
-    : origin.replace('https://', `https://${intermediate.user}:${intermediate.password}@`);
+  if (!origin.includes('@')) {
+    const accessibleRemote = origin.includes('@')
+      ? origin
+      : origin.replace('https://', `https://${intermediate.user}:${intermediate.password}@`);
 
-  execSync(`git remote set-url origin ${accessibleRemote}`);
+    execSync(`git remote set-url origin ${accessibleRemote}`);
+  }
 
   if (!existsSync('./CHANGELOG.md')) {
     Log.warning('CHANGELOG.md is not in place. Creating the file.');
