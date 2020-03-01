@@ -12,28 +12,32 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     return intermediate;
   }
 
-  if (!intermediate.password) {
-    Log.error('Private token not specified');
-    process.exit(1);
-  }
-
   const origin = execSync('git config --get remote.origin.url', { encoding: 'utf8' });
+  const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' });
 
-  const accessibleRemote = origin.replace('https://', `https://${intermediate.user}:${intermediate.password}@`);
 
-  execSync(`git remote set-url origin ${accessibleRemote}`);
+  if (!origin.includes('@')) {
+    if (!intermediate.password) {
+      Log.error('Private token not specified');
+      process.exit(1);
+    }
 
-  if (!existsSync('./CHANGELOG.md')) {
-    Log.warning('CHANGELOG.md is not in place. Creating the file.');
-    writeFileSync('./CHANGELOG.md', '', 'ut8');
+    const accessibleRemote = origin.replace('https://', `https://${intermediate.user}:${intermediate.password}@`);
+
+    execSync(`git remote set-url origin ${accessibleRemote}`);
   }
 
   if (intermediate.writeToChangelog) {
+    if (!existsSync('./CHANGELOG.md')) {
+      Log.warning('CHANGELOG.md is not in place. Creating the file.');
+      writeFileSync('./CHANGELOG.md', '', 'ut8');
+    }
+
     const changelog = readFileSync('./CHANGELOG.md', 'utf8');
     writeFileSync('./CHANGELOG.md', intermediate.tagMessageContents.concat('\n').concat(changelog));
     execSync('git add ./CHANGELOG.md');
     execSync(`git commit -m "docs(changelog): add ${intermediate.newVersion} changes"`);
-    execSync(`git push`);
+    execSync(`git push origin ${branch}`);
   }
 
   execPromise(`git tag -am "${intermediate.tagMessageContents}" ${intermediate.newVersion}`)
