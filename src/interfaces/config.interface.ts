@@ -4,8 +4,8 @@ import { CommitTypeInterface } from './commit-type.interface';
  * ConfigInterface provides the description of configurable parts of @priestine/semantics. Each entry can be set via
  * environment variable or command line argument.
  *
- * To use environment variables in upper-snake case, e.g. `PRIVATE_TOKEN=$TOKEN` for `privateToken`.
- * To use CL args, use long options in kebab case, e.g. `--private-token=$TOKEN` for `privateToken`.
+ * To use environment variables in upper-snake case, e.g. `PRIVATE_TOKEN=$TOKEN` for `password`.
+ * To use CL args, use long options in kebab case, e.g. `--private-token=$TOKEN` for `password`.
  *
  * **NOTE**: environment variable values take precedence over CL arg values. See To Do section below for planned
  * features on configuration control. After these features are implemented, the following order of assignment will
@@ -17,16 +17,19 @@ export interface ConfigInterface {
   /**
    * Private token for publishing to chosen platform. Refer to according docs section on how to get private token.
    *
-   * @throws if you set `publishTag` to true but do not provide the `privateToken` for publishing.
-   *
    * @default ""
    */
-  privateToken: string;
+  password: string;
+
+  /**
+   * Git user that is used to push changes to the repo.
+   */
+  user: string;
 
   /**
    * If true, @priestine/semantics will attempt to publish a release tag to the chosen platform.
    *
-   * Requires `privateToken` and `projectPath` to be provided.
+   * Requires `password` and `projectPath` to be provided.
    *
    * @default true
    */
@@ -72,13 +75,6 @@ export interface ConfigInterface {
    * @default []
    */
   commitTypesExcludedFromTagMessage: string[];
-
-  /**
-   * If true, tag release notes will be generated and added as release message when publishing.
-   *
-   * @default true
-   */
-  tagMessage: boolean;
 
   /**
    * Optional prefix that will be prepended to the version (e.g. `v` will result in **v1.0.0**).

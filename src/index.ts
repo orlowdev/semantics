@@ -61,6 +61,8 @@ GatherConfigPipeline.concat(GitCommandsPipeline)
   .concat(ExitIfNoBumping)
   .concat(ApplyVersioningPipeline)
   .process({
+    user: '',
+    password: '',
     publishTag: true,
     oldestCommitsFirst: true,
     commitTypesIncludedInTagMessage: [
@@ -76,12 +78,10 @@ GatherConfigPipeline.concat(GitCommandsPipeline)
       },
     ],
     commitTypesExcludedFromTagMessage: [],
-    tagMessage: true,
     prefix: '',
     postfix: '',
     writeTemporaryFiles: false,
     preciseVersionMatching: true,
-    privateToken: '',
     excludeMerges: true,
     writeToChangelog: true,
   } as SemanticsIntermediate)
