@@ -85,6 +85,8 @@ GatherConfigPipeline.concat(GitCommandsPipeline)
     excludeMerges: true,
     writeToChangelog: true,
     origin: '',
+    gitUserName: '',
+    gitUserEmail: '',
   } as SemanticsIntermediate)
   .catch((e) => {
     Log.error(e);
