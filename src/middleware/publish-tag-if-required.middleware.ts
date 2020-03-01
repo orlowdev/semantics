@@ -57,10 +57,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
 
       return execPromise(`git push origin ${branch} --follow-tags`);
     })
+    .catch(Log.error)
     .then(() => Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`))
-    .catch((e) => {
-      if (/\[rejected]/.test(e)) {
-        Log.error('Tag already exists.');
-      }
-    });
+    .catch(Log.error);
 }
