@@ -41,20 +41,26 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     execSync(`git remote set-url origin ${accessibleRemote}`);
   }
 
-  if (intermediate.writeToChangelog) {
-    if (!existsSync('./CHANGELOG.md')) {
-      Log.warning('CHANGELOG.md is not in place. Creating the file.');
-      writeFileSync('./CHANGELOG.md', '', 'utf8');
-    }
-
-    const changelog = readFileSync('./CHANGELOG.md', 'utf8');
-    writeFileSync('./CHANGELOG.md', intermediate.tagMessageContents.concat('\n').concat(changelog));
-    execSync('git add ./CHANGELOG.md');
-    execSync(`git commit -m "docs(changelog): add ${intermediate.newVersion} changes"`);
-    execSync(`git push origin ${branch}`);
-  }
-
   execPromise(`git tag -am "${intermediate.tagMessageContents}" ${intermediate.newVersion}`)
-    .then(() => execPromise(`git push origin ${intermediate.newVersion}`))
-    .then(() => Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`));
+    .then(() => {
+      if (intermediate.writeToChangelog) {
+        if (!existsSync('./CHANGELOG.md')) {
+          Log.warning('CHANGELOG.md is not in place. Creating the file.');
+          writeFileSync('./CHANGELOG.md', '', 'utf8');
+        }
+
+        const changelog = readFileSync('./CHANGELOG.md', 'utf8');
+        writeFileSync('./CHANGELOG.md', intermediate.tagMessageContents.concat('\n').concat(changelog));
+        execSync('git add ./CHANGELOG.md');
+        execSync(`git commit -m "docs(changelog): add ${intermediate.newVersion} changes"`);
+      }
+
+      return execPromise(`git push origin ${branch} --follow-tags`);
+    })
+    .then(() => Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`))
+    .catch((e) => {
+      if (/\[rejected]/.test(e)) {
+        Log.error('Tag already exists.');
+      }
+    });
 }
