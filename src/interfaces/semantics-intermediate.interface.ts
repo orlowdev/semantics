@@ -1,6 +1,6 @@
 import { ConfigInterface } from './config.interface';
-import { MiddlewareContextInterface } from '@priestine/data';
 import { CommitInterface } from './commit.interface';
+import { IntermediateInterface } from '@priestine/pipeline';
 
 /**
  * SemanticsIntermediate describes internal properties that @priestine/semantics creates and uses
@@ -52,4 +52,4 @@ export interface SemanticsIntermediate extends ConfigInterface {
 /**
  * Shortcut type for defining middleware argument type within @priestine/semantics.
  */
-export type SemanticsCtx = MiddlewareContextInterface<SemanticsIntermediate>;
+export type SemanticsCtx = IntermediateInterface<SemanticsIntermediate>;

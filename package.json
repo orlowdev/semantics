@@ -18,7 +18,6 @@
     "test:watch": "npm run test -- --watch",
     "style:check": "prettier --list-different src/**/*.ts src/*.ts",
     "style:fix": "prettier --write src/**/*.ts src/*.ts",
-    "build:docs": "typedoc --out ./docs ./src --exclude '**/*.spec.ts' --ignoreCompilerErrors --mode file",
     "build:ci": "tsc",
     "start": "node src/index.js"
   },
@@ -44,7 +43,6 @@
   },
   "homepage": "https://gitlab.com/priestine/semantics#readme",
   "devDependencies": {
-    "@types/chai": "^4.1.6",
     "@types/jest": "24.0.13",
     "@types/node": "^10.11.4",
     "@types/ramda": "^0.25.41",
@@ -52,14 +50,12 @@
     "jest": "24.8.0",
     "prettier": "^1.14.3",
     "ts-jest": "24.0.2",
-    "ts-node": "^7.0.1",
-    "typedoc": "^0.14.2",
     "typescript": "^3.1.1"
   },
   "dependencies": {
     "@priestine/case-transformer": "1.0.1",
-    "@priestine/data": "^3.1.1",
     "@priestine/iro": "^1.0.2",
+    "@priestine/pipeline": "^1.0.0",
     "ramda": "^0.25.0",
     "request": "^2.88.0"
   }

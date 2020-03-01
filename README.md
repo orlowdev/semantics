@@ -1,10 +1,8 @@
 # @priestine/semantics
 
-[![pipeline](https://gitlab.com/priestine1/semantics/badges/master/pipeline.svg)](https://gitlab.com/priestine1/semantics/pipelines) [![codecov](https://codecov.io/gh/priestine/semantics/branch/master/graph/badge.svg)](https://codecov.io/gh/priestine/semantics) [![npm](https://img.shields.io/npm/dt/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics) [![npm](https://img.shields.io/npm/v/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics)
+[![pipeline](https://gitlab.com/priestine1/semantics/badges/master/pipeline.svg)](https://github.com/priestine/semantics/pipelines) [![codecov](https://codecov.io/gh/priestine/semantics/branch/master/graph/badge.svg)](https://codecov.io/gh/priestine/semantics) [![npm](https://img.shields.io/npm/dt/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics) [![npm](https://img.shields.io/npm/v/@priestine/semantics.svg)](https://www.npmjs.com/package/@priestine/semantics)
 
-[![licence: MIT](https://img.shields.io/npm/l/@priestine/semantics.svg)](https://gitlab.com/priestine/semantics) [![docs: typedoc](https://img.shields.io/badge/docs-typedoc-orange.svg)](https://priestine1.gitlab.io/semantics) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) [![versioning: semantics](https://img.shields.io/badge/versioning-semantics-912e5c.svg)](https://github.com/priestine/semantics)
-
-[![Docker Pulls](https://img.shields.io/docker/pulls/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/) [![Docker Stars](https://img.shields.io/docker/stars/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/) [![MicroBadger Layers](https://img.shields.io/microbadger/layers/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/) [![MicroBadger Size](https://img.shields.io/microbadger/image-size/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics/)
+[![licence: MIT](https://img.shields.io/npm/l/@priestine/semantics.svg)](https://github.com/priestine/semantics) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) [![versioning: semantics](https://img.shields.io/badge/versioning-semantics-912e5c.svg)](https://github.com/priestine/semantics)
 
 `@priestine/semantics` automates version bumping for your projects. It determines the next version number, generates the release notes and publishes the release tag.
 
@@ -50,7 +48,7 @@ npm i -g @priestine/semantics
 
 ### GitLab CI using Docker image
 
-The easiest way to use the app is to go get the [Docker image from Docker Cloud](https://cloud.docker.com/repository/docker/priestine/semantics). You can create a separate job in your `.gitlab-ci.yml` that will bump your versions. In fact, it is as simple as:
+The easiest way to use the app is to go get the [Docker image from Docker Cloud](https://hub.docker.com/r/priestine/semantics). You can create a separate job in your `.gitlab-ci.yml` that will bump your versions. In fact, it is as simple as:
 
 ```yaml
 # .gitab-ci.yml
@@ -87,6 +85,8 @@ jobs:
 ```
 
 ### Docker image info
+
+[![Docker Pulls](https://img.shields.io/docker/pulls/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics) [![Docker Stars](https://img.shields.io/docker/stars/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics) [![MicroBadger Layers](https://img.shields.io/microbadger/layers/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics) [![MicroBadger Size](https://img.shields.io/microbadger/image-size/priestine/semantics.svg)](https://hub.docker.com/r/priestine/semantics)
 
 `priestine/semantics:latest` Docker image is built from `node:10-alpine`.
 
@@ -138,8 +138,8 @@ PREFIX=v priestine-semantics
 * `PUBLISH_TAG=<true|false>` - if true, @priestine/semantics will attempt to publish release tag to the platform. Defaults to **true**.
 * `OLDEST_COMMITS_FIRST=<true|false>` - if true, commits in the release notes will be sorted chronologically, oldest to latest. Defaults to **true**.
 * `TAG_MESSAGE=<true|false>` - if true, tag release notes will be generated and added as release message when publishing. Defaults to **true**.
-* `PREFIX=<value>` - set prefix for newly created version (e.g. `--prefix=v -> v1.0.0`)
-* `POSTFIX=<value>` - set postfix for newly created version (e.g. `--postfix=-beta -> 1.0.0-beta`)
+* `PREFIX=<value>` - set prefix for newly created version (e.g. `PREFIX=v -> v1.0.0`)
+* `POSTFIX=<value>` - set postfix for newly created version (e.g. `POSTFIX=-beta -> 1.0.0-beta`)
 * `WRITE_TEMPORARY_FILES=<true|false>` - if true, @priestine/semantics will create temporary files containing the data gathered during its execution (**NOTE**: temporary files are not generated if there are no reasons for version bumping)
 * `PRECISE_VERSION_MATCHING=<true|false>` - if true, @priestine/semantics will look for previous versions with given prefix and/or postfix instead of just looking for any previous SemVer-like tag. This is helpful for leading several changelogs for various types of releases.
 * `EXCLUDE_MERGES=<true|false>` - if true, merge request commits will be excluded when evaluating changes since latest version. Defaults to **true**.
