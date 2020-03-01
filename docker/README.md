@@ -5,6 +5,9 @@
 * latest [(latest/Dockerfile)](https://github.com/priestine/semantics/blob/master/docker/alpine.Dockerfile)
 * alpine [(alpine/Dockerfile)](https://github.com/priestine/semantics/blob/master/docker/alpine.Dockerfile)
 * slim [(slim/Dockerfile)](https://github.com/priestine/semantics/blob/master/docker/slim.Dockerfile)
+* x.x.x-alpine [(alpine/Dockerfile)](https://github.com/priestine/semantics/blob/master/docker/alpine.Dockerfile)
+* x.x.x [(alpine/Dockerfile)](https://github.com/priestine/semantics/blob/master/docker/alpine.Dockerfile)
+* x.x.x-slim [(slim/Dockerfile)](https://github.com/priestine/semantics/blob/master/docker/slim.Dockerfile)
 
 # Quick reference
 
