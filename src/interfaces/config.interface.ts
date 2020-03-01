@@ -91,6 +91,15 @@ export interface ConfigInterface {
   postfix: string;
 
   /**
+   * Custom remote git origin to push tags to. If it is not specified, updates are pushed to the current
+   * repository. This option may be useful when mirroring repositories, e.g. using Gitlab CI for a Github
+   * project. Providing authentication credentials is optional. The origin MUST be using HTTP, not SSH.
+   *
+   * @default ""
+   */
+  origin: string;
+
+  /**
    * Relative or absolute path to the directory where @priestine/semantics should look for config files.
    *
    * Not implemented.
