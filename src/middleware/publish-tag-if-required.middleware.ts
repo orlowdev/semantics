@@ -26,7 +26,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
   let branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' });
   if (/HEAD/.test('HEAD')) {
     branch = execSync('git name-rev HEAD', { encoding: 'utf8' }).replace(/HEAD\s+/, '');
-    Log.warning(`The HEAD is detached. Current branch is ${branch}`);
+    Log.info(`The HEAD is detached. Current branch is ${branch}`);
   }
 
   if (!origin.includes('@')) {
@@ -36,7 +36,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     }
 
     const accessibleRemote = origin.replace('https://', `https://${intermediate.user}:${intermediate.password}@`);
-
+    Log.info("Setting new remote origin...");
     execSync(`git remote set-url origin ${accessibleRemote}`);
   }
 
