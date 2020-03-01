@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Add version to package.json
 sed -i s/"\"version\":.*/\"version\": \"${TRAVIS_TAG}\","/ package.json
 
