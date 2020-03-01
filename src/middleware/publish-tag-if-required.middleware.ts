@@ -22,11 +22,13 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     writeFileSync('./CHANGELOG.md', '', 'ut8');
   }
 
-  const changelog = readFileSync('./CHANGELOG.md', 'utf8');
-  writeFileSync('./CHANGELOG.md', intermediate.tagMessageContents.concat('\n').concat(changelog));
-  execSync('git add ./CHANGELOG.md');
-  execSync(`git commit -m "docs(changelog): add ${intermediate.newVersion} changes"`);
-  execSync(`git push`);
+  if (intermediate.writeToChangelog) {
+    const changelog = readFileSync('./CHANGELOG.md', 'utf8');
+    writeFileSync('./CHANGELOG.md', intermediate.tagMessageContents.concat('\n').concat(changelog));
+    execSync('git add ./CHANGELOG.md');
+    execSync(`git commit -m "docs(changelog): add ${intermediate.newVersion} changes"`);
+    execSync(`git push`);
+  }
 
   execPromise(`git tag -am "${intermediate.tagMessageContents}" ${intermediate.newVersion}`)
     .then(() => execPromise(`git push origin ${intermediate.newVersion}`))

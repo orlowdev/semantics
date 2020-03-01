@@ -83,6 +83,7 @@ GatherConfigPipeline.concat(GitCommandsPipeline)
     preciseVersionMatching: true,
     privateToken: '',
     excludeMerges: true,
+    writeToChangelog: true,
   } as SemanticsIntermediate)
   .catch((e) => {
     Log.error(e);

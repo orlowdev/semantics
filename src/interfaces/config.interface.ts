@@ -145,4 +145,12 @@ export interface ConfigInterface {
    * @default true
    */
   excludeMerges: boolean;
+
+  /**
+   * If true, CHANGELOG.md file in the root directory of the project will be prepended with the changes in the newly
+   * tagged version.
+   *
+   * @default true
+   */
+  writeToChangelog: boolean;
 }
