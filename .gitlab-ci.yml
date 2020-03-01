@@ -51,9 +51,9 @@ coverage:report:
 
 versioning:
   stage: versioning
-  image: priestine/semantics:5.1.1-alpine
+  image: priestine/semantics:latest
   script:
-    - priestine-semantics --private-token=${SEMANTICS_TOKEN} --project-path=priestine/semantics
+    - priestine-semantics
   only:
     - master
 
