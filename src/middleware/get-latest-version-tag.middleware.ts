@@ -17,13 +17,8 @@ export function getLatestVersionTag({ intermediate }: SemanticsCtx) {
       };
     })
     .catch((e) => {
-      if (!/\nfatal: No names found, cannot describe anything/.test(e)) {
-        Log.error(e.replace('\n', '->'));
-        process.exit(1);
-      }
-
       Log.warning(
-        `There are no previous tags matching the "${Iro.yellow(
+        `There seem to be no previous tags matching the "${Iro.yellow(
           `${intermediate.prefix}*${intermediate.postfix}`
         )}" pattern.`
       );

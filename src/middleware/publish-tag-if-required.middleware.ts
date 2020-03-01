@@ -25,8 +25,9 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     : execSync('git config --get remote.origin.url', { encoding: 'utf8' });
 
   let branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' });
-  if (branch == 'HEAD') {
+  if (/HEAD/.test('HEAD')) {
     branch = execSync('git name-rev HEAD', { encoding: 'utf8' }).replace(/HEAD\s+/, '');
+    Log.warning(`The HEAD is detached. Current branch is ${branch}`);
   }
 
   if (!origin.includes('@')) {
