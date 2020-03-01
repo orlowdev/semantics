@@ -54,7 +54,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
       //   execSync(`git commit -m "docs(changelog): add ${intermediate.newVersion} changes"`);
       // }
 
-      return execPromise(`git push origin ${branch} --follow-tags`);
+      return execPromise(`git push --follow-tags`);
     })
     .catch(Log.error)
     .then(() => Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`))
