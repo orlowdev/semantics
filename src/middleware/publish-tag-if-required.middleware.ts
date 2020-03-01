@@ -15,7 +15,10 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
   const origin = intermediate.origin
     ? intermediate.origin
     : execSync('git config --get remote.origin.url', { encoding: 'utf8' });
-  const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' });
+  let branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' });
+  if (branch == 'HEAD') {
+    branch = execSync('git name-rev HEAD', { encoding: 'utf8' }).replace(/HEAD\s+/, '');
+  }
 
   if (!origin.includes('@')) {
     if (!intermediate.password) {
