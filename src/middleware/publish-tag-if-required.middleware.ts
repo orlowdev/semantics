@@ -2,7 +2,6 @@ import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
 import { Log } from '../utils/log.util';
 import { Iro } from '@priestine/iro/src';
 import { execPromise } from '../utils/exec-promise.util';
-import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'fs';
 import { execSync } from 'child_process';
 
 export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
@@ -14,7 +13,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
 
   const gitUser = intermediate.gitUserName ? intermediate.gitUserName : intermediate.user;
 
-  execSync(`git config user.name ${intermediate.gitUserName}`);
+  execSync(`git config user.name ${gitUser}`);
 
   if (intermediate.gitUserEmail) {
     execSync(`git config user.email ${intermediate.gitUserEmail}`);
