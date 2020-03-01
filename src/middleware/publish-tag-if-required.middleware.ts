@@ -2,7 +2,6 @@ import { SemanticsCtx } from '../interfaces/semantics-intermediate.interface';
 import { Log } from '../utils/log.util';
 import { Iro } from '@priestine/iro/src';
 import { execPromise } from '../utils/exec-promise.util';
-import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'fs';
 import { execSync } from 'child_process';
 
 export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
@@ -14,7 +13,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
 
   const gitUser = intermediate.gitUserName ? intermediate.gitUserName : intermediate.user;
 
-  execSync(`git config user.name ${intermediate.gitUserName}`);
+  execSync(`git config user.name ${gitUser}`);
 
   if (intermediate.gitUserEmail) {
     execSync(`git config user.email ${intermediate.gitUserEmail}`);
@@ -27,7 +26,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
   let branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' });
   if (/HEAD/.test('HEAD')) {
     branch = execSync('git name-rev HEAD', { encoding: 'utf8' }).replace(/HEAD\s+/, '');
-    Log.warning(`The HEAD is detached. Current branch is ${branch}`);
+    Log.info(`The HEAD is detached. Current branch is ${branch}`);
   }
 
   if (!origin.includes('@')) {
@@ -37,7 +36,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     }
 
     const accessibleRemote = origin.replace('https://', `https://${intermediate.user}:${intermediate.password}@`);
-
+    Log.info('Setting new remote origin...');
     execSync(`git remote set-url origin ${accessibleRemote}`);
   }
 
