@@ -27,12 +27,12 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     execSync(`git remote set-url origin ${accessibleRemote}`);
   }
 
-  if (!existsSync('./CHANGELOG.md')) {
-    Log.warning('CHANGELOG.md is not in place. Creating the file.');
-    writeFileSync('./CHANGELOG.md', '', 'ut8');
-  }
-
   if (intermediate.writeToChangelog) {
+    if (!existsSync('./CHANGELOG.md')) {
+      Log.warning('CHANGELOG.md is not in place. Creating the file.');
+      writeFileSync('./CHANGELOG.md', '', 'ut8');
+    }
+
     const changelog = readFileSync('./CHANGELOG.md', 'utf8');
     writeFileSync('./CHANGELOG.md', intermediate.tagMessageContents.concat('\n').concat(changelog));
     execSync('git add ./CHANGELOG.md');
