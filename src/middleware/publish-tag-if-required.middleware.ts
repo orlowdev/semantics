@@ -36,7 +36,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
     }
 
     const accessibleRemote = origin.replace('https://', `https://${intermediate.user}:${intermediate.password}@`);
-    Log.info("Setting new remote origin...");
+    Log.info('Setting new remote origin...');
     execSync(`git remote set-url origin ${accessibleRemote}`);
   }
 
