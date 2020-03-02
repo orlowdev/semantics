@@ -7,7 +7,7 @@ export interface ICommitAuthor {
 }
 
 /**
- * ICommit describes the commit entity stored in ISemantics.commitsSinceLatestVersion array.
+ * ICommit describes the commit entity stored in ISemanticsIntermediate.commitsSinceLatestVersion array.
  */
 export interface ICommit {
   /**

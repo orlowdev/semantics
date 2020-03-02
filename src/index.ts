@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Log } from "./utils/log.util";
-import { ISemantics } from "./interfaces/semantics-intermediate.interface";
+import { ISemanticsIntermediate } from "./interfaces/semantics-intermediate.interface";
 import { GatherConfig } from "./pipelines/gather-config";
 import { GetCommitsSinceLatestVersion } from "./pipelines/get-commits-since-latest-version";
 import { NormalizeCommits } from "./pipelines/normalize-commits";
@@ -43,7 +43,7 @@ GatherConfig.concat(GetCommitsSinceLatestVersion)
     origin: "",
     gitUserName: "",
     gitUserEmail: "",
-  } as ISemantics)
+  } as ISemanticsIntermediate)
   .catch((e) => {
     Log.error(e);
     process.exit(1);

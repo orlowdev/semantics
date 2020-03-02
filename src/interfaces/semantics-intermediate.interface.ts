@@ -3,10 +3,10 @@ import { ICommit } from "./commit.interface";
 import { IntermediateInterface } from "@priestine/pipeline";
 
 /**
- * ISemantics describes internal properties that @priestine/semantics creates and uses
+ * ISemanticsIntermediate describes internal properties that @priestine/semantics creates and uses
  * internally during its execution. These values cannot be set from outside or overriden.
  */
-export interface ISemantics extends IConfig {
+export interface ISemanticsIntermediate extends IConfig {
   /**
    * Hash of current commit.
    */
@@ -52,4 +52,4 @@ export interface ISemantics extends IConfig {
 /**
  * Shortcut type for defining middleware argument type within @priestine/semantics.
  */
-export type SemanticsCtx = IntermediateInterface<ISemantics>;
+export type SemanticsCtx = IntermediateInterface<ISemanticsIntermediate>;
