@@ -1,10 +1,10 @@
 import { IntermediatePipeline } from "@priestine/pipeline";
 import { SemanticsCtx } from "../interfaces/semantics-intermediate.interface";
 import { Log } from "../utils/log.util";
-import { CommitInterface } from "../interfaces/commit.interface";
+import { ICommit } from "../interfaces/commit.interface";
 import * as R from "ramda";
 import { Iro } from "@priestine/iro/src";
-import { CommitTypeInterface } from "../interfaces/commit-type.interface";
+import { ICommitType } from "../interfaces/commit-type.interface";
 import { getSubjects } from "../utils/get-subjects.util";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
@@ -23,11 +23,11 @@ export function reverseCommitsArrayIfRequired({ intermediate }: SemanticsCtx) {
   };
 }
 
-export function getBreakingChanges(changes: CommitInterface[]): string {
+export function getBreakingChanges(changes: ICommit[]): string {
   let substring: string = "";
 
   const bc = R.flatten(
-    changes.map((x: CommitInterface) =>
+    changes.map((x: ICommit) =>
       x.breakingChanges.map(
         (y: string) => `* ${x.scope ? x.scope : " "}${y} ${x.abbrevHash}`,
       ),
@@ -50,8 +50,8 @@ export function getBreakingChanges(changes: CommitInterface[]): string {
 }
 
 export function getChangelog(
-  changes: CommitInterface[],
-  types: CommitTypeInterface[],
+  changes: ICommit[],
+  types: ICommitType[],
   omittedTypes: string[],
 ): string {
   const getSubjectedCommits = getSubjects(changes);
@@ -88,7 +88,7 @@ export function getChangelog(
   });
 
   return types
-    .map((ct: CommitTypeInterface) => {
+    .map((ct: ICommitType) => {
       let substring: string = "";
 
       const commitsOfThatType = changes.filter(

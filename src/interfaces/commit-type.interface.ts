@@ -1,5 +1,5 @@
 /**
- * CommitTypeInterface describes the object that can be passed to Config.commitTypesIncludedInTagMessage array.
+ * ICommitType describes the object that can be passed to Config.commitTypesIncludedInTagMessage array.
  * By default, this array includes:
  * - { title: "Bug Fixes", type: "fix", bumps: "patch" }
  * - { title: "New Features", type: "feat", bumps: "minor" }
@@ -9,7 +9,7 @@
  * **NOTE**: You cannot disable bumping major versions via BREAKING CHANGE. If you do not want this behaviour, do not
  * state `BREAKING CHANGE: ` metadata in commits.
  */
-export interface CommitTypeInterface {
+export interface ICommitType {
   /**
    * Title to be used in the release notes as the commit type group header.
    */

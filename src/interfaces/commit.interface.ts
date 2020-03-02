@@ -1,7 +1,7 @@
 /**
- * CommitInterface describes the commit entity stored in SemanticsIntermediate.commitsSinceLatestVersion array.
+ * ICommit describes the commit entity stored in ISemantics.commitsSinceLatestVersion array.
  */
-export interface CommitInterface {
+export interface ICommit {
   /**
    * Full commit hash.
    */

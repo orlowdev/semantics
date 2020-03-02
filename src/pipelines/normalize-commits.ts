@@ -1,6 +1,6 @@
 import { IntermediatePipeline } from "@priestine/pipeline";
 import { SemanticsCtx } from "../interfaces/semantics-intermediate.interface";
-import { CommitInterface } from "../interfaces/commit.interface";
+import { ICommit } from "../interfaces/commit.interface";
 import { Log } from "../utils/log.util";
 import { Iro } from "@priestine/iro/src";
 
@@ -28,12 +28,10 @@ export function normalizeCommitsString({ intermediate }: SemanticsCtx) {
 
 /**
  * Extract breaking changes from commit body.
- * @param commit CommitInterface
- * @returns CommitInterface
+ * @param commit ICommit
+ * @returns ICommit
  */
-export const extractBreakingChanges = (
-  commit: CommitInterface,
-): CommitInterface => {
+export const extractBreakingChanges = (commit: ICommit): ICommit => {
   commit.breakingChanges =
     commit.body
       .filter((x: string) => /^BREAKING\sCHANGE:/.test(x))
@@ -48,12 +46,10 @@ export const extractBreakingChanges = (
 /**
  * Extract type from the commit subject and amend subject itself for later use.
  * @todo:priestine Refactor this into separate functions
- * @param commit CommitInterface
- * @returns CommitInterface
+ * @param commit ICommit
+ * @returns ICommit
  */
-export const extractCommitTypes = (
-  commit: CommitInterface,
-): CommitInterface => {
+export const extractCommitTypes = (commit: ICommit): ICommit => {
   if (commit.description.indexOf(": ") === -1) {
     commit.description = `fix: ${commit.description}`;
   }
@@ -79,10 +75,10 @@ export const extractCommitTypes = (
 /**
  * Transform non-normalized commit body string into array of strings.
  * If body string contains an asterisk (*), it will be automatically trimmed.
- * @param commit CommitInterface
- * @returns CommitInterface
+ * @param commit ICommit
+ * @returns ICommit
  */
-export const normalizeBody = (commit: CommitInterface): CommitInterface => {
+export const normalizeBody = (commit: ICommit): ICommit => {
   commit.body = (commit.body as any)
     .split(", ")
     .reduce((r: string[], x: string) => {
@@ -118,7 +114,7 @@ export function transformCommitsStringToObjects({
       .map(extractCommitTypes)
       .map(extractBreakingChanges)
       // TODO: Extract
-      .map((commit: CommitInterface) => {
+      .map((commit: ICommit) => {
         const whitelistedType = intermediate.commitTypesIncludedInTagMessage.find(
           (c) => c.type === commit.type,
         );

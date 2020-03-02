@@ -1,7 +1,7 @@
-import { CommitTypeInterface } from "./commit-type.interface";
+import { ICommitType } from "./commit-type.interface";
 
 /**
- * ConfigInterface provides the description of configurable parts of @priestine/semantics. Each entry can be set via
+ * IConfig provides the description of configurable parts of @priestine/semantics. Each entry can be set via
  * environment variable or command line argument.
  *
  * To use environment variables in upper-snake case, e.g. `PRIVATE_TOKEN=$TOKEN` for `password`.
@@ -13,7 +13,7 @@ import { CommitTypeInterface } from "./commit-type.interface";
  *
  * defaults -> package.json | semantics.config.js | semantics.{json|yml|yaml} | .semanticsrc -> args -> ENV
  */
-export interface ConfigInterface {
+export interface IConfig {
   /**
    * Private token for publishing to chosen platform. Refer to according docs section on how to get private token.
    *
@@ -60,7 +60,7 @@ export interface ConfigInterface {
    *
    * @default includes fix and feat types
    */
-  commitTypesIncludedInTagMessage: CommitTypeInterface[];
+  commitTypesIncludedInTagMessage: ICommitType[];
 
   /**
    * A list of commit types that are excluded from the release notes.

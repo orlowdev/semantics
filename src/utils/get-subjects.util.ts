@@ -1,17 +1,15 @@
-import { CommitInterface } from "../interfaces/commit.interface";
+import { ICommit } from "../interfaces/commit.interface";
 
 /**
  * Extract commit subjects and transform them into readable form.
- * @param xs CommitInterface[]
+ * @param xs ICommit[]
  * @returns string[]
  */
-export const getSubjects = (xs: CommitInterface[]) => (
-  type: string,
-): string[] =>
+export const getSubjects = (xs: ICommit[]) => (type: string): string[] =>
   xs
-    .filter((x: CommitInterface) => x.type === type)
+    .filter((x: ICommit) => x.type === type)
     .map(
-      (x: CommitInterface) =>
+      (x: ICommit) =>
         `${x.scope ? `${x.scope} ` : ""}${x.description} ${x.abbrevHash}${
           x.body.length ? `\n\n  * ${x.body.join("<br/>\n  * ")}\n` : ""
         }`,
