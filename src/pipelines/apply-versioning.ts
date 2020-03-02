@@ -10,7 +10,7 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
 import { execPromise } from "../utils/exec-promise.util";
 
-export function reverseCommitsArrayIfRequired({ intermediate }: TSemanticsCtx) {
+export function reverseChangesArrayIfRequired({ intermediate }: TSemanticsCtx) {
   const message = intermediate.oldestCommitsFirst
     ? "Changes will be ordered by commit date in ascending order (oldest first)."
     : "Changes will be ordered by commit date in descending order (newest first).";
@@ -252,7 +252,7 @@ export function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
 }
 
 export const ApplyVersioning = IntermediatePipeline.from([
-  reverseCommitsArrayIfRequired,
+  reverseChangesArrayIfRequired,
   buildTagMessageIfRequired,
   writeTemporaryFilesIfRequired,
   publishTagIfRequired,
