@@ -1,4 +1,12 @@
 /**
+ * ICommitAuthor describes the commit author entity.
+ */
+export interface ICommitAuthor {
+  name: string;
+  email: string;
+}
+
+/**
  * ICommit describes the commit entity stored in ISemantics.commitsSinceLatestVersion array.
  */
 export interface ICommit {
@@ -15,10 +23,7 @@ export interface ICommit {
   /**
    * Commit author.
    */
-  author: {
-    name: string;
-    email: string;
-  };
+  author: ICommitAuthor;
 
   /**
    * Commit description (the one that goes after colon on the first line of the commit).
