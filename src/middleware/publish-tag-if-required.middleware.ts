@@ -3,6 +3,7 @@ import { Log } from '../utils/log.util';
 import { Iro } from '@priestine/iro/src';
 import { execPromise } from '../utils/exec-promise.util';
 import { execSync } from 'child_process';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 
 export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
   if (!intermediate.publishTag) {
@@ -42,17 +43,18 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
 
   execPromise(`git tag -am "${intermediate.tagMessageContents}" ${intermediate.newVersion}`)
     .then(() => {
-      // if (intermediate.writeToChangelog) {
-      //   if (!existsSync('./CHANGELOG.md')) {
-      //     Log.warning('CHANGELOG.md is not in place. Creating the file.');
-      //     writeFileSync('./CHANGELOG.md', '', 'utf8');
-      //   }
-      //
-      //   const changelog = readFileSync('./CHANGELOG.md', 'utf8');
-      //   writeFileSync('./CHANGELOG.md', intermediate.tagMessageContents.concat('\n').concat(changelog));
-      //   execSync('git add ./CHANGELOG.md');
-      //   execSync(`git commit -m "docs(changelog): add ${intermediate.newVersion} changes"`);
-      // }
+      if (intermediate.writeToChangelog) {
+        if (!existsSync('./CHANGELOG.md')) {
+          Log.warning('CHANGELOG.md is not in place. Creating the file.');
+          writeFileSync('./CHANGELOG.md', '', 'utf8');
+        }
+
+        const changelog = readFileSync('./CHANGELOG.md', 'utf8');
+        writeFileSync('./CHANGELOG.md', intermediate.tagMessageContents.concat('\n').concat(changelog));
+        execSync('git add ./CHANGELOG.md');
+        execSync(`git commit -m "docs(changelog): add ${intermediate.newVersion} changes"`);
+        execSync(`git push origin ${branch}`);
+      }
 
       return execPromise(`git push origin ${intermediate.newVersion}`);
     })
