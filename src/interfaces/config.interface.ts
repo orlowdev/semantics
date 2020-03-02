@@ -23,6 +23,8 @@ export interface IConfig {
 
   /**
    * Git user that is used to push changes to the repo.
+   *
+   * @default ""
    */
   user: string;
 
@@ -169,6 +171,8 @@ export interface IConfig {
 
   /**
    * Email of the git user that will be used to publish updates to the repository.
+   *
+   * @default ""
    */
   gitUserEmail: string;
 }
