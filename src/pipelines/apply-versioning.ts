@@ -11,9 +11,11 @@ import { execSync } from "child_process";
 import { execPromise } from "../utils/exec-promise.util";
 
 export function reverseCommitsArrayIfRequired({ intermediate }: TSemanticsCtx) {
-  if (intermediate.oldestCommitsFirst) {
-    Log.info("Commits will be put oldest to newest.");
-  }
+  const message = intermediate.oldestCommitsFirst
+    ? "Changes will be ordered by commit date in ascending order (oldest first)."
+    : "Changes will be ordered by commit date in descending order (newest first).";
+
+  Log.info(message);
 
   return {
     ...intermediate,
