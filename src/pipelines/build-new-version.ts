@@ -31,7 +31,7 @@ const currentVersionTagIsValid = R.pipe(
   Boolean,
 );
 
-const getVersionTuple = R.ifElse(
+export const getVersionTuple = R.ifElse(
   R.allPass([hasLatestVersionTag, currentVersionTagIsValid]),
   setVersionTupleFromVersionTag,
   setDefaultVersionTuple,
