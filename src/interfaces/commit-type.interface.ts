@@ -23,5 +23,5 @@ export interface CommitTypeInterface {
   /**
    * Optional value describing if commits of this type should bump appropriate digit if they are found since last release.
    */
-  bumps?: 'patch' | 'minor' | 'major';
+  bumps?: "patch" | "minor" | "major";
 }

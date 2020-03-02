@@ -1,4 +1,4 @@
-import { exec, ExecException } from 'child_process';
+import { exec, ExecException } from "child_process";
 
 /**
  * Execute command in a Promise.
@@ -8,9 +8,9 @@ import { exec, ExecException } from 'child_process';
 export function execPromise(cmd: string): Promise<string> {
   return new Promise((resolve, reject) => {
     exec(cmd, (e: ExecException, stdout: string, stderr: string) => {
-      if (e) return reject(e.message.replace(/\n$/, ''));
-      if (stderr) return reject(stderr.replace(/\n$/, ''));
-      resolve(stdout.replace(/\n$/, ''));
+      if (e) return reject(e.message.replace(/\n$/, ""));
+      if (stderr) return reject(stderr.replace(/\n$/, ""));
+      resolve(stdout.replace(/\n$/, ""));
     });
   });
 }

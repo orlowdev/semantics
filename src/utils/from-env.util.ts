@@ -1,7 +1,7 @@
 import ProcessEnv = NodeJS.ProcessEnv;
 
 export function fromEnv(env: ProcessEnv) {
-  return (key: string, defaultVal = '', transformer = (x) => x): string => {
+  return (key: string, defaultVal = "", transformer = (x) => x): string => {
     if (!env) {
       return defaultVal;
     }

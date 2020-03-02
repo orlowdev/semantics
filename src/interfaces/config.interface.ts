@@ -1,4 +1,4 @@
-import { CommitTypeInterface } from './commit-type.interface';
+import { CommitTypeInterface } from "./commit-type.interface";
 
 /**
  * ConfigInterface provides the description of configurable parts of @priestine/semantics. Each entry can be set via
