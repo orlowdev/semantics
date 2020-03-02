@@ -1,4 +1,4 @@
-import { SemanticsCtx } from "../src/interfaces/semantics-intermediate.interface";
+import { TSemanticsCtx } from "../src/interfaces/semantics-intermediate.interface";
 import { addPrefixAndPostfixToNewVersion } from "../src/pipelines/build-new-version";
 
 describe("addPrefixAndPostfixToNewVersion", () => {
@@ -10,7 +10,7 @@ describe("addPrefixAndPostfixToNewVersion", () => {
           postfix: "-beta.0",
           newVersion: "1.0.0",
         },
-      } as SemanticsCtx).newVersion,
+      } as TSemanticsCtx).newVersion,
     ).toEqual("v1.0.0-beta.0");
   });
 });

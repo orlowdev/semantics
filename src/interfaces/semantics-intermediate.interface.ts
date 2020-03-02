@@ -52,4 +52,4 @@ export interface ISemanticsIntermediate extends IConfig {
 /**
  * Shortcut type for defining middleware argument type within @priestine/semantics.
  */
-export type SemanticsCtx = IntermediateInterface<ISemanticsIntermediate>;
+export type TSemanticsCtx = IntermediateInterface<ISemanticsIntermediate>;

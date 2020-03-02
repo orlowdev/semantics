@@ -1,5 +1,5 @@
 import { IntermediatePipeline } from "@priestine/pipeline";
-import { SemanticsCtx } from "../interfaces/semantics-intermediate.interface";
+import { TSemanticsCtx } from "../interfaces/semantics-intermediate.interface";
 import { Log } from "../utils/log.util";
 import { ICommit } from "../interfaces/commit.interface";
 import * as R from "ramda";
@@ -10,7 +10,7 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
 import { execPromise } from "../utils/exec-promise.util";
 
-export function reverseCommitsArrayIfRequired({ intermediate }: SemanticsCtx) {
+export function reverseCommitsArrayIfRequired({ intermediate }: TSemanticsCtx) {
   if (intermediate.oldestCommitsFirst) {
     Log.info("Commits will be put oldest to newest.");
   }
@@ -121,7 +121,7 @@ export function getChangelog(
     .join("");
 }
 
-export function buildTagMessageIfRequired({ intermediate }: SemanticsCtx) {
+export function buildTagMessageIfRequired({ intermediate }: TSemanticsCtx) {
   Log.info("Building changelog...");
 
   intermediate.tagMessageContents = `# ${intermediate.newVersion}`
@@ -137,7 +137,7 @@ export function buildTagMessageIfRequired({ intermediate }: SemanticsCtx) {
   return intermediate;
 }
 
-export function writeTemporaryFilesIfRequired({ intermediate }: SemanticsCtx) {
+export function writeTemporaryFilesIfRequired({ intermediate }: TSemanticsCtx) {
   if (!intermediate.writeTemporaryFiles) {
     return intermediate;
   }
@@ -164,7 +164,7 @@ export function writeTemporaryFilesIfRequired({ intermediate }: SemanticsCtx) {
   return intermediate;
 }
 
-export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
+export function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
   if (!intermediate.publishTag) {
     Log.info("Skipping publishing newly created tag...");
 

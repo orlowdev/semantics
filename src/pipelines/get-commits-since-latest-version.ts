@@ -1,11 +1,11 @@
 import { IntermediatePipeline } from "@priestine/pipeline";
-import { SemanticsCtx } from "../interfaces/semantics-intermediate.interface";
+import { TSemanticsCtx } from "../interfaces/semantics-intermediate.interface";
 import { execPromise } from "../utils/exec-promise.util";
 import { Log } from "../utils/log.util";
 import { Iro } from "@priestine/iro/src";
 import { commitFormat } from "../commit-format";
 
-const getCurrentCommitHash = ({ intermediate }: SemanticsCtx) => {
+const getCurrentCommitHash = ({ intermediate }: TSemanticsCtx) => {
   return execPromise("git rev-parse HEAD")
     .then((currentCommitHash) => {
       Log.success(`Current commit hash: ${Iro.green(currentCommitHash)}`);
@@ -21,7 +21,7 @@ const getCurrentCommitHash = ({ intermediate }: SemanticsCtx) => {
     });
 };
 
-export function getCommitsSinceLatestVersion({ intermediate }: SemanticsCtx) {
+export function getCommitsSinceLatestVersion({ intermediate }: TSemanticsCtx) {
   const noMerges = intermediate.excludeMerges ? "--no-merges " : "";
   return execPromise(
     `git rev-list ${
@@ -38,7 +38,7 @@ export function getCommitsSinceLatestVersion({ intermediate }: SemanticsCtx) {
     });
 }
 
-export function getLatestVersionTag({ intermediate }: SemanticsCtx) {
+export function getLatestVersionTag({ intermediate }: TSemanticsCtx) {
   const glob = "*[0-9]";
   const matcher = intermediate.preciseVersionMatching
     ? `${intermediate.prefix}${glob}${intermediate.postfix}`
@@ -68,7 +68,7 @@ export function getLatestVersionTag({ intermediate }: SemanticsCtx) {
     });
 }
 
-export function getLatestVersionCommitHash({ intermediate }: SemanticsCtx) {
+export function getLatestVersionCommitHash({ intermediate }: TSemanticsCtx) {
   return (intermediate.latestVersionTag
     ? execPromise(`git show-ref ${intermediate.latestVersionTag} -s`)
     : execPromise("git rev-list HEAD | tail -n 1")

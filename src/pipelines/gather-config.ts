@@ -1,12 +1,12 @@
 import { IntermediatePipeline } from "@priestine/pipeline";
-import { SemanticsCtx } from "../interfaces/semantics-intermediate.interface";
+import { TSemanticsCtx } from "../interfaces/semantics-intermediate.interface";
 import { fromArgv } from "../utils/from-argv.util";
 import { transformCase } from "@priestine/case-transformer/src";
 import { fromEnv } from "../utils/from-env.util";
 import ProcessEnv = NodeJS.ProcessEnv;
 
 const updateConfigFromArgv = (argv: string[]) => {
-  return ({ intermediate }: SemanticsCtx) => {
+  return ({ intermediate }: TSemanticsCtx) => {
     Object.keys(intermediate).forEach((key) => {
       const argvKey = `--${transformCase(key).from.camel.to.kebab.toString()}`;
       const getFromArgv = fromArgv(argv.filter((arg) => /^--.*=?/.test(arg)));
@@ -26,7 +26,7 @@ const updateConfigFromArgv = (argv: string[]) => {
 };
 
 const updateConfigFromEnv = (env: ProcessEnv) => {
-  return ({ intermediate }: SemanticsCtx) => {
+  return ({ intermediate }: TSemanticsCtx) => {
     Object.keys(intermediate).forEach((key) => {
       const envKey = transformCase(key)
         .from.camel.to.snake.toString()

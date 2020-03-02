@@ -1,6 +1,6 @@
 import { IntermediatePipeline } from "@priestine/pipeline";
 import * as R from "ramda";
-import { SemanticsCtx } from "../interfaces/semantics-intermediate.interface";
+import { TSemanticsCtx } from "../interfaces/semantics-intermediate.interface";
 
 const hasLatestVersionTag = R.pipe(
   R.path(["intermediate", "latestVersionTag"]),
@@ -37,7 +37,7 @@ export const getVersionTuple = R.ifElse(
   setDefaultVersionTuple,
 );
 
-export function bumpPatchVersion({ intermediate }: SemanticsCtx) {
+export function bumpPatchVersion({ intermediate }: TSemanticsCtx) {
   const currentVersionTuple = intermediate.versionTuple;
 
   if (
@@ -53,7 +53,7 @@ export function bumpPatchVersion({ intermediate }: SemanticsCtx) {
   return intermediate;
 }
 
-export function bumpMinorVersion({ intermediate }: SemanticsCtx) {
+export function bumpMinorVersion({ intermediate }: TSemanticsCtx) {
   const currentVersionTuple = intermediate.versionTuple;
 
   if (
@@ -71,7 +71,7 @@ export function bumpMinorVersion({ intermediate }: SemanticsCtx) {
 
 export function addPrefixAndPostfixToNewVersion({
   intermediate,
-}: SemanticsCtx) {
+}: TSemanticsCtx) {
   return {
     ...intermediate,
     newVersion: `${intermediate.prefix}${intermediate.newVersion}${
@@ -80,7 +80,7 @@ export function addPrefixAndPostfixToNewVersion({
   };
 }
 
-export function bumpMajorVersion({ intermediate }: SemanticsCtx) {
+export function bumpMajorVersion({ intermediate }: TSemanticsCtx) {
   const currentVersionTuple = intermediate.versionTuple;
 
   if (
