@@ -56,7 +56,7 @@ export function publishTagIfRequired({ intermediate }: SemanticsCtx) {
 
       return execPromise(`git push origin ${intermediate.newVersion}`);
     })
-    .catch(Log.error)
+    .catch(Log.info)
     .then(() => Log.success(`Version ${Iro.bold(Iro.green(intermediate.newVersion))} successfully released! 🙌`))
-    .catch(Log.error);
+    .catch(Log.info);
 }
