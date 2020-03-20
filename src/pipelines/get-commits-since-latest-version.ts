@@ -33,10 +33,10 @@ export function getCommitsSinceLatestVersion({ intermediate }: TSemanticsCtx) {
 }
 
 export function getLatestVersionTag({ intermediate }: TSemanticsCtx) {
-  const glob = "*[0-9]";
+  const glob = "*[0-9].*[0-9].*[0-9]";
   const matcher = intermediate.preciseVersionMatching
     ? `${intermediate.prefix}${glob}${intermediate.postfix}`
-    : glob;
+    : `*${glob}*`;
 
   return execPromise(`git describe --match "${matcher}" --abbrev=0 HEAD --tags`)
     .then((latestVersionTag) => {
