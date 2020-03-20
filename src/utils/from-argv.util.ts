@@ -15,6 +15,6 @@ export function fromArgv(argv: string[]) {
       return acc;
     }, {});
 
-    return transformer(args[key] || defaultVal);
+    return transformer(args[key]) || defaultVal;
   };
 }
