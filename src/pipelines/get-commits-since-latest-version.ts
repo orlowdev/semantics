@@ -4,9 +4,10 @@ import { execPromise } from "../utils/exec-promise.util";
 import { Log } from "../utils/log.util";
 import { Iro } from "@priestine/iro/src";
 import { commitFormat } from "../commit-format";
+import { ExecPromiseErrorHandler } from "../utils/ExecPromiseErrorHandler";
 
-const getCurrentCommitHash = ({ intermediate }: TSemanticsCtx) => {
-  return execPromise("git rev-parse HEAD")
+const getCurrentCommitHash = ({ intermediate }: TSemanticsCtx) =>
+  execPromise("git rev-parse HEAD")
     .then((currentCommitHash) => {
       Log.success(`Current commit hash: ${Iro.green(currentCommitHash)}`);
 
@@ -15,11 +16,7 @@ const getCurrentCommitHash = ({ intermediate }: TSemanticsCtx) => {
         currentCommitHash,
       };
     })
-    .catch((e) => {
-      Log.error(e.replace("\n", "->"));
-      process.exit(1);
-    });
-};
+    .catch(ExecPromiseErrorHandler);
 
 export function getCommitsSinceLatestVersion({ intermediate }: TSemanticsCtx) {
   const noMerges = intermediate.excludeMerges ? "--no-merges " : "";
@@ -32,10 +29,7 @@ export function getCommitsSinceLatestVersion({ intermediate }: TSemanticsCtx) {
       ...intermediate,
       commitsSinceLatestVersionString,
     }))
-    .catch((e) => {
-      Log.error(e.replace("\n", "->"));
-      process.exit(1);
-    });
+    .catch(ExecPromiseErrorHandler);
 }
 
 export function getLatestVersionTag({ intermediate }: TSemanticsCtx) {
@@ -53,7 +47,7 @@ export function getLatestVersionTag({ intermediate }: TSemanticsCtx) {
         latestVersionTag,
       };
     })
-    .catch((e) => {
+    .catch(() => {
       Log.warning(
         `There seem to be no previous tags matching the "${Iro.yellow(
           `${intermediate.prefix}*${intermediate.postfix}`,
