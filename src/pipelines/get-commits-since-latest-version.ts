@@ -69,16 +69,18 @@ export function getLatestVersionCommitHash({ intermediate }: TSemanticsCtx) {
   return (intermediate.latestVersionTag
     ? execPromise(`git show-ref ${intermediate.latestVersionTag} -s`)
     : execPromise("git rev-list HEAD | tail -n 1")
-  ).then((latestVersionCommitHash) => {
-    Log.success(
-      `Commit hash of latest version: ${Iro.green(latestVersionCommitHash)}`,
-    );
+  )
+    .then((latestVersionCommitHash) => {
+      Log.success(
+        `Commit hash of latest version: ${Iro.green(latestVersionCommitHash)}`,
+      );
 
-    return {
-      ...intermediate,
-      latestVersionCommitHash,
-    };
-  });
+      return {
+        ...intermediate,
+        latestVersionCommitHash,
+      };
+    })
+    .catch(ExecPromiseErrorHandler);
 }
 
 export const GetCommitsSinceLatestVersion = IntermediatePipeline.of(
