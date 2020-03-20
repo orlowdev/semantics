@@ -11,8 +11,8 @@ export const UpdateConfigFromArgv = (argv: string[]) =>
 
       if (typeof intermediate[key] === "number") {
         intermediate[key] = Number.isInteger(intermediate[key])
-          ? Number.parseInt(getFromArgv(argvKey, intermediate[key]))
-          : Number.parseFloat(getFromArgv(argvKey, intermediate[key]));
+          ? getFromArgv(argvKey, intermediate[key], Number.parseInt)
+          : getFromArgv(argvKey, intermediate[key], Number.parseFloat);
       } else if (typeof intermediate[key] === "boolean") {
         intermediate[key] =
           getFromArgv(argvKey, String(intermediate[key])) === "true";

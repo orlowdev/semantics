@@ -15,8 +15,8 @@ export const UpdateConfigFromEnv = (env: ProcessEnv) =>
 
       if (typeof intermediate[key] === "number") {
         intermediate[key] = Number.isInteger(intermediate[key])
-          ? Number.parseInt(getFromEnv(envKey, intermediate[key]))
-          : Number.parseFloat(getFromEnv(envKey, intermediate[key]));
+          ? getFromEnv(envKey, intermediate[key], Number.parseInt)
+          : getFromEnv(envKey, intermediate[key], Number.parseFloat);
       } else if (typeof intermediate[key] === "boolean") {
         intermediate[key] =
           getFromEnv(envKey, String(intermediate[key])) === "true";
