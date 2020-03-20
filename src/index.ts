@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 import { Log } from "./utils/log.util";
-import { ISemanticsIntermediate } from "./interfaces/semantics-intermediate.interface";
-import { GatherConfig } from "./pipelines/gather-config";
+import { DefaultConfig, GatherConfig } from "./pipelines/gather-config";
 import { GetCommitsSinceLatestVersion } from "./pipelines/get-commits-since-latest-version";
 import { NormalizeCommits } from "./pipelines/normalize-commits";
 import { ExitIfNoCommits } from "./pipelines/exit-if-no-commits";
@@ -16,34 +15,7 @@ GatherConfig.concat(GetCommitsSinceLatestVersion)
   .concat(BuildNewVersion)
   .concat(ExitIfNoBumping)
   .concat(ApplyVersioning)
-  .process({
-    user: "",
-    password: "",
-    publishTag: true,
-    oldestCommitsFirst: true,
-    commitTypesIncludedInTagMessage: [
-      {
-        type: "feat",
-        title: "New features",
-        bumps: "minor",
-      },
-      {
-        type: "fix",
-        title: "Bug fixes",
-        bumps: "patch",
-      },
-    ],
-    commitTypesExcludedFromTagMessage: [],
-    prefix: "",
-    postfix: "",
-    writeTemporaryFiles: false,
-    preciseVersionMatching: true,
-    excludeMerges: true,
-    writeToChangelog: true,
-    origin: "",
-    gitUserName: "",
-    gitUserEmail: "",
-  } as ISemanticsIntermediate)
+  .process(DefaultConfig)
   .catch((e) => {
     Log.error(e);
     process.exit(1);
