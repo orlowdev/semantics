@@ -1,11 +1,11 @@
 module.exports = {
   roots: [
-    '<rootDir>/test',
+    '<rootDir>',
   ],
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
-  testRegex: '(/test/.*|(\\.|/)(test|spec))\\.ts$',
+  testRegex: '(/test/src/.*|(\\.|/)(test|spec))\\.ts$',
   coverageReporters: ['html', 'json', 'text'],
   moduleFileExtensions: [
     'ts',
