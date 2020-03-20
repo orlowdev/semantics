@@ -7,23 +7,8 @@ import { Iro } from "@priestine/iro/src";
 import { ICommitType } from "../interfaces/commit-type.interface";
 import { getSubjects } from "../utils/get-subjects.util";
 import { existsSync, readFileSync, writeFileSync } from "fs";
-import { execSync } from "child_process";
 import { execPromise } from "../utils/exec-promise.util";
-
-export function reverseChangesArrayIfRequired({ intermediate }: TSemanticsCtx) {
-  const message = intermediate.oldestCommitsFirst
-    ? "Changes will be ordered by commit date in ascending order (oldest first)."
-    : "Changes will be ordered by commit date in descending order (newest first).";
-
-  Log.info(message);
-
-  return {
-    ...intermediate,
-    commitsSinceLatestVersion: intermediate.oldestCommitsFirst
-      ? intermediate.commitsSinceLatestVersion.reverse()
-      : intermediate.commitsSinceLatestVersion,
-  };
-}
+import { ReverseChangesIfRequired } from "./apply-versioning/ReverseChangesIfRequired";
 
 export function getBreakingChanges(changes: ICommit[]): string {
   let substring: string = "";
@@ -166,7 +151,7 @@ export function writeTemporaryFilesIfRequired({ intermediate }: TSemanticsCtx) {
   return intermediate;
 }
 
-export function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
+export async function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
   if (!intermediate.publishTag) {
     Log.info("Skipping publishing newly created tag...");
 
@@ -177,24 +162,19 @@ export function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
     ? intermediate.gitUserName
     : intermediate.user;
 
-  execSync(`git config user.name ${gitUser}`);
+  await execPromise(`git config user.name ${gitUser}`);
 
   if (intermediate.gitUserEmail) {
-    execSync(`git config user.email ${intermediate.gitUserEmail}`);
+    await execPromise(`git config user.email ${intermediate.gitUserEmail}`);
   }
 
   const origin = intermediate.origin
     ? intermediate.origin
-    : execSync("git config --get remote.origin.url", { encoding: "utf8" });
+    : await execPromise("git config --get remote.origin.url");
 
-  let branch = execSync("git rev-parse --abbrev-ref HEAD", {
-    encoding: "utf8",
-  });
+  let branch = await execPromise("git rev-parse --abbrev-ref HEAD");
   if (/HEAD/.test("HEAD")) {
-    branch = execSync("git name-rev HEAD", { encoding: "utf8" }).replace(
-      /HEAD\s+/,
-      "",
-    );
+    branch = (await execPromise("git name-rev HEAD")).replace(/HEAD\s+/, "");
     Log.info(`The HEAD is detached. Current branch is ${branch}.`);
   }
 
@@ -209,7 +189,7 @@ export function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
       `https://${intermediate.user}:${intermediate.password}@`,
     );
     Log.info("Setting new remote origin...");
-    execSync(`git remote set-url origin ${accessibleRemote}`);
+    await execPromise(`git remote set-url origin ${accessibleRemote}`);
   }
 
   execPromise(
@@ -217,7 +197,7 @@ export function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
       intermediate.newVersion
     }`,
   )
-    .then(() => {
+    .then(async () => {
       if (intermediate.writeToChangelog) {
         if (!existsSync("./CHANGELOG.md")) {
           Log.warning("CHANGELOG.md is not in place. Creating the file.");
@@ -229,13 +209,13 @@ export function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
           "./CHANGELOG.md",
           intermediate.tagMessageContents.concat("\n").concat(changelog),
         );
-        execSync("git add ./CHANGELOG.md");
-        execSync(
+        await execPromise("git add ./CHANGELOG.md");
+        await execPromise(
           `git commit -m "docs(changelog): add ${
             intermediate.newVersion
           } changes"`,
         );
-        execSync(`git push origin ${branch}`);
+        await execPromise(`git push origin ${branch}`);
       }
 
       return execPromise(`git push origin ${intermediate.newVersion}`);
@@ -251,9 +231,10 @@ export function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
     .catch(Log.info);
 }
 
-export const ApplyVersioning = IntermediatePipeline.from([
-  reverseChangesArrayIfRequired,
-  buildTagMessageIfRequired,
-  writeTemporaryFilesIfRequired,
-  publishTagIfRequired,
-]);
+export const ApplyVersioning = ReverseChangesIfRequired.concat(
+  IntermediatePipeline.from([
+    buildTagMessageIfRequired,
+    writeTemporaryFilesIfRequired,
+    publishTagIfRequired,
+  ]),
+);
