@@ -29,22 +29,22 @@ export namespace Log {
     );
   }
 
-  export const tapInfo = (...message) => ({ intermediate }) => {
+  export const tapInfo = (...message) => (intermediate) => {
     Log.info(...message);
     return intermediate;
   };
 
-  export const tapSuccess = (...message) => ({ intermediate }) => {
+  export const tapSuccess = (...message) => (intermediate) => {
     Log.success(...message);
     return intermediate;
   };
 
-  export const tapWarning = (...message) => ({ intermediate }) => {
+  export const tapWarning = (...message) => (intermediate) => {
     Log.warning(...message);
     return intermediate;
   };
 
-  export const tapError = (...message) => ({ intermediate }) => {
+  export const tapError = (...message) => (intermediate) => {
     Log.error(...message);
     return intermediate;
   };

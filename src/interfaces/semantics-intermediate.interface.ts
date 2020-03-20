@@ -1,6 +1,5 @@
 import { IConfig } from "./config.interface";
 import { ICommit } from "./commit.interface";
-import { IntermediateInterface } from "@priestine/pipeline";
 
 /**
  * ISemanticsIntermediate describes internal properties that @priestine/semantics creates and uses
@@ -48,8 +47,3 @@ export interface ISemanticsIntermediate extends IConfig {
    */
   tagMessageContents: string;
 }
-
-/**
- * Shortcut type for defining middleware argument type within @priestine/semantics.
- */
-export type TSemanticsCtx = IntermediateInterface<ISemanticsIntermediate>;

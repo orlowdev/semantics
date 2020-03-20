@@ -1,12 +1,12 @@
-import { IntermediatePipeline } from "@priestine/pipeline";
+import { Pipeline } from "@priestine/pipeline";
 import { Log } from "../utils/log.util";
 import { Iro } from "@priestine/iro/src";
 import * as R from "ramda";
 import { exit } from "../utils/exit.util";
 
 const versionHasNotChanged = R.lift(R.equals)(
-  R.path(["intermediate", "newVersion"]),
-  R.path(["intermediate", "latestVersionTag"]),
+  R.path(["newVersion"]),
+  R.path(["latestVersionTag"]),
 );
 
 const handleUnchangedVersion = R.pipe(
@@ -16,15 +16,12 @@ const handleUnchangedVersion = R.pipe(
   exit(0),
 );
 
-const logVersionCandidate = ({ intermediate }) =>
+const logVersionCandidate = (intermediate) =>
   Log.tapSuccess(
     `New version candidate: ${Iro.green(`${intermediate.newVersion}`)}`,
   )(intermediate);
 
-const handleChangedVersion = R.pipe(
-  logVersionCandidate,
-  R.prop("intermediate"),
-);
+const handleChangedVersion = R.pipe(logVersionCandidate);
 
 export const exitIfVersionIsNotUpdated = R.ifElse(
   versionHasNotChanged,
@@ -32,6 +29,4 @@ export const exitIfVersionIsNotUpdated = R.ifElse(
   handleChangedVersion,
 );
 
-export const ExitIfNoBumping = IntermediatePipeline.of(
-  exitIfVersionIsNotUpdated,
-);
+export const ExitIfNoBumping = Pipeline.of(exitIfVersionIsNotUpdated);

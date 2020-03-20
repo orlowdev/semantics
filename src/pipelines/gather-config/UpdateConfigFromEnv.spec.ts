@@ -8,13 +8,13 @@ describe("UpdateConfigFromEnv", () => {
   });
 
   it("should override default values with those provided in env", async () => {
-    const result = await updateConfigFromEnv.process(DefaultConfig);
+    const result: any = await updateConfigFromEnv.process(DefaultConfig);
 
     expect(result.user).toEqual("test");
   });
 
   it("should apply transformations for booleans", async () => {
-    const result = await updateConfigFromEnv.process(DefaultConfig);
+    const result: any = await updateConfigFromEnv.process(DefaultConfig);
 
     expect(result.publishTag).toEqual(false);
   });

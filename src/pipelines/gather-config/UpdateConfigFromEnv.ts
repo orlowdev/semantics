@@ -1,11 +1,11 @@
-import { TSemanticsCtx } from "../../interfaces/semantics-intermediate.interface";
+import { ISemanticsIntermediate } from "../../interfaces/semantics-intermediate.interface";
 import { transformCase } from "@priestine/case-transformer/src";
 import { fromEnv } from "../../utils/from-env.util";
-import { IntermediatePipeline, Pipeline } from '@priestine/pipeline';
+import { Pipeline } from "@priestine/pipeline";
 import ProcessEnv = NodeJS.ProcessEnv;
 
 export const UpdateConfigFromEnv = (env: ProcessEnv) =>
-  IntermediatePipeline.of(({ intermediate }: TSemanticsCtx) => {
+  Pipeline.of((intermediate: ISemanticsIntermediate) => {
     Object.keys(intermediate).forEach((key) => {
       const envKey = transformCase(key)
         .from.camel.to.snake.toString()

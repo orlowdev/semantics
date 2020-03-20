@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Log } from "./utils/log.util";
-import { DefaultConfig, GatherConfig } from "./pipelines/gather-config";
+import { DefaultConfig, GatherConfig } from "./pipelines/GatherConfig";
 import { GetCommitsSinceLatestVersion } from "./pipelines/get-commits-since-latest-version";
 import { NormalizeCommits } from "./pipelines/normalize-commits";
 import { ExitIfNoCommits } from "./pipelines/exit-if-no-commits";

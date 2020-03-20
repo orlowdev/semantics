@@ -1,24 +1,20 @@
-import { IntermediatePipeline } from "@priestine/pipeline";
+import { Pipeline } from "@priestine/pipeline";
 import * as R from "ramda";
-import { TSemanticsCtx } from "../interfaces/semantics-intermediate.interface";
+import { ISemanticsIntermediate } from "../interfaces/semantics-intermediate.interface";
 
 const hasLatestVersionTag = R.pipe(
-  R.path(["intermediate", "latestVersionTag"]),
+  R.path(["latestVersionTag"]),
   Boolean,
 );
 
-const versionTuple = R.lensPath(["intermediate", "versionTuple"]);
+const versionTuple = R.lensPath(["versionTuple"]);
 
-const setVersionTuple = (value) =>
-  R.pipe(
-    R.set(versionTuple, value),
-    R.prop("intermediate"),
-  );
+const setVersionTuple = (value) => R.set(versionTuple, value);
 
 const setDefaultVersionTuple = setVersionTuple([0, 0, 0]);
 
 const getCurrentVersion = R.pipe(
-  R.path(["intermediate", "latestVersionTag"]),
+  R.path(["latestVersionTag"]),
   R.match(/(\d+).(\d+).(\d+)/),
 );
 
@@ -37,7 +33,7 @@ export const getVersionTuple = R.ifElse(
   setDefaultVersionTuple,
 );
 
-export function bumpPatchVersion({ intermediate }: TSemanticsCtx) {
+export function bumpPatchVersion(intermediate: ISemanticsIntermediate) {
   const currentVersionTuple = intermediate.versionTuple;
 
   if (
@@ -53,7 +49,7 @@ export function bumpPatchVersion({ intermediate }: TSemanticsCtx) {
   return intermediate;
 }
 
-export function bumpMinorVersion({ intermediate }: TSemanticsCtx) {
+export function bumpMinorVersion(intermediate: ISemanticsIntermediate) {
   const currentVersionTuple = intermediate.versionTuple;
 
   if (
@@ -69,9 +65,9 @@ export function bumpMinorVersion({ intermediate }: TSemanticsCtx) {
   return intermediate;
 }
 
-export function addPrefixAndPostfixToNewVersion({
-  intermediate,
-}: TSemanticsCtx) {
+export function addPrefixAndPostfixToNewVersion(
+  intermediate: ISemanticsIntermediate,
+) {
   return {
     ...intermediate,
     newVersion: `${intermediate.prefix}${intermediate.newVersion}${
@@ -80,7 +76,7 @@ export function addPrefixAndPostfixToNewVersion({
   };
 }
 
-export function bumpMajorVersion({ intermediate }: TSemanticsCtx) {
+export function bumpMajorVersion(intermediate: ISemanticsIntermediate) {
   const currentVersionTuple = intermediate.versionTuple;
 
   if (
@@ -103,7 +99,7 @@ export function bumpMajorVersion({ intermediate }: TSemanticsCtx) {
   return intermediate;
 }
 
-export const BuildNewVersion = IntermediatePipeline.from([
+export const BuildNewVersion = Pipeline.from([
   getVersionTuple,
   bumpPatchVersion,
   bumpMinorVersion,

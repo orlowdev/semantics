@@ -1,14 +1,14 @@
-import { IntermediatePipeline } from "@priestine/pipeline";
+import { Pipeline } from "@priestine/pipeline";
 import { Log } from "../utils/log.util";
 import * as R from "ramda";
 import { exit } from "../utils/exit.util";
 
 const newCommitsExist = R.pipe(
-  R.path(["intermediate", "commitsSinceLatestVersion", "length"]),
+  R.path(["commitsSinceLatestVersion", "length"]),
   Boolean,
 );
 
-const handleCommitsFoundForUpdate = R.prop("intermediate");
+const handleCommitsFoundForUpdate = R.identity;
 
 const handleNoCommits = R.pipe(
   Log.tapWarning("There are no changes since last release. Terminating."),
@@ -21,6 +21,4 @@ export const exitIfThereAreNoNewCommits = R.ifElse(
   handleNoCommits,
 );
 
-export const ExitIfNoCommits = IntermediatePipeline.of(
-  exitIfThereAreNoNewCommits,
-);
+export const ExitIfNoCommits = Pipeline.of(exitIfThereAreNoNewCommits);

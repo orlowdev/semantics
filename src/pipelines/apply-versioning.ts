@@ -1,5 +1,4 @@
-import { IntermediatePipeline } from "@priestine/pipeline";
-import { TSemanticsCtx } from "../interfaces/semantics-intermediate.interface";
+import { Pipeline } from "@priestine/pipeline";
 import { Log } from "../utils/log.util";
 import { ICommit } from "../interfaces/commit.interface";
 import * as R from "ramda";
@@ -9,6 +8,7 @@ import { getSubjects } from "../utils/get-subjects.util";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execPromise } from "../utils/exec-promise.util";
 import { ReverseChangesIfRequired } from "./apply-versioning/ReverseChangesIfRequired";
+import { ISemanticsIntermediate } from "../interfaces/semantics-intermediate.interface";
 
 export function getBreakingChanges(changes: ICommit[]): string {
   let substring: string = "";
@@ -108,7 +108,9 @@ export function getChangelog(
     .join("");
 }
 
-export function buildTagMessageIfRequired({ intermediate }: TSemanticsCtx) {
+export function buildTagMessageIfRequired(
+  intermediate: ISemanticsIntermediate,
+) {
   Log.info("Building changelog...");
 
   intermediate.tagMessageContents = `# ${intermediate.newVersion}`
@@ -124,7 +126,9 @@ export function buildTagMessageIfRequired({ intermediate }: TSemanticsCtx) {
   return intermediate;
 }
 
-export function writeTemporaryFilesIfRequired({ intermediate }: TSemanticsCtx) {
+export function writeTemporaryFilesIfRequired(
+  intermediate: ISemanticsIntermediate,
+) {
   if (!intermediate.writeTemporaryFiles) {
     return intermediate;
   }
@@ -151,7 +155,9 @@ export function writeTemporaryFilesIfRequired({ intermediate }: TSemanticsCtx) {
   return intermediate;
 }
 
-export async function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
+export async function publishTagIfRequired(
+  intermediate: ISemanticsIntermediate,
+) {
   if (!intermediate.publishTag) {
     Log.info("Skipping publishing newly created tag...");
 
@@ -232,7 +238,7 @@ export async function publishTagIfRequired({ intermediate }: TSemanticsCtx) {
 }
 
 export const ApplyVersioning = ReverseChangesIfRequired.concat(
-  IntermediatePipeline.from([
+  Pipeline.from([
     buildTagMessageIfRequired,
     writeTemporaryFilesIfRequired,
     publishTagIfRequired,

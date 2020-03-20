@@ -1,10 +1,10 @@
-import { IntermediatePipeline } from "@priestine/pipeline";
-import { TSemanticsCtx } from "../interfaces/semantics-intermediate.interface";
+import { Pipeline } from "@priestine/pipeline";
+import { ISemanticsIntermediate } from "../interfaces/semantics-intermediate.interface";
 import { ICommit } from "../interfaces/commit.interface";
 import { Log } from "../utils/log.util";
 import { Iro } from "@priestine/iro/src";
 
-export function normalizeCommitsString({ intermediate }: TSemanticsCtx) {
+export function normalizeCommitsString(intermediate: ISemanticsIntermediate) {
   return {
     ...intermediate,
     commitsSinceLatestVersionString: `[ ${intermediate.commitsSinceLatestVersionString
@@ -100,9 +100,9 @@ export const normalizeBody = (commit: ICommit): ICommit => {
   return commit;
 };
 
-export function transformCommitsStringToObjects({
-  intermediate,
-}: TSemanticsCtx) {
+export function transformCommitsStringToObjects(
+  intermediate: ISemanticsIntermediate,
+) {
   const result = JSON.parse(intermediate.commitsSinceLatestVersionString);
   Log.success(
     `Commits found since latest version: ${Iro.green(result.length)}`,
@@ -141,6 +141,6 @@ export function transformCommitsStringToObjects({
   };
 }
 
-export const NormalizeCommits = IntermediatePipeline.of(
-  normalizeCommitsString,
-).concat(IntermediatePipeline.of(transformCommitsStringToObjects));
+export const NormalizeCommits = Pipeline.of(normalizeCommitsString).concat(
+  Pipeline.of(transformCommitsStringToObjects),
+);

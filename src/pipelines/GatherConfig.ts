@@ -1,8 +1,8 @@
 import { ISemanticsIntermediate } from "../interfaces/semantics-intermediate.interface";
 import { UpdateConfigFromEnv } from "./gather-config/UpdateConfigFromEnv";
 import { UpdateConfigFromArgv } from "./gather-config/UpdateConfigFromArgv";
-import { IntermediatePipeline } from "@priestine/pipeline";
 import { UpdateConfigFromJson } from "./gather-config/UpdateConfigFromJson";
+import { Pipeline } from "@priestine/pipeline";
 
 export const DefaultConfig = {
   user: "",
@@ -33,7 +33,7 @@ export const DefaultConfig = {
   gitUserEmail: "",
 } as ISemanticsIntermediate;
 
-export const GatherConfig = IntermediatePipeline.empty<ISemanticsIntermediate>()
+export const GatherConfig = Pipeline.empty()
   .concat(UpdateConfigFromJson)
   .concat(UpdateConfigFromArgv(process.argv.slice(2)))
   .concat(UpdateConfigFromEnv(process.env));

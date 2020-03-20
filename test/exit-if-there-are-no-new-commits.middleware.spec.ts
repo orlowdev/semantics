@@ -12,11 +12,9 @@ describe("exitIfThereAreNoNewCommits", () => {
       .spyOn(process, "exit")
       .mockImplementation((() => {}) as any);
     exitIfThereAreNoNewCommits({
-      intermediate: {
-        latestVersionTag: "1.2.3",
-        newVersion: "1.2.3",
-        commitsSinceLatestVersion: [],
-      },
+      latestVersionTag: "1.2.3",
+      newVersion: "1.2.3",
+      commitsSinceLatestVersion: [],
     } as any);
 
     expect(mockExit).toHaveBeenCalledWith(0);
@@ -27,14 +25,12 @@ describe("exitIfThereAreNoNewCommits", () => {
 
   it("should return unchanged intermediate for further middleware", () => {
     const ctx: any = {
-      intermediate: {
-        latestVersionTag: "1.2.3",
-        newVersion: "1.3.0",
-        commitsSinceLatestVersion: [{}],
-      },
+      latestVersionTag: "1.2.3",
+      newVersion: "1.3.0",
+      commitsSinceLatestVersion: [{}],
     };
 
-    expect(exitIfVersionIsNotUpdated(ctx)).toEqual(undefined);
+    expect(exitIfVersionIsNotUpdated(ctx)).toEqual(ctx);
     expect(mockSuccess).toHaveBeenCalledWith(
       `New version candidate: ${Iro.green("1.3.0")}`,
     );

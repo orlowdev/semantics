@@ -1,12 +1,12 @@
-import { IntermediatePipeline } from "@priestine/pipeline";
-import { TSemanticsCtx } from "../interfaces/semantics-intermediate.interface";
+import { Pipeline } from "@priestine/pipeline";
+import { ISemanticsIntermediate } from "../interfaces/semantics-intermediate.interface";
 import { execPromise } from "../utils/exec-promise.util";
 import { Log } from "../utils/log.util";
 import { Iro } from "@priestine/iro/src";
 import { commitFormat } from "../commit-format";
 import { ExecPromiseErrorHandler } from "../utils/ExecPromiseErrorHandler";
 
-const getCurrentCommitHash = ({ intermediate }: TSemanticsCtx) =>
+const getCurrentCommitHash = (intermediate: ISemanticsIntermediate) =>
   execPromise("git rev-parse HEAD")
     .then((currentCommitHash) => {
       Log.success(`Current commit hash: ${Iro.green(currentCommitHash)}`);
@@ -18,7 +18,9 @@ const getCurrentCommitHash = ({ intermediate }: TSemanticsCtx) =>
     })
     .catch(ExecPromiseErrorHandler);
 
-export function getCommitsSinceLatestVersion({ intermediate }: TSemanticsCtx) {
+export function getCommitsSinceLatestVersion(
+  intermediate: ISemanticsIntermediate,
+) {
   const noMerges = intermediate.excludeMerges ? "--no-merges " : "";
   return execPromise(
     `git rev-list ${
@@ -32,7 +34,7 @@ export function getCommitsSinceLatestVersion({ intermediate }: TSemanticsCtx) {
     .catch(ExecPromiseErrorHandler);
 }
 
-export function getLatestVersionTag({ intermediate }: TSemanticsCtx) {
+export function getLatestVersionTag(intermediate: ISemanticsIntermediate) {
   const glob = "*[0-9].*[0-9].*[0-9]";
   const matcher = intermediate.preciseVersionMatching
     ? `${intermediate.prefix}${glob}${intermediate.postfix}`
@@ -65,7 +67,9 @@ export function getLatestVersionTag({ intermediate }: TSemanticsCtx) {
     });
 }
 
-export function getLatestVersionCommitHash({ intermediate }: TSemanticsCtx) {
+export function getLatestVersionCommitHash(
+  intermediate: ISemanticsIntermediate,
+) {
   return (intermediate.latestVersionTag
     ? execPromise(`git show-ref ${intermediate.latestVersionTag} -s`)
     : execPromise("git rev-list HEAD | tail -n 1")
@@ -83,9 +87,7 @@ export function getLatestVersionCommitHash({ intermediate }: TSemanticsCtx) {
     .catch(ExecPromiseErrorHandler);
 }
 
-export const GetCommitsSinceLatestVersion = IntermediatePipeline.of(
-  getCurrentCommitHash,
-)
-  .concat(IntermediatePipeline.of(getLatestVersionTag))
-  .concat(IntermediatePipeline.of(getLatestVersionCommitHash))
-  .concat(IntermediatePipeline.of(getCommitsSinceLatestVersion));
+export const GetCommitsSinceLatestVersion = Pipeline.of(getCurrentCommitHash)
+  .concat(Pipeline.of(getLatestVersionTag))
+  .concat(Pipeline.of(getLatestVersionCommitHash))
+  .concat(Pipeline.of(getCommitsSinceLatestVersion));

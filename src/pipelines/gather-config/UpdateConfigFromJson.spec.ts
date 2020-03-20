@@ -23,9 +23,7 @@ describe("UpdateConfigFromJson", () => {
     };
 
     writeFileSync(".semantics.json", JSON.stringify(config), "utf8");
-    const result = await UpdateConfigFromJson.process(
-      Intermediate.of(DefaultConfig),
-    );
+    const result: any = await UpdateConfigFromJson.process(DefaultConfig);
     expect(result.commitTypesIncludedInTagMessage[0].type).toEqual("docs");
     expect(result.excludeMerges).toEqual(true);
     unlinkSync(".semantics.json");

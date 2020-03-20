@@ -11,10 +11,8 @@ describe("exitIfVersionIsNotUpdated", () => {
       .spyOn(process, "exit")
       .mockImplementation((() => {}) as any);
     exitIfVersionIsNotUpdated({
-      intermediate: {
-        latestVersionTag: "1.2.3",
-        newVersion: "1.2.3",
-      },
+      latestVersionTag: "1.2.3",
+      newVersion: "1.2.3",
     } as any);
 
     expect(mockExit).toHaveBeenCalledWith(0);
@@ -25,13 +23,11 @@ describe("exitIfVersionIsNotUpdated", () => {
 
   it("should return unchanged intermediate for further middleware", () => {
     const ctx: any = {
-      intermediate: {
-        latestVersionTag: "1.2.3",
-        newVersion: "1.3.0",
-      },
+      latestVersionTag: "1.2.3",
+      newVersion: "1.3.0",
     };
 
-    expect(exitIfVersionIsNotUpdated(ctx)).toEqual(undefined);
+    expect(exitIfVersionIsNotUpdated(ctx)).toEqual(ctx);
     expect(mockSuccess).toHaveBeenCalledWith(
       `New version candidate: ${Iro.green("1.3.0")}`,
     );

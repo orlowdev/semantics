@@ -1,22 +1,22 @@
 import { Log } from "../../utils/log.util";
-import { TSemanticsCtx } from "../../interfaces/semantics-intermediate.interface";
-import { IntermediatePipeline } from "@priestine/pipeline";
+import { ISemanticsIntermediate } from "../../interfaces/semantics-intermediate.interface";
+import { Pipeline } from "@priestine/pipeline";
 
-const logChangesOrder = ({ intermediate }) =>
+const logChangesOrder = (intermediate) =>
   Log.tapInfo(
     intermediate.oldestCommitsFirst
       ? "Changes will be ordered by commit date in ascending order (oldest first)."
       : "Changes will be ordered by commit date in descending order (newest first).",
   )(intermediate);
 
-const setChangesOrder = ({ intermediate }: TSemanticsCtx) => ({
+const setChangesOrder = (intermediate: ISemanticsIntermediate) => ({
   ...intermediate,
   commitsSinceLatestVersion: intermediate.oldestCommitsFirst
     ? intermediate.commitsSinceLatestVersion.reverse()
     : intermediate.commitsSinceLatestVersion,
 });
 
-export const ReverseChangesIfRequired = IntermediatePipeline.from([
+export const ReverseChangesIfRequired = Pipeline.from([
   logChangesOrder,
   setChangesOrder,
 ]);

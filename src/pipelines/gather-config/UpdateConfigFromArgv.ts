@@ -1,10 +1,10 @@
-import { TSemanticsCtx } from "../../interfaces/semantics-intermediate.interface";
+import { ISemanticsIntermediate } from "../../interfaces/semantics-intermediate.interface";
 import { transformCase } from "@priestine/case-transformer/src";
 import { fromArgv } from "../../utils/from-argv.util";
-import { IntermediatePipeline } from "@priestine/pipeline";
+import { Pipeline } from "@priestine/pipeline";
 
 export const UpdateConfigFromArgv = (argv: string[]) =>
-  IntermediatePipeline.of(({ intermediate }: TSemanticsCtx) =>
+  Pipeline.of((intermediate: ISemanticsIntermediate) => {
     Object.keys(intermediate).forEach((key) => {
       const argvKey = `--${transformCase(key).from.camel.to.kebab.toString()}`;
       const getFromArgv = fromArgv(argv.filter((arg) => /^--.*=?/.test(arg)));
@@ -19,5 +19,7 @@ export const UpdateConfigFromArgv = (argv: string[]) =>
       } else {
         intermediate[key] = getFromArgv(argvKey, intermediate[key]);
       }
-    }),
-  );
+    });
+
+    return intermediate;
+  });
