@@ -55,12 +55,8 @@ export function getLatestVersionTag({ intermediate }: TSemanticsCtx) {
       };
     })
     .catch(() => {
-      Log.warning(
-        `There seem to be no previous tags matching the "${Iro.yellow(
-          `${intermediate.prefix}*${intermediate.postfix}`,
-        )}" pattern.`,
-      );
-      Log.warning(`Initial commit hash will be considered the latest version.`);
+      Log.warning("There seem to be no previous tags that match.");
+      Log.warning("Initial commit hash will be considered the latest version.");
 
       return {
         ...intermediate,
