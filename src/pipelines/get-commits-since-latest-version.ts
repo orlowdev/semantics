@@ -38,6 +38,13 @@ export function getLatestVersionTag({ intermediate }: TSemanticsCtx) {
     ? `${intermediate.prefix}${glob}${intermediate.postfix}`
     : `*${glob}*`;
 
+  Log.info(
+    intermediate.preciseVersionMatching
+      ? "Precise version matching is on, only the versions having the same prefix/postfix will be considered"
+      : "Precise version matching is off, the latest semantic version will be referred to as previous version, " +
+        "regardless of prefixes/postfixes",
+  );
+
   return execPromise(`git describe --match "${matcher}" --abbrev=0 HEAD --tags`)
     .then((latestVersionTag) => {
       Log.success(`Latest version tag: ${Iro.green(latestVersionTag)}`);
